@@ -1,0 +1,6 @@
+<svg width="20" height="10" viewBox="0 0 20 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="rotate(180 10 5)">
+    <line x1="0.661659" y1="9.46682" x2="10.2332" y2="0.66996" stroke="white"/>
+    <line y1="-0.5" x2="13" y2="-0.5" transform="matrix(-0.736276 -0.676682 -0.676682 0.736276 18.6416 9.79688)" stroke="white"/>
+  </g>
+</svg>

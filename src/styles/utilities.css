@@ -1,0 +1,57 @@
+@layer utilities {
+  /* Grid */
+  .grid-container {
+    @apply grid gap-[var(--grid-gutter)] px-[var(--grid-margin)] w-full max-w-[var(--grid-container)] mx-auto;
+  }
+
+  /* Gradient */
+  .button-gradient {
+    background-image: var(--gradient-button);
+  }
+
+  .graphic-gradient {
+    background-image: var(--gradient-graphic);
+  }
+
+  .graphic-gradient-light {
+    background-image: var(--gradient-graphic-light);
+  }
+
+  .text-gradient {
+    background-image: var(--gradient-text);
+
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-light {
+    background-image: var(--gradient-graphic-light);
+
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .container-gradient {
+    background-image: var(--gradient-container);
+  }
+
+  .stroke-gradient {
+    background-image: var(--gradient-stroke);
+    border: 2px solid rgba(215, 215, 215, 0.47);
+    box-sizing: border-box;
+  }
+
+  /* style */
+  .button-bg {
+    background-image: var(--styly-button-bg);
+    backdrop-filter: blur(2px);
+  }
+
+  .image-gradient {
+    background-image: var(--linear-image-gradient);
+  }
+
+  .bottom-gradient {
+    background-image: var(--linear-bottom-gradient);
+  }
+}

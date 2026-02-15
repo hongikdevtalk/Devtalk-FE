@@ -1,0 +1,12 @@
+@import 'pretendard/dist/web/static/pretendard.css';
+@import 'tailwindcss';
+@import 'tailwind-scrollbar-hide/v4';
+@import './styles/theme.css';
+@import './styles/utilities.css';
+@import './styles/components.css';
+
+@layer base {
+  body {
+    @apply bg-background text-white font-sans;
+  }
+}

@@ -1,0 +1,29 @@
+@layer components {
+  .form-input-base {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #282c34;
+    color: #f1f4f8;
+    border: transparent;
+  }
+
+  .form-input-base:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #d5ff7a; /* focus:ring-2  focus:ring-green-300 */
+  }
+
+  .form-input-text {
+    height: 66px;
+    padding: 20px 24px;
+  }
+
+  .form-input-textarea {
+    padding: 12px 24px;
+    resize: none;
+    scrollbar-width: none;
+  }
+
+  .form-input-textarea::-webkit-scrollbar {
+    display: none;
+  }
+}

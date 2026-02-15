@@ -1,0 +1,98 @@
+name: Sync develop to main
+
+on:
+  # 워크플로우 실행 조건들
+  schedule:
+    # 10분마다 실행 (매 시간 0, 10, 20, 30, 40, 50분)
+    - cron: '0,10,20,30,40,50 * * * *'
+  workflow_dispatch: # GitHub UI에서 수동 실행 가능
+
+# GitHub Actions가 필요한 권한들
+permissions:
+  contents: write # 코드 푸시 권한
+  pull-requests: write # PR 생성 권한
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 저장소 체크아웃 (PAT 사용하여 다른 워크플로우 트리거 가능)
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 히스토리 가져오기 (머지에 필요)
+          token: ${{ secrets.AUTO_ACTIONS }} # PAT 사용으로 push 이벤트 트리거 가능
+
+      # 2. 모든 브랜치를 강제로 최신 상태로 fetch
+      - name: Fetch all branches
+        run: |
+          # +refs/heads/*로 모든 브랜치를 강제 갱신
+          git fetch origin +refs/heads/*:refs/remotes/origin/*
+
+      # 3. Git 사용자 설정 (커밋/푸시할 때 필요)
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # 4. 브랜치 존재 및 변경사항 체크
+      - name: Check branches and changes
+        id: check
+        run: |
+          # main 브랜치 존재 확인
+          if ! git rev-parse --verify origin/main >/dev/null 2>&1; then
+            echo "status=skip" >> $GITHUB_OUTPUT
+            echo "reason=main 브랜치가 존재하지 않습니다" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # develop 브랜치 존재 확인
+          if ! git rev-parse --verify origin/develop >/dev/null 2>&1; then
+            echo "status=skip" >> $GITHUB_OUTPUT
+            echo "reason=develop 브랜치가 존재하지 않습니다" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # main과 develop 사이에 변경사항이 있는지 확인
+          if [ -z "$(git rev-list origin/main..origin/develop)" ]; then
+            echo "status=skip" >> $GITHUB_OUTPUT
+            echo "reason=변경사항이 없습니다" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "status=proceed" >> $GITHUB_OUTPUT
+
+      # 5. develop을 main으로 머지 시도
+      - name: Sync develop to main
+        if: steps.check.outputs.status == 'proceed' # 변경사항이 있을 때만 실행
+        id: sync # 다음 스텝에서 결과를 참조하기 위한 ID
+        run: |
+          git checkout main
+          # 로컬 main을 origin/main으로 강제 초기화 (이전 실패 잔재 제거)
+          git reset --hard origin/main
+          # develop 브랜치를 main으로 머지 시도
+          if git merge origin/develop --no-edit; then
+            # 충돌 없이 성공하면 main에 푸시
+            git push origin main
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            # 충돌 발생 시 머지 취소하고 상태 저장
+            echo "status=conflict" >> $GITHUB_OUTPUT
+            git merge --abort
+          fi
+
+      # 6. 충돌 발생 시에만 PR 자동 생성
+      - name: Create PR on conflict
+        if: steps.sync.outputs.status == 'conflict' # 위에서 conflict 상태일 때만 실행
+        uses: repo-sync/pull-request@v2 # 브랜치 간 PR 생성 액션
+        with:
+          source_branch: develop # PR의 소스 브랜치
+          destination_branch: main # PR의 타겟 브랜치
+          pr_title: '[FIX] develop -> main 동기화 중 충돌 발생'
+          pr_body: |
+            develop 브랜치를 main으로 동기화하는 중 충돌이 발생했습니다.
+            충돌을 해결한 후 머지해주세요.
+          # 리뷰어 지정
+          pr_reviewer: waldls,wnsjun,cchaeyoon,BeJunseok,jungyungee,wlsldm
+          github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,6 +1,6 @@
 @theme {
   /* Layout */
-  --grid-width: 375px;
+  --grid-width: 384px;
   --grid-margin: 20px;
   --grid-gutter: 12px;
 
@@ -8,23 +8,34 @@
   --font-sans: Pretendard, system-ui, sans-serif;
 
   /* Colors */
-  --color-black: #090a0c;
+  --color-black: #000000;
   --color-white: #ffffff;
-  --color-background: #090a0c;
+  --color-background: #f8f8f8;
   --color-status-error: #ff5454;
 
-  --color-grey-900: #16181d;
-  --color-grey-800: #1d2025;
-  --color-grey-700: #282c34;
-  --color-grey-600: #353b45;
-  --color-grey-500: #4b5362;
-  --color-grey-400: #626b7f;
-  --color-grey-300: #808a9d;
-  --color-grey-200: #a9b4c6;
-  --color-grey-100: #d8dfe9;
-  --color-grey-50: #f1f4f8;
+  --color-grey-900: #080519;
+  --color-grey-800: #434853;
+  --color-grey-700: #7b7e84;
+  --color-grey-600: #d2d3d8;
+  --color-grey-500: #dcdfe4;
+  --color-grey-400: #e8eaef;
+  --color-grey-300: #eef0f4;
+  --color-grey-200: #f8f8f8;
 
-  --color-blue-900: #2d4259;
+  --color-primary-400: #c0ff39;
+  --color-primary-300: #bdf548;
+  --color-primary-200: #ade657;
+
+  --color-secondary-400: #4eabb5;
+  --color-secondary-300: #5293af;
+  --color-secondary-200: #4fc78f;
+  --color-secondary-100: #4cbca5;
+
+  /* --color-grey-200: #a9b4c6;
+  --color-grey-100: #d8dfe9;
+  --color-grey-50: #f1f4f8; */
+
+  /* --color-blue-900: #2d4259;
   --color-blue-800: #3a5573;
   --color-blue-700: #4d7199;
   --color-blue-600: #608ebf;
@@ -33,9 +44,9 @@
   --color-blue-300: #80bdff;
   --color-blue-200: #d8ebff;
   --color-blue-100: #ecf5ff;
-  --color-blue-50: #f2f8ff;
+  --color-blue-50: #f2f8ff; */
 
-  --color-green-900: #4b592b;
+  /* --color-green-900: #4b592b;
   --color-green-800: #607337;
   --color-green-700: #809949;
   --color-green-600: #a0bf5c;
@@ -44,7 +55,7 @@
   --color-green-300: #d5ff7a;
   --color-green-200: #f2ffd6;
   --color-green-100: #f9ffeb;
-  --color-green-50: #fbfff2;
+  --color-green-50: #fbfff2; */
 
   /* Gradients */
   --gradient-button:

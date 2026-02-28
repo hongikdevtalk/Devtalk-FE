@@ -8,7 +8,7 @@ const ComingSoon = () => {
           <span className="pretendard text-[40px] font-semibold text-gradient-light">
             Coming Soon
           </span>
-          <span className="text-grey-200 body-1-medium">다음 DevTalk 세션을 기대해주세요!</span>
+          <span className="text-grey-700 body-1-medium">다음 DevTalk 세션을 기대해주세요!</span>
         </div>
         <img src={comingSoonGraphic} alt="Coming Soon" />
       </div>

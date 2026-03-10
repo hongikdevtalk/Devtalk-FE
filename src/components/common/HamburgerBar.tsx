@@ -12,6 +12,7 @@ import type { SeminarListResponse } from '../../types/SeminarManage/seminarCard.
 import { getSeminarList } from '../../apis/seminarList';
 import SearchResultItem from './SearchResultItem';
 import { getSeminarSession } from '../../apis/seminarDetail';
+import SearchResultSpeaker from './SearchResultSpeaker';
 
 type HamburgerBarProps = {
   isOpen: boolean;
@@ -53,7 +54,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
 
     const speakerNames = sessions.map((s: any) => s.speaker.name);
     const subTitles = sessions.map((s: any) => s.title);
-    const speakerImageUrl = sessions[0]?.speaker?.profileUrl || seminar.imageUrl;
+    const speakerImageUrl = sessions.map((s: any) => s.speaker?.profileUrl || seminar.imageUrl);
     return {
       ...seminar,
       speakerNames,
@@ -65,8 +66,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
   const filteredResults = combinedResults.filter((item) => {
     if (!searchTerm || !searchTerm.trim()) return false;
     const term = searchTerm.toLowerCase().trim();
-    const pureNum = term.replace(/[^0-9]/g, '');
-    const matchesNum = pureNum !== '' && String(item.seminarNum) === pureNum;
+    const matchesNum = String(item.seminarNum) === term.replace(/[^0-9]/g, '');
     const matchesTopic = item.seminarTopic.toLowerCase().includes(term);
     const matchesSpeaker = item.speakerNames.some((name: string) =>
       name.toLowerCase().includes(term)
@@ -126,7 +126,19 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
           filteredResults.length > 0 ? (
             <div className="flex flex-col">
               {filteredResults.map((result) => (
-                <SearchResultItem key={result.seminarId} result={result} onClose={_onClose} />
+                <div key={result.seminarId} className="flex flex-col">
+                  <SearchResultItem key={result.seminarId} result={result} onClose={_onClose} />
+                  <SearchResultSpeaker
+                    result={{
+                      seminarId: result.seminarId,
+                      seminarNum: result.seminarNum,
+                      speakerNames: result.speakerNames,
+                      subTitles: result.subTitles,
+                      speakerImageUrl: result.speakerImageUrl,
+                    }}
+                    onClose={_onClose}
+                  />
+                </div>
               ))}
             </div>
           ) : (

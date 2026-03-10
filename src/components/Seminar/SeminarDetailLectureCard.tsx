@@ -9,6 +9,7 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
   });
 
   const session = data?.result?.[index];
+
   const { title, description, speaker } = session || {};
 
   // %~% 텍스트 <span>으로 변환

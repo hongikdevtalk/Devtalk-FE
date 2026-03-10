@@ -24,7 +24,7 @@ const FaqItems = ({ question, answer, highlightText }: FaqItemProps) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-[10px]">
+    <div className="w-full flex flex-col gap-[10px] px-5 pt-2.5 pb-[26px]">
       {/* 질문(Q)*/}
       <div
         className="self-stretch p-[3px] rounded-[30px] flex justify-start items-center gap-[10px]"

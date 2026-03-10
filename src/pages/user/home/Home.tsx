@@ -32,6 +32,7 @@ import { useQuery, useQueries } from '@tanstack/react-query';
 import { getSeminarList } from '../../../apis/seminarList';
 // import type { SeminarSessionResponse } from '../../../types/SeminarDetail/seminarDetail';
 import { getSeminarSession } from '../../../apis/seminarDetail';
+import poster from '../../../assets/logos/poster.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -147,8 +148,16 @@ const Home = () => {
   return (
     <>
       <div>
-        <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-        <div className="snap-y snap-proximity overflow-y-scroll h-screen scrollbar-hide overflow-x-hidden">
+        <div className="relative">
+          <img
+            src={poster}
+            alt="DevTalk Poster"
+            className="absolute top-0 left-0 w-full h-[520px] object-cover"
+          />
+          <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
+          <div className="snap-y snap-proximity overflow-y-scroll h-screen scrollbar-hide overflow-x-hidden"></div>
+
+          {/* <div className="w-full max-w-[440px] mx-auto pt-[56px]"></div> */}
           {/* 배경 비디오 및 세미나 포스터*/}
           {/* {seminarId ? (
             <div className="snap-center relative w-[376px] h-[585px] mx-auto pt-[56px]">
@@ -193,28 +202,30 @@ const Home = () => {
           )} */}
 
           {/* 데브톡 소개 */}
-          <div className="flex flex-col pt-[200px] px-20 pb-[92px] snap-none">
-            <div className="flex flex-col gap-8 pb-[10px]">
+          <>
+            <div className="flex flex-col pt-2.5 px-[24px]">
               <p className="text-[22px] text-black font-medium">DevTalk이란?</p>
-              {/* <p className="body-1-semibold text-gradient">각자의 경험, 모두의 인사이트</p> */}
             </div>
-            <img
-              src={IntroDevtalk}
-              alt="DevTalk 소개 이미지"
-              className="w-[335px] h-[196px] rounded-8"
-            />
-            <div className="flex flex-col w-[335px] h-[100px] pt-24 body-1-medium text-grey-700">
-              <p>2023년부터 지금까지,</p>
-              <p>
-                <span className="text-grey-700 font-bold">
-                  약 1,000명의 학생이 선택한 DevTalk Seminar
-                </span>
-                는
-              </p>
-              <p className="pt-8">매 회차 IT 업계 실무자 및 전문 연사 두 분을 초청해</p>
-              <p>수업에서 접할 수 없는 생생한 인사이트를 공유합니다.</p>
+            <div className="flex flex-col justify-between px-5 pt-2.5 pb-5">
+              <img
+                src={IntroDevtalk}
+                alt="DevTalk 소개 이미지"
+                className="w-[335px] h-[196px] rounded-8"
+              />
+              <div className="flex flex-col w-[335px] h-[100px] pt-4 body-1-medium text-grey-700">
+                <p>2023년부터 지금까지,</p>
+                <p>
+                  <span className="text-grey-700 font-bold">
+                    약 1,000명의 학생이 선택한 DevTalk Seminar
+                  </span>
+                  는
+                </p>
+                <p className="pt-8">매 회차 IT 업계 실무자 및 전문 연사 두 분을 초청해</p>
+                <p>수업에서 접할 수 없는 생생한 인사이트를 공유합니다.</p>
+              </div>
             </div>
-          </div>
+          </>
+          <div className="py-[14px]" />
 
           {/* 학우들의 후기
           <div className="flex flex-col px-20 gap-16 pb-[200px] snap-none">
@@ -301,12 +312,13 @@ const Home = () => {
           )} */}
 
           {/* Seminar Info */}
-          <div className="flex flex-col w-full max-w-[440px] mx-auto px-5 pt-2.5 pb-5">
-            <h2 className="text-[22px] font-medium text-black font-['Pretendard'] pb-[10px]">
-              Seminar Info
-            </h2>
+          <>
+            <div className="flex flex-col pt-2.5 px-[24px]">
+              <p className="text-[22px] text-black font-medium">Seminar Info</p>
+            </div>
+
             {/* 카드 리스트 */}
-            <div className="flex flex-col pb-10">
+            <div className="flex flex-col px-5 pt-2.5 pb-5">
               <Carousel>
                 {latestSeminar && <SeminarInfoCard seminar={latestSeminar} />}
 
@@ -319,13 +331,16 @@ const Home = () => {
                 <LectureCardSpeaker seminarId={seminarId ?? 0} index={0} /> */}
               </Carousel>
             </div>
-          </div>
+          </>
+          <div className="py-[14px]" />
 
           {/* FAQ 섹션 */}
-          <div className="flex flex-col px-5 py-10 gap-4">
-            <p className="text-[22px] font-medium text-black pb-[10px]">FAQ</p>
+          <>
+            <div className="flex flex-col pt-2.5 px-[24px]">
+              <p className="text-[22px] text-black font-medium">FAQ</p>
+            </div>
 
-            <div className="flex flex-col gap-10">
+            <div className="flex flex-col">
               <FaqItems
                 question="데브톡에 대해 알려주세요!"
                 answer="DevTalk은 IT 업계 실무자들의 경험을 학생들에게 전하기 위해 매 회차 다양한 연사를 초청해 진행하는 학생 주도 세미나입니다. 전공이나 학년에 상관없이 누구나 참여할 수 있습니다."
@@ -351,12 +366,13 @@ const Home = () => {
                 highlightText="성함, 연락처(전화번호 또는 메일), 간단한 이력"
               />
             </div>
-          </div>
+          </>
+          <div className="py-[14px]" />
 
           <div className="px-5 pb-10">
             <Button
               variant="custom"
-              text="3회차 세미나 신청하기"
+              text={`${latestSeminar?.seminarNum ?? ''}회차 세미나 신청하기`}
               onClick={() => navigate('/seminar/apply-info')}
               className="w-full h-[24px] px-6 py-4 rounded-[10px] text-white text-xl font-semibold bg-[radial-gradient(ellipse_171.17%_557.08%_at_74.62%_100.00%,_#BDF548_0%,_#4EABB5_100%)]"
             />

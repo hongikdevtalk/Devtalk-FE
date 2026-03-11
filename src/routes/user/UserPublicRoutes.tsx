@@ -10,6 +10,7 @@ import SpeakersDetail from '../../pages/user/speakers/Detail';
 import NoticeHome from '../../pages/user/notice/Home';
 import NoticeQna from '../../pages/user/notice/Qna';
 import NoticeInquiry from '../../pages/user/notice/Inquiry';
+import SeminarReview from '../../pages/user/seminar/Review';
 
 export const userPublicRoutes = [
   {
@@ -26,6 +27,7 @@ export const userPublicRoutes = [
       { path: 'notice', element: <NoticeHome /> },
       { path: 'notice/qna', element: <NoticeQna /> },
       { path: 'notice/inquiry', element: <NoticeInquiry /> },
+      { path: 'seminar/review', element: <SeminarReview /> },
     ],
   },
 ];

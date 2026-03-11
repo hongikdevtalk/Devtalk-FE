@@ -18,7 +18,10 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
   };
 
   return session ? (
-    <div className="relative w-[335px] h-[1033px] rounded-[12px] overflow-hidden flex flex-col items-center justify-start bg-black">
+    <div
+      id={speaker?.name}
+      className="relative w-[335px] h-[1033px] rounded-[12px] overflow-hidden flex flex-col items-center justify-start bg-black"
+    >
       {isLoading && <div>Loading...</div>}
 
       <div className="relative w-[335px] overflow-hidden">

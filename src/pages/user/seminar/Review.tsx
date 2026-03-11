@@ -147,7 +147,7 @@ const Review = () => {
           <div className="self-stretch h-0.5 bg-gray-200" />
 
           <div className="flex-1 pt-32 flex-col items-center w-full">
-            {isVerified ? (
+            {!isVerified ? (
               <div className="flex flex-col h-[612px] items-start px-5">
                 <label className="text-lg font-medium mb-16 text-black">
                   학번을 입력해 주세요.

@@ -18,7 +18,7 @@ const ReviewRating = ({ rating, onChange }: ReviewRatingProps) => {
             key={index}
             className="w-[50px] h-[50px] cursor-pointer"
             style={{
-              fill: rating > index ? 'url(#paint0_linear_524_3678)' : '#4B5362',
+              fill: rating > index ? '#BDF548' : '#E8EAEF',
             }}
             onClick={() => handleStarClick(index)}
           />

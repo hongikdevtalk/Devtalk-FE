@@ -11,9 +11,10 @@ export const Button = ({ variant = 'default', text, onClick, className }: Button
   const variantStyles = {
     home: 'button-gradient text-white',
     default: 'graphic-gradient-light text-black',
-    sub: 'bg-grey-700 text-white',
+    sub: 'bg-grey-600 text-white',
     disabled: 'bg-grey-700 text-grey-500',
-    custom: '',
+    custom:
+      'bg-[radial-gradient(ellipse_171.17%_557.08%_at_74.62%_100%,_#ADE657_0%,_#4CBCA5_100%)] text-white',
   };
 
   return (

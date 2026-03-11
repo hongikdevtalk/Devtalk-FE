@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Header from '../../../components/common/Header';
 import SeminarDetailCard from '../../../components/Seminar/SeminarDetailCard';
 import ReviewCard from '../../../components/common/ReviewCard';
@@ -14,6 +14,9 @@ import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 const SeminarDetail = () => {
   const { id } = useParams();
   const seminarId = Number(id);
+  const [searchParams] = useSearchParams();
+  const speakerName = searchParams.get('speaker');
+
   const lectureRef = useRef<HTMLDivElement>(null);
   const secondRef = useRef<HTMLDivElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
@@ -25,6 +28,18 @@ const SeminarDetail = () => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (speakerName) {
+      const element = document.getElementById(speakerName);
+      if (element) {
+        const timer = setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [speakerName]);
 
   useEffect(() => {
     if (secondVisible && secondRef.current) {
@@ -45,7 +60,7 @@ const SeminarDetail = () => {
   return (
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col gap-32 bg-black pt-[88px]">
+      <div className="flex flex-col gap-32 bg-background pt-[88px]">
         <SeminarDetailCard id={seminarId} />
         <div
           ref={lectureRef}
@@ -54,9 +69,8 @@ const SeminarDetail = () => {
           }`}
         >
           <div className="heading-3-semibold text-white">연사 소개</div>
-          <div className="flex flex-col gap-10 justify-center items-center bg-black ">
+          <div className="flex flex-col gap-10 justify-center items-center bg-background ">
             <SeminarDetailLectureCard seminarId={seminarId} index={0} />
-
             <div ref={secondRef}>
               <SeminarDetailLectureCard seminarId={seminarId} index={1} />
             </div>

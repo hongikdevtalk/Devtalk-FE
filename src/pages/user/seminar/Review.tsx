@@ -1,14 +1,19 @@
+// 익명 처리 삭제함
+
 import { useState } from 'react';
-import BackButton from '../../../components/Button/BackButton';
+import Header from '../../../components/common/Header';
 import { Button } from '../../../components/Button/Button';
 import ReviewRating from '../../../components/Seminar/ReviewRating';
 import SeminarReviewForm from '../../../components/Seminar/SeminarReviewForm';
-import emptybox from '../../../assets/icons/components/SeminarApply/emptybox.svg';
-import checkbox from '../../../assets/icons/components/SeminarApply/checkbox.svg';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { postSeminarReview } from '../../../apis/seminarReview';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
+import Tag from '../../../components/common/Tag';
+import BackButton from '../../../components/Button/BackButton';
+import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
+import { getSeminarSession } from '../../../apis/seminarDetail';
+import { useSeminarAuth } from '../../../hooks/SeminarLive/useSeminarAuth';
 
 type ReviewValues = {
   strength: string;
@@ -17,13 +22,45 @@ type ReviewValues = {
 };
 
 const Review = () => {
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const navigation = useNavigate();
+  const { seminarId, seminarNum } = useShowSeminar();
+
+  const [isVerified, setIsVerified] = useState(false);
+  const [studentNum, setStudentNum] = useState('');
+
+  const { mutate: authMutate, isPending: isAuthPending } = useSeminarAuth();
+
+  const handleNextStep = () => {
+    if (!studentNum) return alert('학번을 입력해주세요.');
+
+    authMutate(
+      { studentNum, name: '사용자' },
+      {
+        onSuccess: (res) => {
+          if (res.result) {
+            setIsVerified(true);
+          } else {
+            alert('수강 내역을 찾을 수 없습니다. 다시 한번 확인해 주세요.');
+          }
+        },
+      }
+    );
+  };
+
+  const { data: sessionData } = useQuery({
+    queryKey: ['seminarDetail', seminarId],
+    queryFn: () => getSeminarSession(seminarId!),
+    enabled: !!seminarId,
+  });
+
+  const sessions = Array.isArray(sessionData?.result) ? sessionData.result : [];
+  const speakerNames = sessions.map((s: any) => s.speaker.name).join(' / ');
+  const seminarTitle = sessions.length > 0 ? sessions[0].title : '세미나 제목';
+  // const seminarSummary = sessions.length > 0 ? `${sessions[0].speaker.name} 님의 강연입니다.` : '강연 요약 정보가 없습니다.';
 
   //별점
   const [score, setScore] = useState(0);
-
-  //비공개 여부
-  const [isPublic, setIsPublic] = useState(true);
 
   //리뷰
   const [values, setValues] = useState<ReviewValues>({
@@ -60,14 +97,12 @@ const Review = () => {
 
   //리뷰 제출 함수
   function handleSubmit() {
-    if (isPending) return;
-    if (!isAllFilled) return;
+    if (isPending || !isAllFilled) return;
     mutate({
       strength,
       improvement,
       nextTopic,
       score,
-      isPublic,
     });
   }
 
@@ -80,68 +115,98 @@ const Review = () => {
   };
 
   return (
-    <div className="w-[375px] flex flex-col gap-28">
-      {/*헤더 */}
-      <header className="w-full h-[56px] py-[14px] relative flex justify-center">
-        <BackButton className="absolute left-[20px]" />
-        <div className="subhead-2-medium text-white">세미나 후기 남기기</div>
-      </header>
+    <div className="w-full mx-auto flex flex-col gap-28">
+      <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
 
-      <div className="w-[375px] flex flex-col gap-48">
-        {/**별점 매기기 */}
-        <div className="w-[375px] h-[112px] flex flex-col gap-28 items-center justify-center">
-          <div className="w-full px-20 text-white heading-2-bold">
-            세미나에 대한 후기를 남겨주세요!
-          </div>
-          <div className="w-full h-[50px] flex flex-row justify-center">
-            <ReviewRating rating={score} onChange={setScore} />
-          </div>
-        </div>
-
-        {/**리뷰 작성 폼 */}
-        <div className="w-[375px] h-[863px] flex flex-col items-center gap-40">
-          <SeminarReviewForm values={values} onChange={handleChange} />
-
-          <div className="w-[335px] h-[169px] flex flex-col gap-32">
-            {/**비공개 여부 선택 */}
-            <div className="w-full h-[80px] flex flex-col gap-16">
-              <div className="text-grey-100 body-2-regular">
-                작성하신 후기는 홍보에 사용될 수 있어요 (익명o) <br />
-                민감한 내용이 포함되었다면 비공개 요청에 체크해주세요 😊
+      <div className="w-full flex flex-col justify-center pt-15">
+        <div className="w-[375px] flex flex-col items-start justify-center">
+          <div className="self-stretch px-5 py-7 inline-flex flex-col justify-center items-start gap-4 overflow-hidden">
+            <div className="px-2.5 py-1.5 bg-gray-200 rounded-[5px] inline-flex justify-center items-center gap-2.5">
+              <div className="justify-start text-grey-700 text-base font-medium font-['Pretendard']">
+                <Tag>{seminarNum}회차</Tag>
               </div>
-              <div className="w-full h-[24px] flex flex-row gap-8 px-8">
-                <div className="text-white body-1-medium">비공개 요청</div>
-                {isPublic ? (
-                  <img
-                    src={emptybox}
-                    className="w-[24px] h-[24px] cursor-pointer"
-                    onClick={() => setIsPublic(false)}
-                  />
-                ) : (
-                  <img
-                    src={checkbox}
-                    className="w-[24px] h-[24px] cursor-pointer"
-                    onClick={() => setIsPublic(true)}
-                  />
-                )}
+            </div>
+            <div className="self-stretch flex flex-col justify-start items-start gap-1">
+              <div className="self-stretch text-black text-xl font-medium font-['Pretendard']">
+                {seminarTitle}
+              </div>
+              <div className="self-stretch text-grey-700 text-base font-light font-['Pretendard'] leading-5">
+                강연한 내용을 한 줄로 요약해주세요.
               </div>
             </div>
 
-            {/**제출 버튼 */}
-            <Button
-              variant={!isAllFilled || isPending ? 'disabled' : 'default'}
-              text="후기 제출하기"
-              onClick={handleSubmit}
-            />
-          </div>
-          {isPending && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-              <LoadingSpinner />
+            <div className="flex items-start gap-3 w-full overflow-hidden pt-[16px]">
+              <span className="w-[35px] flex-shrink-0 text-black text-[18px] font-normal font-['Pretendard'] leading-tight">
+                연사
+              </span>
+              <span className="flex-1 text-black text-[18px] font-[200] font-['Pretendard'] leading-tight break-keep">
+                {speakerNames || '연사 정보 로딩중..'}
+              </span>
             </div>
-          )}
+          </div>
+          <div className="self-stretch h-0.5 bg-gray-200" />
+
+          <div className="flex-1 pt-32 flex-col items-center w-full">
+            {!isVerified ? (
+              <div className="flex flex-col h-[612px] items-start px-5">
+                <label className="text-lg font-medium mb-16 text-black">
+                  학번을 입력해 주세요.
+                </label>
+                <input
+                  type="text"
+                  value={studentNum}
+                  onChange={(e) => setStudentNum(e.target.value)}
+                  placeholder="C60000"
+                  className="self-stretch w-[340px] h-14 px-5 py-4 rounded-8 border-[1px] text-black placeholder:text-grey-700 inline-flex justify-start items-center"
+                />
+              </div>
+            ) : (
+              <>
+                {/**별점 매기기 */}
+                <div className="flex flex-col items-center w-full min-h-screen">
+                  <div className="w-full flex flex-row items-start pt-10 pb-5">
+                    <ReviewRating rating={score} onChange={setScore} />
+                  </div>
+                  {/**리뷰 작성 폼 */}
+                  <div className="w-full h-[863px] flex flex-col items-center gap-40">
+                    <SeminarReviewForm values={values} onChange={handleChange} />
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/**제출 버튼 */}
+          <div className="w-full px-5 pb-10 flex flex-row justify-between items-center overflow-hidden">
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigation(-1)}>
+              <BackButton />
+              <span className="text-black text-xl font-medium font-['Pretendard']">이전</span>
+            </div>
+
+            {!isVerified ? (
+              <Button
+                variant="custom"
+                text="다음"
+                onClick={handleNextStep}
+                className="!w-auto px-11 h-[56px] rounded-[10px] text-xl font-medium"
+              />
+            ) : (
+              <Button
+                variant={isPending || !isAllFilled ? 'sub' : 'custom'}
+                text="등록"
+                onClick={handleSubmit}
+                className="!w-auto px-11 h-[56px] rounded-[10px] text-xl font-medium"
+              />
+            )}
+          </div>
         </div>
-        <div className="h-[91px]"></div>
+        {(isPending || isAuthPending) && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <LoadingSpinner />
+          </div>
+        )}
       </div>
+      <div className="h-[91px]"></div>
     </div>
   );
 };

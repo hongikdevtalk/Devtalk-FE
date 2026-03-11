@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import arrow from '../../assets/icons/components/SeminarApply/arrow.svg';
+import chevronleft from '../../assets/icons/common/chevronleft.svg';
 
 interface BackButtonProps {
   className?: string;
@@ -18,7 +18,7 @@ const BackButton: React.FC<BackButtonProps> = ({ className = '' }) => {
       className={`text-white hover:opacity-70 transition-opacity ${className} cursor-pointer`}
       aria-label="뒤로가기"
     >
-      <img src={arrow} alt="뒤로가기" className="w-7 h-7" />
+      <img src={chevronleft} alt="뒤로가기" className="w-7 h-7" />
     </button>
   );
 };

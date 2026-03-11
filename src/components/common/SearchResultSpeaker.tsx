@@ -18,17 +18,21 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   const navigate = useNavigate();
   const { seminarId, seminarNum, speakerNames, subTitles, speakerImageUrl } = result;
 
-  const handleNavigate = () => {
+  const handleNavigate = (name: string) => {
     onClose();
-    navigate(`/seminar/${seminarId}`);
-    window.location.reload();
+    navigate(`/seminar/${seminarId}?speaker=${encodeURIComponent(name)}`);
+    1;
   };
 
   return (
     <div className="flex flex-col">
       {/* 하단 영역 - 연사 정보 카드 */}
       {speakerNames.map((name, index) => (
-        <div key={index} className="flex flex-col cursor-pointer" onClick={handleNavigate}>
+        <div
+          key={index}
+          className="flex flex-col cursor-pointer"
+          onClick={() => handleNavigate(name)}
+        >
           <div className="h-0.5 bg-grey-400 w-full" />
 
           <div className="flex px-5 pt-5 pb-6 gap-6 items-start">

@@ -24,6 +24,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const { seminarId, seminarNum } = useShowSeminar();
 
+  // 태그 admin에서 입력 또는 회차 번호 등 넘겨야함
   const Tags = [
     { id: 1, text: `${seminarNum}회차` },
     { id: 2, text: '태그1' },

@@ -60,7 +60,7 @@ const SeminarDetail = () => {
   return (
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col gap-32 bg-background pt-[88px]">
+      <div className="flex flex-col gap-32 bg-background">
         <SeminarDetailCard id={seminarId} />
         <div
           ref={lectureRef}
@@ -68,7 +68,6 @@ const SeminarDetail = () => {
             lectureVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="heading-3-semibold text-white">연사 소개</div>
           <div className="flex flex-col gap-10 justify-center items-center bg-background ">
             <SeminarDetailLectureCard seminarId={seminarId} index={0} />
             <div ref={secondRef}>

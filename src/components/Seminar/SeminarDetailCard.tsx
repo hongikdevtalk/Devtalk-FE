@@ -3,6 +3,7 @@ import { getSeminarDetail } from '../../apis/seminarDetail';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { formatDate } from '../../utils/formatDate';
 import axios from 'axios';
+import { Chip } from '../Chip/Chip';
 
 const SeminarDetailCard = ({ id }: { id: number }) => {
   const { data, isLoading } = useQuery({
@@ -43,22 +44,22 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
   };
 
   return data ? (
-    <div className="w-[375px] gap-20 p-20 flex flex-col transition-all duration-500 ease-out">
+    <div className="w-full gap-20 flex flex-col transition-all duration-500 ease-out">
       {isLoading && <LoadingSpinner />}
-      <div className="w-[335px] gap-[31px] flex flex-col">
-        <div className="flex flex-col gap-8 justify-between">
-          <div className="subhead-2-medium text-grey-100">{seminarNum}회차</div>
-          <div className="heading-2-bold text-gradient">{topic}</div>
+      <img src={thumbnailUrl} alt="seminar" className="h-[266px] w-full shrink-0 object-cover" />
+      <div className="w-[335px] gap-[31px] flex flex-col px-20">
+        <div className="flex flex-col gap-16 justify-between">
+          <Chip text={`${seminarNum}회차`} />
+          <div className="heading-2-5-medium text-black">{topic}</div>
         </div>
-        <img src={thumbnailUrl} alt="seminar" className="h-[220px] rounded-8 object-cover " />
-        <div className="h-[54px] flex flex-col gap-8 body-1-medium">
+        <div className="h-[54px] flex flex-col gap-8">
           <div className="flex flex-row gap-28">
-            <div className="text-grey-300">일정</div>
-            <div className="text-grey-400">{formDate}</div>
+            <div className="subhead-1-medium text-black">일정</div>
+            <div className="subhead-light text-black">{formDate}</div>
           </div>
           <div className="flex flex-row gap-28">
-            <div className="text-grey-300">장소</div>
-            <div className="text-grey-400">{place}</div>
+            <div className="subhead-1-medium text-black">장소</div>
+            <div className="subhead-light text-black">{place}</div>
           </div>
         </div>
       </div>

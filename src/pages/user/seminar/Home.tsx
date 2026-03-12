@@ -27,11 +27,11 @@ function SeminarHome() {
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
       <div className="flex flex-col justify-center gap-16 px-20 pt-16">
         {isLoading && <LoadingSpinner />}
-        <div className="flex flex-col gap-24 items-center py-10 ">
+        <div className="flex flex-col items-center py-10 ">
           {seminarList.map((seminar) => (
             <div
               key={seminar.seminarId}
-              className="border-t border-grey-700"
+              className="border-b-2 pb-6 border-[#E8EAEF]"
               onClick={() => handleCardClick(seminar.seminarId)}
             >
               <SeminarListCard seminar={seminar} />

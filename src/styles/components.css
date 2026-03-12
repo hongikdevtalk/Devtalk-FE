@@ -87,6 +87,12 @@
     letter-spacing: var(--letter-spacing-normal);
   }
 
+  .body-1-light {
+    font-size: var(--font-size-body-1);
+    line-height: normal;
+    font-weight: var(--font-weight-light);
+  }
+
   .body-1-medium {
     font-size: var(--font-size-body-1);
     line-height: var(--line-height-body);

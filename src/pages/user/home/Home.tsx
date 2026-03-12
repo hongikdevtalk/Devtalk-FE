@@ -19,27 +19,10 @@ import { SeminarExCard } from '../../../components/Carousel/SeminarExCard';
 // import { LectureCardMain } from '../../../components/LectureCard/LectureCardMain';
 // import { LectureCardSpeaker } from '../../../components/LectureCard/LectureCardSpeaker';
 // import { LectureCardSession } from '../../../components/LectureCard/LectureCardSession';
-import Carousel from '../../../components/Carousel/Carousel';
-import { SeminarInfoCard } from '../../../components/Carousel/SeminarInfoCard';
-import { SeminarExCard } from '../../../components/Carousel/SeminarExCard';
-// import { LectureCardMain } from '../../../components/LectureCard/LectureCardMain';
-// import { LectureCardSpeaker } from '../../../components/LectureCard/LectureCardSpeaker';
-// import { LectureCardSession } from '../../../components/LectureCard/LectureCardSession';
 import { useNavigate } from 'react-router-dom';
 // import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
 // import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
 import { useEffect, useRef, useState } from 'react';
-// import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
-// import BackgroundVideo from '../../../components/common/BackgroundVideo';
-// import { useHomeReviews } from '../../../hooks/HomeManage/useHomeReview';
-// import ComingSoon from '../../../components/common/ComingSoon';
-import FaqItems from '../../../components/common/FaqItems';
-// import dev from '../../../assets/logos/dev.svg';
-import { useQuery, useQueries } from '@tanstack/react-query';
-import { getSeminarList } from '../../../apis/seminarList';
-// import type { SeminarSessionResponse } from '../../../types/SeminarDetail/seminarDetail';
-import { getSeminarSession } from '../../../apis/seminarDetail';
-import poster from '../../../assets/logos/poster.png';
 // import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 // import BackgroundVideo from '../../../components/common/BackgroundVideo';
 // import { useHomeReviews } from '../../../hooks/HomeManage/useHomeReview';
@@ -67,44 +50,7 @@ const Home = () => {
     queryKey: ['seminarList'],
     queryFn: getSeminarList,
   });
-  const { data: seminarResponse } = useQuery({
-    queryKey: ['seminarList'],
-    queryFn: getSeminarList,
-  });
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-
-  const seminarList = seminarResponse?.result?.seminarList || [];
-
-  const sortedSeminars =
-    seminarList.length > 0 ? [...seminarList].sort((a, b) => b.seminarNum - a.seminarNum) : [];
-  const latestSeminar = sortedSeminars[0];
-  // const pastSeminars = sortedSeminars.slice(1);
-
-  const detailQueries = useQueries({
-    queries: sortedSeminars.map((seminar) => ({
-      queryKey: ['seminarDetail', seminar.seminarId],
-      queryFn: () => getSeminarSession(seminar.seminarId),
-      staleTime: 1000 * 60 * 5,
-    })),
-  });
-
-  const combinedSeminars = sortedSeminars.map((seminar, index) => {
-    const detailData = detailQueries[index]?.data;
-
-    const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
-    const speakerNames = sessions.map((session: any) => session.speaker?.name || '연사 미정');
-    const subTitles = sessions.map((session: any) => session.title || '주제 미정');
-    const speakerImageUrl = sessions[0]?.speaker?.profileUrl || seminar.imageUrl;
-
-    return {
-      ...seminar,
-      summary: seminar.seminarTopic,
-      speakerNames,
-      subTitles,
-      speakerImageUrl,
-      isClosed: index !== 0,
-    };
-  });
 
   const seminarList = seminarResponse?.result?.seminarList || [];
 
@@ -340,7 +286,6 @@ const Home = () => {
         {/* {!hideCTA && !hamburgerOpen && !isLoading && ctaElement && (
             <div className="fixed bottom-0 w-full z-50">{ctaElement}</div>
           )} */}
-          )} */}
 
           {/* 강연 소개 카드 */}
           {/* {seminarId && (
@@ -382,7 +327,6 @@ const Home = () => {
                 ))}
               </InfiniteCarousel>
             </div>
-          </div> */}
           </div> */}
 
           {/* 이전 세미나 알아보기 */}

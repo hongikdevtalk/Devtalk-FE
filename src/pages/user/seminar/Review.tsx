@@ -1,4 +1,4 @@
-// 익명 처리 삭제함
+// 익명 처리 삭제함 -> 필요하다면 구현 필요
 
 import { useState } from 'react';
 import Header from '../../../components/common/Header';
@@ -14,6 +14,8 @@ import BackButton from '../../../components/Button/BackButton';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import { useSeminarAuth } from '../../../hooks/SeminarLive/useSeminarAuth';
+// import emptybox from '../../../assets/icons/components/SeminarApply/emptybox.svg';
+// import checkbox from '../../../assets/icons/components/SeminarApply/checkbox.svg';
 
 type ReviewValues = {
   strength: string;
@@ -23,7 +25,42 @@ type ReviewValues = {
 
 const Review = () => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const navigation = useNavigate();
+  const { seminarId, seminarNum } = useShowSeminar();
+
+  const [isVerified, setIsVerified] = useState(false);
+  const [studentNum, setStudentNum] = useState('');
+
+  const { mutate: authMutate, isPending: isAuthPending } = useSeminarAuth();
+
+  const handleNextStep = () => {
+    if (!studentNum) return alert('학번을 입력해주세요.');
+
+    authMutate(
+      { studentNum, name: '사용자' },
+      {
+        onSuccess: (res) => {
+          if (res.result) {
+            setIsVerified(true);
+          } else {
+            alert('수강 내역을 찾을 수 없습니다. 다시 한번 확인해 주세요.');
+          }
+        },
+      }
+    );
+  };
+
+  const { data: sessionData } = useQuery({
+    queryKey: ['seminarDetail', seminarId],
+    queryFn: () => getSeminarSession(seminarId!),
+    enabled: !!seminarId,
+  });
+
+  const sessions = Array.isArray(sessionData?.result) ? sessionData.result : [];
+  const speakerNames = sessions.map((s: any) => s.speaker.name).join(' / ');
+  const seminarTitle = sessions.length > 0 ? sessions[0].title : '세미나 제목';
+  // const seminarSummary = sessions.length > 0 ? `${sessions[0].speaker.name} 님의 강연입니다.` : '강연 요약 정보가 없습니다.';
   const { seminarId, seminarNum } = useShowSeminar();
 
   const [isVerified, setIsVerified] = useState(false);
@@ -130,6 +167,7 @@ const Review = () => {
               <div className="self-stretch text-black text-xl font-medium font-['Pretendard']">
                 {seminarTitle}
               </div>
+              {/* 요약본 추가 필요 */}
               <div className="self-stretch text-grey-700 text-base font-light font-['Pretendard'] leading-5">
                 강연한 내용을 한 줄로 요약해주세요.
               </div>
@@ -146,7 +184,7 @@ const Review = () => {
           </div>
           <div className="self-stretch h-0.5 bg-gray-200" />
 
-          <div className="flex-1 pt-32 flex-col items-center w-full">
+          <div className="flex-1 pt-20 flex-col items-center w-full">
             {!isVerified ? (
               <div className="flex flex-col h-[612px] items-start px-5">
                 <label className="text-lg font-medium mb-16 text-black">
@@ -164,7 +202,7 @@ const Review = () => {
               <>
                 {/**별점 매기기 */}
                 <div className="flex flex-col items-center w-full min-h-screen">
-                  <div className="w-full flex flex-row items-start pt-10 pb-5">
+                  <div className="w-full flex flex-row items-start pt-[30px] pb-5">
                     <ReviewRating rating={score} onChange={setScore} />
                   </div>
                   {/**리뷰 작성 폼 */}
@@ -175,9 +213,8 @@ const Review = () => {
               </>
             )}
           </div>
-
           {/**제출 버튼 */}
-          <div className="w-full px-5 pb-10 flex flex-row justify-between items-center overflow-hidden">
+          <div className="w-full px-5 pb-5 flex flex-row justify-between items-center overflow-hidden">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigation(-1)}>
               <BackButton />
               <span className="text-black text-xl font-medium font-['Pretendard']">이전</span>
@@ -206,7 +243,6 @@ const Review = () => {
           </div>
         )}
       </div>
-      <div className="h-[91px]"></div>
     </div>
   );
 };

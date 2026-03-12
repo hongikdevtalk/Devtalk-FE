@@ -37,9 +37,9 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
           <Tag>{seminarNum}회차</Tag>
         </div>
         {/* 요약본이 아직 없음 */}
-        {/* <p className="text-grey-700 text-base font-light font-['Pretendard'] leading-5 text-[16px]">
+        <p className="text-grey-700 text-base font-light font-['Pretendard'] leading-5 text-[16px]">
           강연 주제를 한 줄로 요약하여 적어주세요.
-        </p> */}
+        </p>
 
         <div className="flex justify-start items-start mt-[16px] gap-16">
           <img

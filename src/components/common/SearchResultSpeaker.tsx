@@ -35,7 +35,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
         >
           <div className="h-0.5 bg-grey-400 w-full" />
 
-          <div className="flex px-5 pt-5 pb-6 gap-6 items-start">
+          <div className="flex px-5 pt-5 pb-6 gap-[16px] items-start">
             <img
               className="w-[130px] h-[164px] rounded-[5px] object-cover shrink-0"
               src={Array.isArray(speakerImageUrl) ? speakerImageUrl[index] : speakerImageUrl}

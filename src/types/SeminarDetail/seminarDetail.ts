@@ -29,6 +29,7 @@ export interface SeminarSession {
   title: string;
   description: string;
   speaker: SessionSpeaker;
+  keywords: string[];
 }
 export type SeminarSessionResponse = CommonResponse<SeminarSession[]>;
 

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import type { SeminarSessionResponse } from '../../types/SeminarDetail/seminarDetail';
 import { getSeminarSession } from '../../apis/seminarDetail';
+import rightarrow from '../../assets/icons/common/rightarrow.svg';
+import SessionTagList from './SessionTagList';
 
 const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; index: number }) => {
   const { data, isLoading } = useQuery<SeminarSessionResponse>({
@@ -10,38 +12,38 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
 
   const session = data?.result?.[index];
 
-  const { title, description, speaker } = session || {};
+  const { title, description, speaker, keywords } = session || {};
 
   // %~% 텍스트 <span>으로 변환
   const highlightDescription = (text: string) => {
-    return text.replace(/%([^%]+)%/g, `<span class="text-gradient">$1</span>`);
+    return text.replace(/%([^%]+)%/g, `<span class="text-highlight">$1</span>`);
   };
 
   return session ? (
     <div
       id={speaker?.name}
-      className="relative w-[335px] h-[1033px] rounded-[12px] overflow-hidden flex flex-col items-center justify-start bg-black"
+      className="w-[335px] flex flex-col items-center gap-20"
     >
       {isLoading && <div>Loading...</div>}
 
-      <div className="relative w-[335px] overflow-hidden">
-        <img
-          src={speaker?.profileUrl}
-          alt="연사 이미지"
-          className="w-full h-[427px] object-cover block"
-        />
-        <div className="absolute inset-0 h-[430px] image-gradient" />
-        <div className="w-full h-[606px] -mt-[2px] bottom-gradient" />
-      </div>
+      <div className="session-title">Session #{index + 1}</div>
+      <img
+        src={speaker?.profileUrl}
+        alt="연사 이미지"
+        className="w-[314px] h-[361px] object-cover rounded-[12px]"
+        style={{ aspectRatio: '147/169' }}
+      />
 
-      <div className="flex flex-col w-[295px] gap-[20px] items-center absolute top-[300px] z-10 ">
+      <div className="flex flex-col w-[295px] gap-[20px] items-center">
         <div className="flex flex-col gap-4 justify-center items-center">
-          <div className="flex gap-[8px] items-center body-2-semibold text-white ">
-            연사 <span className="subhead-1-semibold text-gradient">{speaker?.name}</span>님
+          <p className="organization-tag">{speaker?.organization}</p>
+          <div className="flex gap-0 items-center mt-4">
+            <span className="subhead-1-medium text-black text-center">{speaker?.name}</span>
+            <span className="subhead-1-regular text-black"> 님</span>
+            <img src={rightarrow} alt="right arrow" />
           </div>
-          <p className="body-1-medium text-white">{speaker?.organization}</p>
         </div>
-        <ul className="w-[273px] h-[140px] pl-5 body-2-medium text-grey-200 list-disc list-outside">
+        <ul className="w-[273px] pl-5 body-2-regular text-grey-700 list-disc list-outside">
           {speaker?.history
             ?.split('-')
             .map((item) => item.trim())
@@ -50,16 +52,19 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
               <li key={idx}>{item}</li>
             ))}
         </ul>
-      </div>
-      <div className="absolute bottom-[52px] h-[332px] w-[295px] flex flex-col gap-[39px] items-center justify-center">
-        <div className="w-[237px] h-[93px] flex flex-col gap-[9px] justify-center items-center heading-3-semibold">
-          <div className="text-gradient">Session #{index + 1}</div>
-          <div className="text-white text-center break-keep-all">{title}</div>
+        <div className="mt-16 w-full">
+          <SessionTagList tags={keywords && keywords.length > 0 ? keywords.slice(0, 3) : ['태그1', '태그2', '태그3']} />
         </div>
-        <div
-          className="w-[295px] body-2-medium text-grey-200 text-left whitespace-pre-line"
-          dangerouslySetInnerHTML={{ __html: highlightDescription(description ?? '') }}
-        />
+        <div className="w-[295px] flex flex-col gap-[39px] items-center">
+          <div className="w-[237px] flex flex-col gap-[9px] justify-center items-center heading-3-semibold">
+            
+            <div className="subhead-1-regular text-black text-center break-keep-all">{index + 1}부 {title}</div>
+          </div>
+          <div
+            className="w-[295px] body-1-light text-black text-left whitespace-pre-line"
+            dangerouslySetInnerHTML={{ __html: highlightDescription(description ?? '') }}
+          />
+        </div>
       </div>
     </div>
   ) : null;

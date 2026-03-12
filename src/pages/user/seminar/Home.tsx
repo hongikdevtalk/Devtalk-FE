@@ -26,9 +26,8 @@ function SeminarHome() {
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
       <div className="flex flex-col justify-center gap-16 px-20 pt-16">
-        <div className="heading-1-bold text-white">세미나</div>
         {isLoading && <LoadingSpinner />}
-        <div className="flex flex-col gap-28 items-center ">
+        <div className="flex flex-col gap-24 items-center py-10 ">
           {seminarList.map((seminar) => (
             <div
               key={seminar.seminarId}
@@ -40,7 +39,7 @@ function SeminarHome() {
           ))}
         </div>
       </div>
-      <div className="h-[85px]" />
+      <div className="h-[24px]" />
     </div>
   );
 }

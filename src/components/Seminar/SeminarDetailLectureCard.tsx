@@ -39,7 +39,7 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
           <p className="organization-tag">{speaker?.organization}</p>
           <div className="flex gap-0 items-center mt-4">
             <span className="subhead-1-medium text-black text-center">{speaker?.name}</span>
-            <span className="subhead-1-regular text-black">님</span>
+            <span className="subhead-1-regular text-black"> 님</span>
             <img src={rightarrow} alt="right arrow" />
           </div>
         </div>

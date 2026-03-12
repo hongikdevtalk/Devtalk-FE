@@ -74,15 +74,16 @@ const SeminarDetail = () => {
               <SeminarDetailLectureCard seminarId={seminarId} index={1} />
             </div>
           </div>
+          <div className="mt-40 h-[2px] shrink-0 self-stretch bg-grey-400" />
         </div>
         <div
           ref={reviewRef}
-          className={`transition-all duration-500 ease-out transform h-[475px] gap-12 px-20 flex flex-col ${
+          className={`transition-all duration-500 ease-out transform gap-12 px-20 flex flex-col ${
             reviewVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <div className="heading-3-semibold text-white">후기</div>
-          <div className="w-[335px] h-[435px] flex flex-col gap-12">
+          <div className="heading-2-5-medium text-black mb-2">후기</div>
+          <div className="w-full flex flex-col gap-12">
             {isLoading && <LoadingSpinner />}
             {seminarReviews.length === 0 ? (
               //등록된 후기가 없는 경우

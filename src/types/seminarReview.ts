@@ -13,5 +13,4 @@ export type SeminarReviewRequest = {
   improvement: string;
   nextTopic: string;
   score: number;
-  isPublic: boolean;
 };

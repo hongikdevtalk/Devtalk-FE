@@ -25,7 +25,42 @@ type ReviewValues = {
 
 const Review = () => {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const navigation = useNavigate();
+  const { seminarId, seminarNum } = useShowSeminar();
+
+  const [isVerified, setIsVerified] = useState(false);
+  const [studentNum, setStudentNum] = useState('');
+
+  const { mutate: authMutate, isPending: isAuthPending } = useSeminarAuth();
+
+  const handleNextStep = () => {
+    if (!studentNum) return alert('학번을 입력해주세요.');
+
+    authMutate(
+      { studentNum, name: '사용자' },
+      {
+        onSuccess: (res) => {
+          if (res.result) {
+            setIsVerified(true);
+          } else {
+            alert('수강 내역을 찾을 수 없습니다. 다시 한번 확인해 주세요.');
+          }
+        },
+      }
+    );
+  };
+
+  const { data: sessionData } = useQuery({
+    queryKey: ['seminarDetail', seminarId],
+    queryFn: () => getSeminarSession(seminarId!),
+    enabled: !!seminarId,
+  });
+
+  const sessions = Array.isArray(sessionData?.result) ? sessionData.result : [];
+  const speakerNames = sessions.map((s: any) => s.speaker.name).join(' / ');
+  const seminarTitle = sessions.length > 0 ? sessions[0].title : '세미나 제목';
+  // const seminarSummary = sessions.length > 0 ? `${sessions[0].speaker.name} 님의 강연입니다.` : '강연 요약 정보가 없습니다.';
   const { seminarId, seminarNum } = useShowSeminar();
 
   const [isVerified, setIsVerified] = useState(false);
@@ -63,9 +98,6 @@ const Review = () => {
 
   //별점
   const [score, setScore] = useState(0);
-
-  //비공개 여부
-  const [isPublic, setIsPublic] = useState(true);
 
   //리뷰
   const [values, setValues] = useState<ReviewValues>({
@@ -108,7 +140,6 @@ const Review = () => {
       improvement,
       nextTopic,
       score,
-      isPublic,
     });
   }
 

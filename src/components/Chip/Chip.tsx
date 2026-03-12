@@ -6,15 +6,9 @@ interface ChipProps {
 export const Chip = ({ text, className = '' }: ChipProps) => {
   return (
     <button
-      className={`
-        inline-flex items-center gap-[8px]
-        px-[12px] py-[8px]
-        bg-grey-800 rounded-8
-        w-fit
-        ${className}
-      `}
+      className={`inline-flex w-fit py-[6px] px-[10px] justify-center items-center gap-[10px] rounded-[5px] bg-grey-400 ${className}`}
     >
-      <p className="text-gradient">{text}</p>
+      <p className="body-medium text-grey-700">{text}</p>
     </button>
   );
 };

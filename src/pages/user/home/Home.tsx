@@ -19,9 +19,27 @@ import { SeminarExCard } from '../../../components/Carousel/SeminarExCard';
 // import { LectureCardMain } from '../../../components/LectureCard/LectureCardMain';
 // import { LectureCardSpeaker } from '../../../components/LectureCard/LectureCardSpeaker';
 // import { LectureCardSession } from '../../../components/LectureCard/LectureCardSession';
+import Carousel from '../../../components/Carousel/Carousel';
+import { SeminarInfoCard } from '../../../components/Carousel/SeminarInfoCard';
+import { SeminarExCard } from '../../../components/Carousel/SeminarExCard';
+// import { LectureCardMain } from '../../../components/LectureCard/LectureCardMain';
+// import { LectureCardSpeaker } from '../../../components/LectureCard/LectureCardSpeaker';
+// import { LectureCardSession } from '../../../components/LectureCard/LectureCardSession';
 import { useNavigate } from 'react-router-dom';
 // import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
+// import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
 import { useEffect, useRef, useState } from 'react';
+// import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
+// import BackgroundVideo from '../../../components/common/BackgroundVideo';
+// import { useHomeReviews } from '../../../hooks/HomeManage/useHomeReview';
+// import ComingSoon from '../../../components/common/ComingSoon';
+import FaqItems from '../../../components/common/FaqItems';
+// import dev from '../../../assets/logos/dev.svg';
+import { useQuery, useQueries } from '@tanstack/react-query';
+import { getSeminarList } from '../../../apis/seminarList';
+// import type { SeminarSessionResponse } from '../../../types/SeminarDetail/seminarDetail';
+import { getSeminarSession } from '../../../apis/seminarDetail';
+import poster from '../../../assets/logos/poster.png';
 // import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 // import BackgroundVideo from '../../../components/common/BackgroundVideo';
 // import { useHomeReviews } from '../../../hooks/HomeManage/useHomeReview';
@@ -41,13 +59,52 @@ const Home = () => {
 
   //const [exVisible, setExVisible] = useState(false);
   //const [bottomVisible, setBottomVisible] = useState(false);
+  //const [exVisible, setExVisible] = useState(false);
+  //const [bottomVisible, setBottomVisible] = useState(false);
 
   // const [hideCTA, setHideCTA] = useState(false);
   const { data: seminarResponse } = useQuery({
     queryKey: ['seminarList'],
     queryFn: getSeminarList,
   });
+  const { data: seminarResponse } = useQuery({
+    queryKey: ['seminarList'],
+    queryFn: getSeminarList,
+  });
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+
+  const seminarList = seminarResponse?.result?.seminarList || [];
+
+  const sortedSeminars =
+    seminarList.length > 0 ? [...seminarList].sort((a, b) => b.seminarNum - a.seminarNum) : [];
+  const latestSeminar = sortedSeminars[0];
+  // const pastSeminars = sortedSeminars.slice(1);
+
+  const detailQueries = useQueries({
+    queries: sortedSeminars.map((seminar) => ({
+      queryKey: ['seminarDetail', seminar.seminarId],
+      queryFn: () => getSeminarSession(seminar.seminarId),
+      staleTime: 1000 * 60 * 5,
+    })),
+  });
+
+  const combinedSeminars = sortedSeminars.map((seminar, index) => {
+    const detailData = detailQueries[index]?.data;
+
+    const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
+    const speakerNames = sessions.map((session: any) => session.speaker?.name || '연사 미정');
+    const subTitles = sessions.map((session: any) => session.title || '주제 미정');
+    const speakerImageUrl = sessions[0]?.speaker?.profileUrl || seminar.imageUrl;
+
+    return {
+      ...seminar,
+      summary: seminar.seminarTopic,
+      speakerNames,
+      subTitles,
+      speakerImageUrl,
+      isClosed: index !== 0,
+    };
+  });
 
   const seminarList = seminarResponse?.result?.seminarList || [];
 
@@ -89,8 +146,10 @@ const Home = () => {
         entries.forEach((entry) => {
           if (entry.target === exSeminarref.current) {
             //setExVisible(entry.isIntersecting);
+            //setExVisible(entry.isIntersecting);
           }
           if (entry.target === bottomRef.current) {
+            //setBottomVisible(entry.isIntersecting);
             //setBottomVisible(entry.isIntersecting);
           }
         });
@@ -107,7 +166,12 @@ const Home = () => {
     };
   }, []);
   // const hideCTA = exVisible || bottomVisible;
+  // const hideCTA = exVisible || bottomVisible;
 
+  // 노출 회차 정보 -> 원본
+  // const { seminarId, seminarNum, liveActivate, applicantActivate, isLoading } = useShowSeminar();
+
+  // const { data } = useHomeReviews();
   // 노출 회차 정보 -> 원본
   // const { seminarId, seminarNum, liveActivate, applicantActivate, isLoading } = useShowSeminar();
 
@@ -276,10 +340,12 @@ const Home = () => {
         {/* {!hideCTA && !hamburgerOpen && !isLoading && ctaElement && (
             <div className="fixed bottom-0 w-full z-50">{ctaElement}</div>
           )} */}
+          )} */}
 
-        {/* 강연 소개 카드 */}
-        {/* {seminarId && (
+          {/* 강연 소개 카드 */}
+          {/* {seminarId && (
             <div className="flex flex-col pt-80 gap-32">
+              <div className="text-black heading-2-semibold px-20 snap-none">
               <div className="text-black heading-2-semibold px-20 snap-none">
                 다가오는 세미나 강연 소개
               </div>
@@ -317,12 +383,19 @@ const Home = () => {
               </InfiniteCarousel>
             </div>
           </div> */}
+          </div> */}
 
+          {/* 이전 세미나 알아보기 */}
+          {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
+          {/* 이미지 */}
+          {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
         {/* 이전 세미나 알아보기 */}
         {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
         {/* 이미지 */}
         {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
 
+          {/* 그라데이션 */}
+          {/* <div
         {/* 그라데이션 */}
         {/* <div
               className="absolute inset-0"

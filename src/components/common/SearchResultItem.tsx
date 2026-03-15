@@ -23,7 +23,6 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
   const handleNavigate = () => {
     onClose();
     navigate(`/seminar/${seminarId}`);
-    window.location.reload();
   };
 
   return (
@@ -32,12 +31,12 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
       <div className="px-5 pt-5 pb-6 flex flex-col gap-4 cursor-pointer" onClick={handleNavigate}>
         <div className="flex justify-between items-start">
           <div className="flex flex-col gap-0.5">
-            <h3 className="text-black text-xl font-medium font-['Pretendard']">{seminarTopic}</h3>
+            <h3 className="text-black heading-3-medium">{seminarTopic}</h3>
           </div>
           <Tag>{seminarNum}회차</Tag>
         </div>
         {/* 요약본이 아직 없음 */}
-        <p className="text-grey-700 text-base font-light font-['Pretendard'] leading-5 text-[16px]">
+        <p className="text-grey-700 body-1-light text-[16px]">
           강연 주제를 한 줄로 요약하여 적어주세요.
         </p>
 
@@ -49,20 +48,18 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
           />
           <div className="py-2 flex flex-col gap-2.5">
             <div className="flex items-center gap-8.5">
-              <span className="w-8 flex-shrink-0 whitespace-nowrap text-black text-lg font-medium font-['Pretendard']">
+              <span className="w-8 flex-shrink-0 whitespace-nowrap text-black subhead-1-medium">
                 일정
               </span>
-              <span className="text-black text-lg font-light font-['Pretendard'] leading-tight">
+              <span className="text-black subhead-light leading-tight">
                 {formatDate(seminarDate)}
               </span>
             </div>
             <div className="flex items-center gap-8.5">
-              <span className="w-8 flex-shrink-0 whitespace-nowrap text-black text-lg font-medium font-['Pretendard']">
+              <span className="w-8 flex-shrink-0 whitespace-nowrap text-black subhead-1-medium">
                 장소
               </span>
-              <span className="text-black text-lg font-light font-['Pretendard'] leading-tight">
-                {place}
-              </span>
+              <span className="text-black subhead-light leading-tight">{place}</span>
             </div>
           </div>
         </div>

@@ -21,7 +21,6 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   const handleNavigate = (name: string) => {
     onClose();
     navigate(`/seminar/${seminarId}?speaker=${encodeURIComponent(name)}`);
-    1;
   };
 
   return (
@@ -44,15 +43,15 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
 
             <div className="flex flex-col flex-1 py-2 gap-2.5">
               <div className="self-stretch flex justify-between items-center">
-                <div className="text-black text-xl font-medium font-['Pretendard']">{name}</div>
+                <div className="text-black heading-3-medium">{name}</div>
                 <Tag>{seminarNum}회차</Tag>
               </div>
 
-              <div className="text-black text-lg font-normal font-['Pretendard'] whitespace-pre-line leading-tight">
+              <div className="text-black subhead-1-regular whitespace-pre-line leading-tight">
                 {subTitles[index]}
               </div>
 
-              <div className="text-grey-700 text-base font-light font-['Pretendard'] leading-5">
+              <div className="text-grey-700 body-1-light text-[16px]">
                 강연 주제를 한 줄로 요약하여 적어주세요.
               </div>
             </div>

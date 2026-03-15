@@ -36,9 +36,7 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
         <img src={imageUrl} alt={seminarTopic} className="w-full h-full object-cover" />
         {isClosed && (
           <div className="absolute inset-0 flex justify-center items-center">
-            <span className="text-grey-700 text-[18px] font-semibold font-['Pretendard']">
-              신청마감
-            </span>
+            <span className="text-grey-700 subhead-1-semibold">신청마감</span>
           </div>
         )}
       </div>
@@ -50,9 +48,7 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
           className="w-full flex justify-between items-center gap-16"
           onClick={() => navigate(`/seminar/${seminarId}`)}
         >
-          <h3 className="text-black text-[20px] font-semibold font-['Pretendard'] leading-tight">
-            {seminarTopic}
-          </h3>
+          <h3 className="text-black heading-3-semibold leading-tight">{seminarTopic}</h3>
           <div className="w-6 h-6 flex items-center justify-center relative overflow-hidden">
             <img
               src={chevronright2}
@@ -63,22 +59,17 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
         </div>
         <div className="gap-1">
           {/* 강연 내용 요약 -> 아직 없음 => 세미나 제목으로 설정해놓음 */}
-          <p className="w-full text-black text-base font-extralight font-['Pretendard'] leading-5">
-            {summary}
-          </p>
+          <p className="w-full text-black body-1-light text-[16px]">{summary}</p>
         </div>
         {/* 연사 정보 */}
         <div className="flex flex-col gap-1 w-full">
           <div className="flex items-center gap-3 w-full overflow-hidden">
-            <span className="w-[35px] flex-shrink-0 text-black text-[18px] font-normal font-['Pretendard'] leading-tight">
+            <span className="w-[35px] flex-shrink-0 text-black subhead-1-regular leading-tight">
               연사
             </span>
             <div className="flex flex-col gap-1 flex-1">
               {speakers.map((name, index) => (
-                <span
-                  key={index}
-                  className="text-black text-[18px] font-[200] font-['Pretendard'] leading-tight break-keep"
-                >
+                <span key={index} className="text-black subhead-light leading-tight break-keep">
                   {name}
                 </span>
               ))}

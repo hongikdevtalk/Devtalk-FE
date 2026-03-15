@@ -29,9 +29,7 @@ export const SeminarInfoCard = ({ seminar }: SeminarInfoCardProps) => {
           alt={seminar.seminarTopic}
           className="w-full h-full object-cover"
         />
-        {seminar.isClosed && (
-          <span className="text-white text-[18px] font-semibold font-['Pretendard']">신청마감</span>
-        )}
+        {seminar.isClosed && <span className="text-white subhead-1-semibold">신청마감</span>}
       </div>
       <div className="w-full flex-1 p-16 flex flex-col justify-start items-start gap-3">
         <Tag>{seminar.seminarNum}회차</Tag>
@@ -41,9 +39,7 @@ export const SeminarInfoCard = ({ seminar }: SeminarInfoCardProps) => {
           className="w-full flex justify-between items-center mb-1 gap-16 cursor-pointer"
           onClick={() => navigate(`/seminar/${seminar.seminarId}`)}
         >
-          <h3 className="text-black text-[20px] font-semibold font-['Pretendard'] leading-tight">
-            {seminar.seminarTopic}
-          </h3>
+          <h3 className="text-black heading-3-semibold leading-tight">{seminar.seminarTopic}</h3>
           <div className="w-6 h-6 flex items-center justify-center">
             <img
               src={chevronright2}
@@ -54,18 +50,18 @@ export const SeminarInfoCard = ({ seminar }: SeminarInfoCardProps) => {
         </div>
         <div className="flex flex-col gap-1 w-full">
           <div className="flex items-start gap-3 w-full overflow-hidden">
-            <span className="w-[35px] flex-shrink-0 text-black text-[18px] font-normal font-['Pretendard'] leading-tight">
+            <span className="w-[35px] flex-shrink-0 text-black subhead-1-regular leading-tight">
               일정
             </span>
-            <span className="flex-1 text-black text-[18px] font-[200] font-['Pretendard'] leading-tight break-keep">
+            <span className="flex-1 text-black subhead-light leading-tight break-keep">
               {formatDate(seminar.seminarDate)}
             </span>
           </div>
           <div className="flex items-start gap-3 w-full overflow-hidden">
-            <span className="w-[35px] flex-shrink-0 text-black text-[18px] font-normal font-['Pretendard'] leading-tight">
+            <span className="w-[35px] flex-shrink-0 text-black subhead-1-regular leading-tight">
               장소
             </span>
-            <span className="flex-1 text-black text-[18px] font-[200] font-['Pretendard'] leading-tight break-keep">
+            <span className="flex-1 text-black subhead-light leading-tight break-keep">
               {seminar.place}
             </span>
           </div>

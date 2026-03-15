@@ -14,13 +14,9 @@ import BackButton from '../../../components/Button/BackButton';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import { useSeminarAuth } from '../../../hooks/SeminarLive/useSeminarAuth';
-// import emptybox from '../../../assets/icons/components/SeminarApply/emptybox.svg';
-// import checkbox from '../../../assets/icons/components/SeminarApply/checkbox.svg';
 
 type ReviewValues = {
-  strength: string;
-  improvement: string;
-  nextTopic: string;
+  review: string;
 };
 
 const Review = () => {
@@ -66,15 +62,12 @@ const Review = () => {
 
   //리뷰
   const [values, setValues] = useState<ReviewValues>({
-    strength: '',
-    improvement: '',
-    nextTopic: '',
+    review: '',
   });
-  const { strength, improvement, nextTopic } = values;
+  const { review } = values;
 
   //모든 칸 입력 확인
-  const isAllFilled =
-    strength.trim() !== '' && improvement.trim() !== '' && nextTopic.trim() !== '' && score !== 0;
+  const isAllFilled = review.trim() !== '' && score !== 0;
 
   const { mutate, isPending } = useMutation({
     mutationFn: postSeminarReview,
@@ -101,9 +94,7 @@ const Review = () => {
   function handleSubmit() {
     if (isPending || !isAllFilled) return;
     mutate({
-      strength,
-      improvement,
-      nextTopic,
+      review,
       score,
     });
   }
@@ -121,28 +112,26 @@ const Review = () => {
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
 
       <div className="w-full flex flex-col justify-center pt-15">
-        <div className="w-[375px] flex flex-col items-start justify-center">
+        <div className="w-[384px] flex flex-col items-start justify-center">
           <div className="self-stretch px-5 py-7 inline-flex flex-col justify-center items-start gap-4 overflow-hidden">
             <div className="px-2.5 py-1.5 bg-gray-200 rounded-[5px] inline-flex justify-center items-center gap-2.5">
-              <div className="justify-start text-grey-700 text-base font-medium font-['Pretendard']">
+              <div className="justify-start text-grey-700 body-1-medium">
                 <Tag>{seminarNum}회차</Tag>
               </div>
             </div>
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
-              <div className="self-stretch text-black text-xl font-medium font-['Pretendard']">
-                {seminarTitle}
-              </div>
+              <div className="self-stretch text-black heading-3-medium">{seminarTitle}</div>
               {/* 요약본 추가 필요 */}
-              <div className="self-stretch text-grey-700 text-base font-light font-['Pretendard'] leading-5">
+              <div className="self-stretch text-grey-700 body-1-light text-[16px] leading-5">
                 강연한 내용을 한 줄로 요약해주세요.
               </div>
             </div>
 
             <div className="flex items-start gap-3 w-full overflow-hidden pt-[16px]">
-              <span className="w-[35px] flex-shrink-0 text-black text-[18px] font-normal font-['Pretendard'] leading-tight">
+              <span className="w-[35px] flex-shrink-0 text-black subhead-1-regular leading-tight">
                 연사
               </span>
-              <span className="flex-1 text-black text-[18px] font-[200] font-['Pretendard'] leading-tight break-keep">
+              <span className="flex-1 text-black subhead-light leading-tight break-keep">
                 {speakerNames || '연사 정보 로딩중..'}
               </span>
             </div>
@@ -152,9 +141,7 @@ const Review = () => {
           <div className="flex-1 pt-20 flex-col items-center w-full">
             {!isVerified ? (
               <div className="flex flex-col h-[612px] items-start px-5">
-                <label className="text-lg font-medium mb-16 text-black">
-                  학번을 입력해 주세요.
-                </label>
+                <label className="subhead-1-medium mb-16 text-black">학번을 입력해 주세요.</label>
                 <input
                   type="text"
                   value={studentNum}
@@ -167,11 +154,11 @@ const Review = () => {
               <>
                 {/**별점 매기기 */}
                 <div className="flex flex-col items-center w-full min-h-screen">
-                  <div className="w-full flex flex-row items-start pt-[30px] pb-5">
+                  <div className="w-full flex flex-row items-start pt-5 pb-5">
                     <ReviewRating rating={score} onChange={setScore} />
                   </div>
                   {/**리뷰 작성 폼 */}
-                  <div className="w-full h-[863px] flex flex-col items-center gap-40">
+                  <div className="w-full h-[538px] flex flex-col items-center gap-40">
                     <SeminarReviewForm values={values} onChange={handleChange} />
                   </div>
                 </div>
@@ -182,7 +169,7 @@ const Review = () => {
           <div className="w-full px-5 pb-5 flex flex-row justify-between items-center overflow-hidden">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigation(-1)}>
               <BackButton />
-              <span className="text-black text-xl font-medium font-['Pretendard']">이전</span>
+              <span className="text-black heading-3-medium">이전</span>
             </div>
 
             {!isVerified ? (
@@ -190,14 +177,14 @@ const Review = () => {
                 variant="custom"
                 text="다음"
                 onClick={handleNextStep}
-                className="!w-auto px-11 h-[56px] rounded-[10px] text-xl font-medium"
+                className="!w-auto px-11 h-[56px] rounded-[10px] heading-3-medium"
               />
             ) : (
               <Button
                 variant={isPending || !isAllFilled ? 'sub' : 'custom'}
                 text="등록"
                 onClick={handleSubmit}
-                className="!w-auto px-11 h-[56px] rounded-[10px] text-xl font-medium"
+                className="!w-auto px-11 h-[56px] rounded-[10px] heading-3-medium"
               />
             )}
           </div>

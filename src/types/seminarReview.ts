@@ -9,8 +9,6 @@ export interface SeminarReview {
 export type SeminarReviewResponse = CommonResponse<SeminarReview>;
 
 export type SeminarReviewRequest = {
-  strength: string;
-  improvement: string;
-  nextTopic: string;
+  review: string;
   score: number;
 };

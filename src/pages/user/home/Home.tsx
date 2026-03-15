@@ -169,7 +169,7 @@ const Home = () => {
           {/* 데브톡 소개 */}
           <section>
             <div className="flex flex-col pt-2.5 px-[24px]">
-              <p className="text-[22px] text-black font-medium">DevTalk이란?</p>
+              <p className="text-black heading-3-medium">DevTalk이란?</p>
             </div>
             <div className="flex flex-col justify-between px-5 pt-2.5 pb-5">
               <img
@@ -177,7 +177,7 @@ const Home = () => {
                 alt="DevTalk 소개 이미지"
                 className="w-[335px] h-[196px] rounded-8"
               />
-              <div className="flex flex-col w-[335px] h-[100px] pt-4 body-1-medium text-grey-700">
+              <div className="flex flex-col w-[335px] h-[100px] pt-[16px] body-1-medium text-grey-700">
                 <p>2023년부터 지금까지,</p>
                 <p>
                   <span className="text-grey-700 font-bold">
@@ -195,7 +195,7 @@ const Home = () => {
           {/* Seminar Info */}
           <section>
             <div className="flex flex-col pt-2.5 px-[24px]">
-              <p className="text-[22px] text-black font-medium">Seminar Info</p>
+              <p className="text-black heading-3-medium">Seminar Info</p>
             </div>
 
             {/* 카드 리스트 */}
@@ -218,7 +218,7 @@ const Home = () => {
           {/* FAQ 섹션 */}
           <section>
             <div className="flex flex-col pt-2.5 px-[24px]">
-              <p className="text-[22px] text-black font-medium">FAQ</p>
+              <p className="text-black heading-3-medium">FAQ</p>
             </div>
 
             <div className="flex flex-col">
@@ -256,7 +256,8 @@ const Home = () => {
               variant="custom"
               text={`${latestSeminar?.seminarNum ?? ''}회차 세미나 신청하기`}
               onClick={() => navigate('/seminar/apply-info')}
-              className="w-full h-[24px] px-6 py-4 rounded-[10px] text-white text-xl font-semibold bg-[radial-gradient(ellipse_171.17%_557.08%_at_74.62%_100.00%,_#BDF548_0%,_#4EABB5_100%)]"
+              className="w-full h-[24px] px-6 py-4 rounded-[10px] 
+              text-white heading-3-semibold bg-[radial-gradient(ellipse_171.17%_557.08%_at_74.62%_100.00%,_#BDF548_0%,_#4EABB5_100%)]"
             />
           </div>
 
@@ -287,8 +288,8 @@ const Home = () => {
             <div className="fixed bottom-0 w-full z-50">{ctaElement}</div>
           )} */}
 
-          {/* 강연 소개 카드 */}
-          {/* {seminarId && (
+        {/* 강연 소개 카드 */}
+        {/* {seminarId && (
             <div className="flex flex-col pt-80 gap-32">
               <div className="text-black heading-2-semibold px-20 snap-none">
               <div className="text-black heading-2-semibold px-20 snap-none">
@@ -329,17 +330,17 @@ const Home = () => {
             </div>
           </div> */}
 
-          {/* 이전 세미나 알아보기 */}
-          {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
-          {/* 이미지 */}
-          {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
+        {/* 이전 세미나 알아보기 */}
+        {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
+        {/* 이미지 */}
+        {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
         {/* 이전 세미나 알아보기 */}
         {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
         {/* 이미지 */}
         {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
 
-          {/* 그라데이션 */}
-          {/* <div
+        {/* 그라데이션 */}
+        {/* <div
         {/* 그라데이션 */}
         {/* <div
               className="absolute inset-0"

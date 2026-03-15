@@ -10,7 +10,13 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
     queryKey: ['seminarDetail', id],
     queryFn: () => getSeminarDetail(id),
     enabled: Number.isFinite(id),
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
+
+  if (isLoading || !data?.result) {
+    return <LoadingSpinner />;
+  }
 
   const { seminarNum, topic, thumbnailUrl, seminarDate, place, fileUrls } = data?.result || {};
   const formDate = formatDate(seminarDate ?? '');
@@ -45,7 +51,6 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
 
   return data ? (
     <div className="w-full gap-20 flex flex-col transition-all duration-500 ease-out">
-      {isLoading && <LoadingSpinner />}
       <img src={thumbnailUrl} alt="seminar" className="h-[266px] w-full shrink-0 object-cover" />
       <div className="w-[335px] gap-[31px] flex flex-col px-20">
         <div className="flex flex-col gap-16 justify-between">

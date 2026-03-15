@@ -50,6 +50,7 @@ const SeminarDetail = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['seminarReview', seminarId],
     queryFn: () => getSeminarReview(seminarId),
+    enabled: !!id,
   });
 
   const seminarReviews = data?.result || [];
@@ -61,22 +62,23 @@ const SeminarDetail = () => {
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
       <div className="flex flex-col gap-32 bg-background">
-        <SeminarDetailCard id={seminarId} />
+        {seminarId && <SeminarDetailCard key={seminarId} id={seminarId} />}
         <div
           ref={lectureRef}
-          className={`w-[375px] flex flex-col gap-24 px-20 transition-all duration-500 ease-out transform ${
+          className={`w-[384px] flex flex-col gap-24 px-20 transition-all duration-500 ease-out transform ${
             lectureVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
           <div className="flex flex-col gap-10 justify-center items-center bg-background ">
-            <SeminarDetailLectureCard seminarId={seminarId} index={0} />
+            <SeminarDetailLectureCard key={`${seminarId}-0`} seminarId={seminarId} index={0} />
             <div ref={secondRef}>
-              <SeminarDetailLectureCard seminarId={seminarId} index={1} />
+              <SeminarDetailLectureCard key={`${seminarId}-1`} seminarId={seminarId} index={1} />
             </div>
           </div>
           <div className="mt-40 h-[2px] shrink-0 self-stretch bg-grey-400" />
         </div>
         <div
+          key={`review-${seminarId}`}
           ref={reviewRef}
           className={`transition-all duration-500 ease-out transform gap-12 px-20 flex flex-col ${
             reviewVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'

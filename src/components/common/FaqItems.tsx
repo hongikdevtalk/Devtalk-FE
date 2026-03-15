@@ -34,19 +34,17 @@ const FaqItems = ({ question, answer, highlightText }: FaqItemProps) => {
         }}
       >
         <div className="w-10 h-10 bg-[#F8F8F8] rounded-[20px] flex justify-center items-center shrink-0 shadow-sm">
-          <span className="text-[#6ABC9A] text-[20px] font-bold font-['Pretendard']">Q</span>
+          <span className="text-[#6ABC9A] heading-2-bold">Q</span>
         </div>
-        <div className="text-white text-[16px] font-semibold font-['Pretendard'] leading-5">
-          {question}
-        </div>
+        <div className="text-white body-1-semibold leading-5">{question}</div>
       </div>
 
       {/* 답변(A) */}
       <div className="self-stretch py-[3px] pl-[3px] pr-5 flex justify-start items-start gap-[10px]">
-        <div className="w-10 h-10 rounded-[20px] border border-[#7B7E84] flex justify-center items-center shrink-0">
-          <span className="text-grey-700 text-[20px] font-bold font-['Pretendard']">A</span>
+        <div className="w-10 h-10 rounded-[20px] border border-grey-700 flex justify-center items-center shrink-0">
+          <span className="text-grey-700 heading-2-bold">A</span>
         </div>
-        <div className="flex-1 text-grey-700 text-[16px] font-normal font-['Pretendard'] leading-5 break-keep pt-2">
+        <div className="flex-1 text-grey-700 body-1-regular leading-5 break-keep pt-2">
           {renderAnswer()}
         </div>
       </div>

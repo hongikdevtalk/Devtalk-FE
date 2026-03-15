@@ -47,6 +47,12 @@
     font-weight: var(--font-weight-medium);
   }
 
+  .heading-3-regular {
+    font-size: var(--font-size-heading-3);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-heading);
+  }
+
   /* Subhead */
   .subhead-1-semibold {
     font-size: var(--font-size-subhead-1);
@@ -114,7 +120,7 @@
 
   .text-highlight {
     font-size: 14px;
-    background: linear-gradient(92deg, #5293AF -29.69%, #BDF548 127.79%);
+    background: linear-gradient(92deg, #5293af -29.69%, #bdf548 127.79%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -124,7 +130,7 @@
     font-size: var(--font-size-heading-2-5);
     font-weight: var(--font-weight-medium);
     line-height: normal;
-    background: linear-gradient(92deg, #5293AF -29.69%, #BDF548 127.79%);
+    background: linear-gradient(92deg, #5293af -29.69%, #bdf548 127.79%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

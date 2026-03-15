@@ -62,9 +62,7 @@ export default function Carousel({ children }: { children: ReactNode }) {
           onClick={() => navigate('/seminar')}
           className="flex-shrink-0 flex items-center gap-[6px] px-5 h-[346px] cursor-pointer"
         >
-          <span className="text-[20px] font-medium text-black whitespace-nowrap font-['Pretendard']">
-            더보기
-          </span>
+          <span className="heading-3-medium font-medium text-black whitespace-nowrap">더보기</span>
           <img
             src={chevronrightduo}
             alt="chevronrightduo"

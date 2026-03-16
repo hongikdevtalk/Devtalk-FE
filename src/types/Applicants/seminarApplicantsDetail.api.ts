@@ -2,6 +2,7 @@ import type { CommonResponse } from '../common';
 
 export interface ApplicantData {
   topic: string;
+  appliedAt: string;
   studentId: string;
   studentNum: string;
   department: string;

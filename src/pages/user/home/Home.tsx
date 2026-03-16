@@ -199,7 +199,7 @@ const Home = () => {
             </div>
 
             {/* 카드 리스트 */}
-            <div className="flex flex-col pt-2.5 pb-5">
+            <div className="flex flex-col pb-5">
               <Carousel>
                 {latestSeminar && <SeminarInfoCard seminar={latestSeminar} />}
 

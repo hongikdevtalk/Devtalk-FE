@@ -1,9 +1,16 @@
-const Detail = () => {
+import { useParams } from 'react-router-dom';
+import SeminarDetailSpeakerCard from '../../../components/Seminar/SeminarDetailSpeakerCard';
+
+const SpeakerDetail = () => {
+  const { id, num, index } = useParams();
+
   return (
-    <div>
-      <h1>연사진 상세정보</h1>
-    </div>
+    <SeminarDetailSpeakerCard
+      seminarId={Number(id)}
+      seminarNum={Number(num)}
+      index={Number(index)}
+    />
   );
 };
 
-export default Detail;
+export default SpeakerDetail;

@@ -18,9 +18,9 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   const navigate = useNavigate();
   const { seminarId, seminarNum, speakerNames, subTitles, speakerImageUrl } = result;
 
-  const handleNavigate = (name: string) => {
+  const handleNavigate = (index: number) => {
     onClose();
-    navigate(`/seminar/${seminarId}?speaker=${encodeURIComponent(name)}`);
+    navigate(`/speakers/${seminarId}/${seminarNum}/${index}`);
   };
 
   return (
@@ -30,7 +30,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
         <div
           key={index}
           className="flex flex-col cursor-pointer"
-          onClick={() => handleNavigate(name)}
+          onClick={() => handleNavigate(index)}
         >
           <div className="h-0.5 bg-grey-400 w-full" />
 

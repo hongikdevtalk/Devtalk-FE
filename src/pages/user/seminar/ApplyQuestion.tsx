@@ -1,8 +1,9 @@
-import ApplyHeader from '../../../components/SeminarApply/ApplyHeader';
-import SpeakerCard from '../../../components/SeminarApply/SpeakerCard';
-import AutoResizeTextarea from '../../../components/SeminarApply/AutoResizeTextarea';
-import { Button } from '../../../components/Button/Button';
+import Header from '../../../components/common/Header';
+import { Chip } from '../../../components/Chip/Chip';
+import { SessionQuestionCard } from '../../../components/SeminarApply/SessionQuestionCard';
+import chevronleft from '../../../assets/icons/common/chevronleft2.svg';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ApplySuccessModal from '../../../components/Modal/ApplySuccessModal';
 import ApplyAlertModal from '../../../components/Modal/ApplyAlertModal';
 import { useApplyDraft } from '../../../stores/useApplyDraft';
@@ -30,11 +31,27 @@ type SeminarSession = {
 };
 
 const ApplyQuestion = () => {
+  const navigate = useNavigate();
   const draft = useApplyDraft();
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [seminarNum] = useState<number | null>(10);
   const seminarId = useApplyFlow((s) => s.seminarId);
 
   const [sessionIds, setSessionIds] = useState<number[]>([]);
-  const [sessions, setSessions] = useState<SeminarSession[]>([]);
+  const [sessions, setSessions] = useState<SeminarSession[]>([
+    {
+      sessionId: 1,
+      title: '프론트엔드 개발자의 커리어 여정',
+      description: '프론트엔드 개발자로 성장하는 방법에 대해 이야기합니다.',
+      speaker: { speakerId: 1, name: '김개발', organization: '카카오', profileUrl: '', history: '' },
+    },
+    {
+      sessionId: 2,
+      title: '디자인 시스템 구축기',
+      description: '실무에서 디자인 시스템을 구축한 경험을 공유합니다.',
+      speaker: { speakerId: 2, name: '이디자인', organization: '토스', profileUrl: '', history: '' },
+    },
+  ]);
 
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -133,55 +150,62 @@ const ApplyQuestion = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-16 mb-[160px]">
-        <ApplyHeader backTo="/seminar/apply-info" />
-        <div className="flex flex-col gap-32">
-          {/* 문구 */}
-          <div className="flex flex-col gap-4 px-5">
-            <div className="flex flex-row gap-4">
-              <div className="heading-2-bold text-gradient">(선택)</div>
-              <div className="heading-2-bold text-white">사전 질문란</div>
-            </div>
-            <div className="body-2-medium text-grey-300">
-              연사님께서 질문 선별 후, Q&A 시간에 답변 드립니다.
-            </div>
-          </div>
-
-          {/* 연사별 질문 */}
+      <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
+      <div className="flex flex-col gap-16 mb-[160px] pt-[86px]">
+        {/* 세미나 정보 */}
+        <div className="flex flex-col w-[375px] px-[20px] gap-32">
+          {seminarNum !== null && <Chip text={`${seminarNum}회차`} />}
           <div className="flex flex-col">
-            {sessions.map((s, idx) => (
-              <div key={s.sessionId}>
-                <div className="flex flex-col gap-16">
-                  <SpeakerCard
-                    name={s.speaker.name}
-                    title={s.title}
-                    organization={s.speaker.organization}
-                    description={s.description}
-                    profileUrl={s.speaker.profileUrl}
-                  />
-                  <AutoResizeTextarea
-                    value={draft.questions[s.sessionId] ?? ''}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                      handleChangeQuestion(s.sessionId, e.target.value)
-                    }
-                    placeholder={`[${s.speaker.name}] 연사님께 드리고 싶은 질문을\n자유롭게 남겨주세요.`}
-                  />
-                </div>
-                {idx < sessions.length - 1 && (
-                  <hr className="border-t border-grey-700 w-[335px] mx-auto my-32" />
-                )}
-              </div>
+            <p className="heading-3-medium text-black">세미나 제목</p>
+            <p className="body-1-light text-grey-700">강연 주제를 한 줄로 요약하여 적어주세요.</p>
+            <div className="flex flex-row items-center gap-[12px] mt-16">
+              <p className="subhead-medium text-black">연사</p>
+              <p className="subhead-light text-black">
+                {sessions.map((s, i) => `${i + 1}부 ${s.speaker.name} 님`).join(' / ')}
+              </p>
+            </div>
+            <div className="mt-[30px] h-[2px] self-stretch bg-grey-400" />
+          </div>
+        </div>
+
+        <div className="flex flex-col w-[375px] px-[20px]">
+          <p className="subhead-medium text-black">연사님께 직접 묻고 싶은 질문을 남겨주세요!</p>
+          <p className="body-1-light text-grey-700 mt-[12px]">*작성해주신 질문은 연사님께 전달됩니다.</p>
+          <div className="flex flex-col gap-[30px] mt-[30px]">
+            {sessions.slice(0, 2).map((s, i) => (
+              <SessionQuestionCard
+                key={s.sessionId}
+                index={i + 1}
+                title={s.title}
+                value={draft.questions[s.sessionId] ?? ''}
+                onChange={(v) => handleChangeQuestion(s.sessionId, v)}
+              />
             ))}
           </div>
         </div>
       </div>
 
-      <Button
-        variant={submitting ? 'disabled' : 'default'}
-        text={submitting ? '신청 중...' : '신청하기'}
-        onClick={handleClickApply}
-        className="fixed bottom-[64px] left-1/2 -translate-x-1/2 z-50"
-      />
+      <div className="flex justify-between items-center w-[375px] px-[20px] mt-[30px] mb-[64px]">
+        <button
+          type="button"
+          onClick={() => navigate('/seminar/apply-info')}
+          className="flex items-center gap-[15px] cursor-pointer"
+        >
+          <img src={chevronleft} alt="이전" />
+          <span className="heading-3-medium text-black">이전</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleClickApply}
+          disabled={submitting}
+          style={{ background: submitting ? '#E8EAEF' : 'radial-gradient(557.08% 171.17% at 74.62% 100%, #ADE657 0%, #4CBCA5 100%)' }}
+          className="flex w-[125px] shrink-0 items-center justify-center gap-[10px] rounded-[10px] px-[45px] py-[16px] cursor-pointer"
+        >
+          <span className={`heading-3-medium ${submitting ? 'text-grey-700' : 'text-white'}`}>
+            {submitting ? '신청 중...' : '등록'}
+          </span>
+        </button>
+      </div>
 
       <ApplySuccessModal
         open={openSuccess}

@@ -1,94 +1,45 @@
-import { SectionHeader } from '../../components/SeminarApply/SectionHeader';
-import emptycircle from '../../assets/icons/components/SeminarApply/emptycircle.svg';
-import chosencircle from '../../assets/icons/components/SeminarApply/chosencircle.svg';
+import { useState } from 'react';
+import arrowdown from '../../assets/icons/common/arrowdown.svg';
 
 type GradeSectionProps = {
-  options: string[];
   selected: string | null;
-  etcValue: string | null;
   onSelect: (grade: string) => void;
-  onSelectEtc: (checked: boolean) => void;
-  onChangeEtc: (value: string) => void;
 };
 
-export const GradeSection = ({
-  options,
-  selected,
-  etcValue,
-  onSelect,
-  onSelectEtc,
-  onChangeEtc,
-}: GradeSectionProps) => (
-  <div className="flex flex-col gap-20">
-    <SectionHeader title="학년을 선택해주세요" required />
-    <div className="flex flex-col gap-6">
-      {options.map((g, i) => {
-        const id = `grade-${i}`;
-        return (
-          <label key={id} htmlFor={id} className="group flex items-center gap-12 cursor-pointer">
-            <input
-              id={id}
-              name="grade"
-              type="radio"
-              value={g}
-              className="sr-only"
-              checked={selected === g}
-              onChange={() => onSelect(g)}
-            />
+export const GradeSection = ({ selected, onSelect }: GradeSectionProps) => {
+  const [open, setOpen] = useState(false);
 
-            <span className="relative w-6 h-6 shrink-0">
-              <img src={emptycircle} alt="" className="w-6 h-6" />
-              <img
-                src={chosencircle}
-                alt=""
-                className="w-3 h-3 absolute top-1/2 left-1/2
-                           -translate-x-1/2 -translate-y-1/2
-                           hidden group-has-[:checked]:block"
-              />
-            </span>
-
-            <span className="body-1-medium text-white">{g}</span>
-          </label>
-        );
-      })}
-
-      {/* 기타 */}
-      <label htmlFor="grade-other" className="group flex items-center gap-12 cursor-pointer">
-        <input
-          id="grade-other"
-          name="grade"
-          type="radio"
-          value="기타"
-          className="sr-only"
-          checked={etcValue !== null}
-          onChange={(e) => onSelectEtc(e.target.checked)}
-        />
-
-        <span className="relative w-6 h-6 shrink-0">
-          <img src={emptycircle} alt="" className="w-6 h-6" />
-          <img
-            src={chosencircle}
-            alt=""
-            className="w-3 h-3 absolute top-1/2 left-1/2
-                       -translate-x-1/2 -translate-y-1/2
-                       hidden group-has-[:checked]:block"
-          />
+  return (
+    <div className="flex flex-col mt-[30px]">
+      <p className="subhead-medium text-black">학년</p>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="flex h-[56px] px-[20px] items-center justify-between self-stretch rounded-[3px] border-[1.4px] border-grey-700 mt-[12px]"
+      >
+        <span className={`heading-3-regular-normal ${selected ? 'text-black' : 'text-grey-700'}`}>
+          {selected || '학년을 선택해주세요.'}
         </span>
+        <img src={arrowdown} alt="열기" />
+      </button>
 
-        <span className="body-1-medium text-white shrink-0">기타:</span>
-        <input
-          type="text"
-          value={etcValue ?? ''}
-          onChange={(e) => onChangeEtc(e.target.value)}
-          data-other-for="grade"
-          className="flex-1 bg-transparent outline-none
-             body-1-medium text-white
-             border-b border-grey-900
-             opacity-0 pointer-events-none transition-opacity
-             group-has-[:checked]:opacity-100 group-has-[:checked]:pointer-events-auto
-             focus:border-grey-600"
-        />
-      </label>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+          <div className="relative w-full max-w-[375px] bg-white rounded-t-[16px] px-[20px] pt-[24px] pb-[40px] flex flex-col">
+            {['1학년', '2학년', '3학년', '4학년','5학년'].map((grade) => (
+              <button
+                key={grade}
+                type="button"
+                onClick={() => { onSelect(grade); setOpen(false); }}
+                className={`h-[52px] flex items-center px-[4px] heading-3-regular-normal ${selected === grade ? 'text-black font-medium' : 'text-grey-700'}`}
+              >
+                {grade}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
+};

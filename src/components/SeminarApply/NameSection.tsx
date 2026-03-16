@@ -1,21 +1,19 @@
-import { SectionHeader } from '../../components/SeminarApply/SectionHeader';
-
 type NameSectionProps = {
   value: string;
   onChange: (value: string) => void;
 };
 
 export const NameSection = ({ value, onChange }: NameSectionProps) => (
-  <div className="flex flex-col gap-12">
-    <SectionHeader title="이름을 적어주세요" required />
+  <div className="flex flex-col mt-[30px]">
+    <p className="subhead-medium text-black">이름</p>
     <input
+      type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="bg-grey-800 w-full h-14 rounded-8 placeholder:text-grey-300 px-16
-                 outline-none border border-transparent focus:border-grey-300 text-grey-50"
-      placeholder="ex. 김홍익"
+      placeholder="이름을 입력해주세요."
       name="name"
       autoComplete="name"
+      className="heading-3-regular-normal text-grey-700 h-[56px] px-[20px] self-stretch rounded-[3px] border-[1.4px] border-grey-700 mt-[12px] outline-none bg-transparent"
     />
   </div>
 );

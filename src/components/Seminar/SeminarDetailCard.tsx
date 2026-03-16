@@ -4,6 +4,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import { formatDate } from '../../utils/formatDate';
 import axios from 'axios';
 import { Chip } from '../Chip/Chip';
+import download from '../../assets/icons/common/download.svg';
 
 const SeminarDetailCard = ({ id }: { id: number }) => {
   const { data, isLoading } = useQuery({
@@ -50,11 +51,22 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
   };
 
   return data ? (
-    <div className="w-full gap-20 flex flex-col transition-all duration-500 ease-out">
-      <img src={thumbnailUrl} alt="seminar" className="h-[266px] w-full shrink-0 object-cover" />
-      <div className="w-[335px] gap-[31px] flex flex-col px-20">
-        <div className="flex flex-col gap-16 justify-between">
-          <Chip text={`${seminarNum}회차`} />
+    <div className="w-full gap-[20px] flex flex-col transition-all duration-500 ease-out">
+      <div className="relative h-[266px] w-full shrink-0">
+        <img src={thumbnailUrl} alt="seminar" className="h-full w-full object-cover" />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 39.42%)' }}
+        />
+      </div>
+      <div className="w-full flex flex-col gap-[30px] px-[20px]">
+        <div className="flex flex-col gap-16">
+          <div className="flex flex-row items-center justify-between w-full">
+            <Chip text={`${seminarNum}회차`} />
+            <button type="button" onClick={handleDownloadFiles} className="cursor-pointer">
+              <img src={download} alt="발표자료 다운로드" />
+            </button>
+          </div>
           <div className="heading-2-5-medium text-black">{topic}</div>
         </div>
         <div className="h-[54px] flex flex-col gap-8">
@@ -67,12 +79,6 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
             <div className="subhead-light text-black">{place}</div>
           </div>
         </div>
-      </div>
-      <div
-        className="w-[102px] h-[25px] gap-10 px-8 py-4 rounded-4 bg-grey-900 cursor-pointer text-center flex items-center"
-        onClick={() => handleDownloadFiles()}
-      >
-        <span className="text-gradient caption-semibold ">발표자료 다운로드</span>
       </div>
     </div>
   ) : null;

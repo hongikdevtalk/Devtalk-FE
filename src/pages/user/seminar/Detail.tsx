@@ -65,7 +65,7 @@ const SeminarDetail = () => {
         {seminarId && <SeminarDetailCard key={seminarId} id={seminarId} />}
         <div
           ref={lectureRef}
-          className={`w-[384px] flex flex-col gap-24 px-20 transition-all duration-500 ease-out transform ${
+          className={`w-full flex flex-col gap-[24px] px-[20px] transition-all duration-500 ease-out transform ${
             lectureVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >

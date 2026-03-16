@@ -39,12 +39,12 @@ const ApplyInfo = () => {
   return (
     <div className="flex flex-col items-center mb-64">
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col w-[375px] gap-80 pt-[56px]">
+      <div className="flex flex-col w-[375px] gap-80 pt-[86px]">
         <div className="flex flex-col">
           <div className="flex flex-col gap-32">
             {seminarNum !== null && <Chip text={`${seminarNum}회차`} />}
             <div className="flex flex-col">
-              <p className="heading-3-medium text-black">제목</p>
+              <p className="heading-3-medium text-black">세미나 제목</p>
               <p className="body-1-light text-grey-700">강연 주제를 한 줄로 요약하여 적어주세요.</p>
               <div className="flex flex-row items-center gap-[12px] mt-16">
                 <p className="subhead-medium text-black">연사</p>

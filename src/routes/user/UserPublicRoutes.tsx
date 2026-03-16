@@ -23,7 +23,7 @@ export const userPublicRoutes = [
       { path: 'seminar/apply-question', element: <SeminarApplyQuestion /> },
       { path: 'seminar/live/verification', element: <LiveVerification /> },
       { path: 'speakers', element: <SpeakersList /> },
-      { path: 'speakers/:id', element: <SpeakersDetail /> },
+      { path: 'speakers/:id/:num/:index', element: <SpeakersDetail /> },
       { path: 'notice', element: <NoticeHome /> },
       { path: 'notice/qna', element: <NoticeQna /> },
       { path: 'notice/inquiry', element: <NoticeInquiry /> },

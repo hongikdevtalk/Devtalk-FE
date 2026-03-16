@@ -1,7 +1,7 @@
 // home에서 carousel 중 신청 마감된 이전 카드들 - 연사 정보 포함됨
 
 import { useNavigate } from 'react-router-dom';
-import Tag from '../common/Tag';
+import { Chip } from '../Chip/Chip';
 import chevronright2 from '../../assets/icons/common/chevronright2.svg';
 
 interface SeminarExProps {
@@ -41,7 +41,7 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
         )}
       </div>
       <div className="w-full flex-1 p-16 flex flex-col justify-start items-start gap-3">
-        <Tag>{seminarNum}회차</Tag>
+        <Chip text={`${seminarNum}회차`} />
 
         {/* 하단 영역 - 제목, 연사, 요약(아직 구현X, 26.02.28)*/}
         <div

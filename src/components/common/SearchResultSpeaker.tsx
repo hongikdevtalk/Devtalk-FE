@@ -1,7 +1,7 @@
 // 햄버거 바 검색 시 나오는 결과 아이템들 - 연사 카드
 
 import { useNavigate } from 'react-router-dom';
-import Tag from '../common/Tag';
+import { Chip } from '../Chip/Chip';
 
 interface SearchResultSpeakerProps {
   result: {
@@ -44,7 +44,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
             <div className="flex flex-col flex-1 py-2 gap-2.5">
               <div className="self-stretch flex justify-between items-center">
                 <div className="text-black heading-3-medium">{name}</div>
-                <Tag>{seminarNum}회차</Tag>
+                <Chip text={`${seminarNum}회차`} />
               </div>
 
               <div className="text-black subhead-1-regular whitespace-pre-line leading-tight">

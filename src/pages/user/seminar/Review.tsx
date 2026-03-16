@@ -9,7 +9,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { postSeminarReview } from '../../../apis/seminarReview';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
-import Tag from '../../../components/common/Tag';
+import { Chip } from '../../../components/Chip/Chip';
 import BackButton from '../../../components/Button/BackButton';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 import { getSeminarSession } from '../../../apis/seminarDetail';
@@ -116,7 +116,7 @@ const Review = () => {
           <div className="self-stretch px-5 py-7 inline-flex flex-col justify-center items-start gap-4 overflow-hidden">
             <div className="px-2.5 py-1.5 bg-gray-200 rounded-[5px] inline-flex justify-center items-center gap-2.5">
               <div className="justify-start text-grey-700 body-1-medium">
-                <Tag>{seminarNum}회차</Tag>
+                <Chip text={`${seminarNum}회차`} />
               </div>
             </div>
             <div className="self-stretch flex flex-col justify-start items-start gap-1">

@@ -1,8 +1,8 @@
 // 햄버거 바 검색 시 나오는 결과 아이템들 - 세미나 정보 카드 및 연사 정보
 
 import { useNavigate } from 'react-router-dom';
-import Tag from '../common/Tag';
 import { formatDate } from '../../utils/formatDate';
+import { Chip } from '../Chip/Chip';
 
 interface SearchResultItemProps {
   result: {
@@ -33,7 +33,7 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
           <div className="flex flex-col gap-0.5">
             <h3 className="text-black heading-3-medium">{seminarTopic}</h3>
           </div>
-          <Tag>{seminarNum}회차</Tag>
+          <Chip text={`${seminarNum}회차`} />
         </div>
         {/* 요약본이 아직 없음 */}
         <p className="text-grey-700 body-1-light text-[16px]">

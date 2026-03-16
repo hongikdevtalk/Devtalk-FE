@@ -1,10 +1,10 @@
 // home에서 carousel 중 현재 세미나 카드
 
 import { useNavigate } from 'react-router-dom';
-import Tag from '../common/Tag';
 import chevronright2 from '../../assets/icons/common/chevronright2.svg';
 import dev from '../../assets/logos/dev.svg';
 import { formatDate } from '../../utils/formatDate';
+import { Chip } from '../Chip/Chip';
 
 interface SeminarInfoCardProps {
   seminar: {
@@ -32,7 +32,7 @@ export const SeminarInfoCard = ({ seminar }: SeminarInfoCardProps) => {
         {seminar.isClosed && <span className="text-white subhead-1-semibold">신청마감</span>}
       </div>
       <div className="w-full flex-1 p-16 flex flex-col justify-start items-start gap-3">
-        <Tag>{seminar.seminarNum}회차</Tag>
+        <Chip text={`${seminar.seminarNum}회차`} />
 
         {/* 하단 영역 - 제목, 일정, 장소 등 */}
         <div

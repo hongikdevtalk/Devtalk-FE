@@ -53,6 +53,24 @@
     line-height: var(--line-height-heading);
   }
 
+  .heading-3-regular-normal {
+    font-size: var(--font-size-heading-3);
+    font-weight: var(--font-weight-regular);
+    line-height: normal;
+  }
+
+  .heading-3-semibold-normal {
+    font-size: var(--font-size-heading-3);
+    font-weight: var(--font-weight-semibold);
+    line-height: normal;
+  }
+
+  .heading-3-light-normal {
+    font-size: var(--font-size-heading-3);
+    font-weight: var(--font-weight-light);
+    line-height: normal;
+  }
+
   /* Subhead */
   .subhead-1-semibold {
     font-size: var(--font-size-subhead-1);

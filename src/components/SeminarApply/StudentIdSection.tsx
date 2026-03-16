@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { SectionHeader } from '../../components/SeminarApply/SectionHeader';
 import { formatStudentId, validateStudentId } from '../../utils/formatStudentId';
 
 type StudentIdSectionProps = {
@@ -22,23 +21,27 @@ export const StudentIdSection = ({ value, onChange }: StudentIdSectionProps) => 
   };
 
   return (
-    <div className="flex flex-col gap-12">
-      <SectionHeader title="학번을 적어주세요" required />
-      <div className="relative">
+    <div className="flex flex-col mt-[30px]">
+      <p className="subhead-medium text-black">학번</p>
+      <div className="flex items-center gap-[12px] mt-[12px]">
         <input
+          type="text"
           value={value}
           onChange={handleChange}
-          placeholder="ex. C012345"
-          className={`bg-grey-800 w-full h-14 rounded-8 placeholder:text-grey-300 px-16
-                      outline-none border text-grey-50
-                      ${error ? 'border-status-error focus:border-status-error' : 'border-transparent focus:border-grey-300'}`}
+          placeholder="C00000"
           name="student-id"
           autoComplete="off"
+          className={`h-[56px] w-[278px] px-[20px] rounded-[3px] text-grey-700 border-[1.4px] outline-none bg-transparent
+            ${error ? 'border-status-error' : 'border-grey-700'}`}
         />
-        {error && (
-          <p className="absolute left-0 top-full mt-1 text-status-error body-2-medium">{error}</p>
-        )}
+        <button
+          type="button"
+          className="flex h-[56px] px-[20px] items-center rounded-[3px] bg-grey-900 whitespace-nowrap shrink-0"
+        >
+          <span className="heading-3-semibold-normal text-white">중복확인</span>
+        </button>
       </div>
+      {error && <p className="mt-[4px] text-status-error body-2-medium">{error}</p>}
     </div>
   );
 };

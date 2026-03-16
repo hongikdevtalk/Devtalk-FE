@@ -1,7 +1,6 @@
-import ApplyHeader from '../../../components/SeminarApply/ApplyHeader';
 import { Chip } from '../../../components/Chip/Chip';
-import SpeakerInfo from '../../../components/SeminarApply/SpeakerInfo';
 import ApplyForm from '../../../components/SeminarApply/ApplyForm';
+import Header from '../../../components/common/Header';
 import { useState, useEffect } from 'react';
 import { useBlocker } from 'react-router-dom';
 import ApplyExitModal from '../../../components/Modal/ApplyExitModal';
@@ -26,12 +25,38 @@ type SeminarSession = {
 
 const ApplyInfo = () => {
   const [exitOpen, setExitOpen] = useState(false);
+  const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [proceed, setProceed] = useState<null | (() => void)>(null);
-  const [seminarId, setSeminarId] = useState<number | null>(null);
-  const [seminarNum, setSeminarNum] = useState<number | null>(null);
-  const [seminarDate, setSeminarDate] = useState<string>('-');
-  const [place, setPlace] = useState<string>('-');
-  const [sessions, setSessions] = useState<SeminarSession[]>([]);
+  const [seminarId, setSeminarId] = useState<number | null>(1);
+  const [seminarNum, setSeminarNum] = useState<number | null>(10);
+  const [seminarDate, setSeminarDate] = useState<string>('2026.03.20 19:00');
+  const [place, setPlace] = useState<string>('홍익대학교 홍문관 401호');
+  const [sessions, setSessions] = useState<SeminarSession[]>([
+    {
+      sessionId: 1,
+      title: '프론트엔드 개발자의 커리어 여정',
+      description: '프론트엔드 개발자로 성장하는 방법에 대해 이야기합니다.',
+      speaker: {
+        speakerId: 1,
+        name: '김개발',
+        organization: '카카오',
+        history: '카카오 프론트엔드 개발자- 네이버 UI 개발팀- 홍익대학교 컴퓨터공학과',
+        profileUrl: '',
+      },
+    },
+    {
+      sessionId: 2,
+      title: '디자인 시스템 구축기',
+      description: '실무에서 디자인 시스템을 구축한 경험을 공유합니다.',
+      speaker: {
+        speakerId: 2,
+        name: '이디자인',
+        organization: '토스',
+        history: '토스 디자인 엔지니어- 라인 UI/UX 개발자- 홍익대학교 시각디자인과',
+        profileUrl: '',
+      },
+    },
+  ]);
 
   const globalSeminarId = useApplyFlow((s) => s.seminarId);
   const setSeminarIdGlobal = useApplyFlow((s) => s.setSeminarId);
@@ -55,105 +80,87 @@ const ApplyInfo = () => {
     }
   }, [blocker]);
 
-  // 1) 홈 노출 세미나 조회
-  useEffect(() => {
-    const fetchShowSeminar = async () => {
-      try {
-        const res = await getShowSeminar();
-        if (res?.isSuccess && res.result?.applicantActivate) {
-          setSeminarNum(res.result?.seminarNum ?? null);
-          setSeminarId(res.result?.seminarId ?? null);
-        } else {
-          setSeminarNum(null);
-          setSeminarId(null);
-        }
-      } catch (e) {
-        console.error('getShowSeminar error:', e);
-      }
-    };
-    fetchShowSeminar();
-  }, []);
+  // TODO: 목데이터 확인 후 주석 해제
+  // // 1) 홈 노출 세미나 조회
+  // useEffect(() => {
+  //   const fetchShowSeminar = async () => {
+  //     try {
+  //       const res = await getShowSeminar();
+  //       if (res?.isSuccess && res.result?.applicantActivate) {
+  //         setSeminarNum(res.result?.seminarNum ?? null);
+  //         setSeminarId(res.result?.seminarId ?? null);
+  //       } else {
+  //         setSeminarNum(null);
+  //         setSeminarId(null);
+  //       }
+  //     } catch (e) {
+  //       console.error('getShowSeminar error:', e);
+  //     }
+  //   };
+  //   fetchShowSeminar();
+  // }, []);
 
-  // 2) seminarId를 전역에 반영 (값이 바뀔 때만)
-  useEffect(() => {
-    if (seminarId != null && globalSeminarId !== seminarId) {
-      setSeminarIdGlobal(seminarId);
-    }
-  }, [seminarId, globalSeminarId, setSeminarIdGlobal]);
+  // // 2) seminarId를 전역에 반영 (값이 바뀔 때만)
+  // useEffect(() => {
+  //   if (seminarId != null && globalSeminarId !== seminarId) {
+  //     setSeminarIdGlobal(seminarId);
+  //   }
+  // }, [seminarId, globalSeminarId, setSeminarIdGlobal]);
 
-  // 3) seminarId 기반 상세조회 (일시/장소)
-  useEffect(() => {
-    if (!seminarId) return;
-    const fetchSeminarDetail = async () => {
-      try {
-        const res = await getUserSeminar(seminarId);
-        if (res?.isSuccess && res.result) {
-          setSeminarDate(res.result.seminarDate);
-          setPlace(res.result.place);
-        }
-      } catch (e) {
-        console.error('getUserSeminar error:', e);
-      }
-    };
-    fetchSeminarDetail();
-  }, [seminarId]);
+  // // 3) seminarId 기반 상세조회 (일시/장소)
+  // useEffect(() => {
+  //   if (!seminarId) return;
+  //   const fetchSeminarDetail = async () => {
+  //     try {
+  //       const res = await getUserSeminar(seminarId);
+  //       if (res?.isSuccess && res.result) {
+  //         setSeminarDate(res.result.seminarDate);
+  //         setPlace(res.result.place);
+  //       }
+  //     } catch (e) {
+  //       console.error('getUserSeminar error:', e);
+  //     }
+  //   };
+  //   fetchSeminarDetail();
+  // }, [seminarId]);
 
-  // 4) seminarId 기반 세션 목록 조회
-  useEffect(() => {
-    if (!seminarId) return;
-    const fetchSessions = async () => {
-      try {
-        const res = await getSeminarSession(seminarId);
-        if (res?.isSuccess && Array.isArray(res.result)) {
-          setSessions(res.result as SeminarSession[]);
-        }
-      } catch (e) {
-        console.error('getSeminarSession error:', e);
-      }
-    };
-    fetchSessions();
-  }, [seminarId]);
+  // // 4) seminarId 기반 세션 목록 조회
+  // useEffect(() => {
+  //   if (!seminarId) return;
+  //   const fetchSessions = async () => {
+  //     try {
+  //       const res = await getSeminarSession(seminarId);
+  //       if (res?.isSuccess && Array.isArray(res.result)) {
+  //         setSessions(res.result as SeminarSession[]);
+  //       }
+  //     } catch (e) {
+  //       console.error('getSeminarSession error:', e);
+  //     }
+  //   };
+  //   fetchSessions();
+  // }, [seminarId]);
 
   return (
-    <div className="flex flex-col gap-16 justify-center items-center mb-64">
-      <ApplyHeader backTo={seminarId ? `/seminar/${seminarId}` : '/seminar'} />
-      <div className="flex flex-col w-[335px] gap-80">
-        <div className="flex flex-col gap-14">
+    <div className="flex flex-col items-center mb-64">
+      <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
+      <div className="flex flex-col w-[375px] gap-80 pt-[56px]">
+        <div className="flex flex-col">
           <div className="flex flex-col gap-32">
-            <h1 className="heading-2-bold text-white">
-              {seminarNum !== null ? `제 ${seminarNum}회 Devtalk Seminar` : 'DevTalk Seminar'}
-            </h1>
-            <div className="flex flex-col gap-48">
-              {/* Outline 영역 */}
-              <div className="flex flex-col gap-20">
-                <Chip className="body-2-semibold" text="Outline" />
-                <div className="flex flex-col gap-8">
-                  <div className="flex flex-row gap-16">
-                    <p className="body-1-medium text-grey-300">일시</p>
-                    <p className="body-1-medium text-white">{seminarDate}</p>
-                  </div>
-                  <div className="flex flex-row gap-16">
-                    <p className="body-1-medium text-grey-300">장소</p>
-                    <p className="body-1-medium text-white">{place}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-12">
-                  {sessions.length > 0 ? (
-                    sessions.map((s) => (
-                      <SpeakerInfo
-                        key={s.sessionId}
-                        name={s.speaker.name}
-                        history={s.speaker.history}
-                        organization={s.speaker.organization}
-                        profileUrl={s.speaker.profileUrl}
-                      />
-                    ))
-                  ) : (
-                    <div className="text-grey-400 body-2-medium">세션 정보를 불러오는 중…</div>
-                  )}
-                </div>
+            {seminarNum !== null && <Chip text={`${seminarNum}회차`} />}
+            <div className="flex flex-col">
+              <p className="heading-3-medium text-black">제목</p>
+              <p className="body-1-light text-grey-700">강연 주제를 한 줄로 요약하여 적어주세요.</p>
+              <div className="flex flex-row items-center gap-[12px] mt-16">
+                <p className="subhead-medium text-black">연사</p>
+                <p className="subhead-light text-black">
+                  {sessions.map((s, i) => `${i + 1}부 ${s.speaker.name} 님`).join(' / ')}
+                </p>
               </div>
+              <div className="mt-[30px] h-[2px] self-stretch bg-grey-400" />
+              <p className="heading-3-medium text-black mt-[30px]">세미나 신청을 위해 아래 내용을 작성해주세요.</p>
 
+            </div>
+            <div className="flex flex-col gap-48">
               {/* 온라인 LIVE 안내 영역 */}
               {/* <div className="flex flex-col gap-20">
                 <Chip className="body-2-semibold" text="온라인 LIVE 안내" />
@@ -171,7 +178,6 @@ const ApplyInfo = () => {
               </div> */}
             </div>
           </div>
-          <hr className="text-grey-700 w-full h-[1px]" />
           {/* 신청폼 부분 */}
           <ApplyForm />
         </div>
@@ -190,6 +196,7 @@ const ApplyInfo = () => {
           blocker.reset?.();
         }}
       />
+
     </div>
   );
 };

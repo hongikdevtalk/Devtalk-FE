@@ -91,7 +91,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
 
   return (
     <div
-      className={`fixed w-full max-w-[384px] h-screen bg-background transform transition-transform duration-400 z-40 overflow-hidden flex flex-col ${
+      className={`fixed w-full max-w-[400px] h-screen bg-background transform transition-transform duration-400 z-40 overflow-hidden flex flex-col ${
         isOpen ? 'translate-y-0' : '-translate-y-full'
       }`}
     >

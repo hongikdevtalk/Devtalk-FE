@@ -14,7 +14,7 @@ const Header = ({ hamburgerOpen, setHamburgerOpen }: HeaderProps) => {
   return (
     <>
       <header className="fixed top-0 left-0 flex justify-center items-center w-full h-[56px] z-[56]">
-        <div className="flex items-center justify-between w-[335px] h-[34px]">
+        <div className="flex items-center justify-between w-[375px] h-[34px]">
           <img
             src={devlogo2}
             alt="devlogo2"

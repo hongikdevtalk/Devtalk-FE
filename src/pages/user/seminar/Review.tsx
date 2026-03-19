@@ -1,5 +1,3 @@
-// 익명 처리 삭제함 -> 필요하다면 구현 필요
-
 import { useState } from 'react';
 import Header from '../../../components/common/Header';
 import { Button } from '../../../components/Button/Button';
@@ -14,6 +12,7 @@ import BackButton from '../../../components/Button/BackButton';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import { useSeminarAuth } from '../../../hooks/SeminarLive/useSeminarAuth';
+import ReviewModal from '../../../components/Modal/ReviewAlertModal';
 
 type ReviewValues = {
   review: string;
@@ -27,10 +26,18 @@ const Review = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [studentNum, setStudentNum] = useState('');
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
+  const openModal = (message: string) => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
+
   const { mutate: authMutate, isPending: isAuthPending } = useSeminarAuth();
 
   const handleNextStep = () => {
-    if (!studentNum) return alert('학번을 입력해주세요.');
+    if (!studentNum) return openModal('학번을 입력해주세요.');
 
     authMutate(
       { studentNum, name: '사용자' },
@@ -39,7 +46,7 @@ const Review = () => {
           if (res.result) {
             setIsVerified(true);
           } else {
-            alert('수강 내역을 찾을 수 없습니다. 다시 한번 확인해 주세요.');
+            openModal('수강 내역을 찾을 수 없습니다. \n다시 한번 확인해 주세요.');
           }
         },
       }
@@ -73,12 +80,11 @@ const Review = () => {
     mutationFn: postSeminarReview,
     onSuccess: (data) => {
       if (data.isSuccess === false) {
-        alert(data.message);
-        navigation('/seminar');
+        openModal(data.message);
         return;
       }
       if (data.result?.seminarId) {
-        alert('소중한 후기 감사합니다!');
+        openModal('소중한 후기 감사합니다!');
         navigation(`/seminar/${data.result?.seminarId}`);
       } else {
         navigation('/seminar');
@@ -86,7 +92,7 @@ const Review = () => {
     },
 
     onError: () => {
-      alert('후기 제출에 실패했습니다. 다시 시도해주세요.');
+      openModal('후기 제출에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
@@ -189,6 +195,12 @@ const Review = () => {
             )}
           </div>
         </div>
+        <ReviewModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          message={modalMessage}
+        />
+
         {(isPending || isAuthPending) && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <LoadingSpinner />

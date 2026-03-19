@@ -3,8 +3,17 @@ import type { SeminarSessionResponse } from '../../types/SeminarDetail/seminarDe
 import { getSeminarSession } from '../../apis/seminarDetail';
 import rightarrow from '../../assets/icons/common/rightarrow.svg';
 import SessionTagList from './SessionTagList';
+import { useNavigate } from 'react-router-dom';
 
-const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; index: number }) => {
+const SeminarDetailLectureCard = ({
+  seminarId,
+  seminarNum,
+  index,
+}: {
+  seminarId: number;
+  seminarNum: number;
+  index: number;
+}) => {
   const { data, isLoading } = useQuery<SeminarSessionResponse>({
     queryKey: ['seminarSession', seminarId],
     queryFn: () => getSeminarSession(seminarId),
@@ -14,16 +23,19 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
 
   const { title, description, speaker, keywords } = session || {};
 
+  const navigate = useNavigate();
+
+  const handleNavigateSpeaker = () => {
+    navigate(`/speakers/${seminarId}/${seminarNum}/${index}`);
+  };
+
   // %~% 텍스트 <span>으로 변환
   const highlightDescription = (text: string) => {
     return text.replace(/%([^%]+)%/g, `<span class="text-highlight">$1</span>`);
   };
 
   return session ? (
-    <div
-      id={speaker?.name}
-      className="w-[335px] flex flex-col items-center gap-20"
-    >
+    <div id={speaker?.name} className="w-[335px] flex flex-col items-center gap-20">
       {isLoading && <div>Loading...</div>}
 
       <div className="session-title">Session #{index + 1}</div>
@@ -37,7 +49,10 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
       <div className="flex flex-col w-[295px] gap-[20px] items-center">
         <div className="flex flex-col gap-4 justify-center items-center">
           <p className="organization-tag">{speaker?.organization}</p>
-          <div className="flex gap-0 items-center mt-4">
+          <div
+            className="flex gap-0 items-center mt-4 cursor-pointer"
+            onClick={handleNavigateSpeaker}
+          >
             <span className="subhead-1-medium text-black text-center">{speaker?.name}</span>
             <span className="subhead-1-regular text-black"> 님</span>
             <img src={rightarrow} alt="right arrow" />
@@ -53,12 +68,17 @@ const SeminarDetailLectureCard = ({ seminarId, index }: { seminarId: number; ind
             ))}
         </ul>
         <div className="mt-16 w-full">
-          <SessionTagList tags={keywords && keywords.length > 0 ? keywords.slice(0, 3) : ['태그1', '태그2', '태그3']} />
+          <SessionTagList
+            tags={
+              keywords && keywords.length > 0 ? keywords.slice(0, 3) : ['태그1', '태그2', '태그3']
+            }
+          />
         </div>
         <div className="w-[295px] flex flex-col gap-[39px] items-center">
           <div className="w-[237px] flex flex-col gap-[9px] justify-center items-center heading-3-semibold">
-            
-            <div className="subhead-1-regular text-black text-center break-keep-all">{index + 1}부 {title}</div>
+            <div className="subhead-1-regular text-black text-center break-keep-all">
+              {index + 1}부 {title}
+            </div>
           </div>
           <div
             className="w-[295px] body-1-light text-black text-left whitespace-pre-line"

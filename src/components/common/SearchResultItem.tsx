@@ -42,11 +42,11 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
 
         <div className="flex justify-start items-start mt-[16px] gap-16">
           <img
-            className="w-[162px] h-[98px] rounded-[5px] object-cover shrink-0"
+            className="w-[150px] h-[106px] rounded-[5px] object-cover shrink-0"
             src={imageUrl}
             alt="seminar"
           />
-          <div className="py-2 flex flex-col gap-2.5">
+          <div className="py-2 flex flex-col gap-8">
             <div className="flex items-center gap-8.5">
               <span className="w-8 flex-shrink-0 whitespace-nowrap text-black subhead-1-medium">
                 일정

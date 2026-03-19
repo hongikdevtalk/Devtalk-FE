@@ -2,11 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../../components/common/Header';
 import SeminarListCard from '../../../components/Seminar/SeminarListCard';
 import SearchBar from '../../../components/common/SearchBar';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import { getSeminarList } from '../../../apis/seminarList';
 import type { SeminarListResponse } from '../../../types/SeminarManage/seminarCard.api';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useState } from 'react';
+import SearchResultSpeaker from '../../../components/common/SearchResultSpeaker';
+import { getSeminarSession } from '../../../apis/seminarDetail';
 
 const TAGS = [
   { id: 1, text: '태그1' },
@@ -19,16 +21,38 @@ function SeminarHome() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleCardClick = (id: number) => {
-    navigate(`/seminar/${id}`);
-  };
-
-  const { data, isLoading } = useQuery<SeminarListResponse>({
+  const { data, isLoading: isListLoading } = useQuery<SeminarListResponse>({
     queryKey: ['seminarList'],
     queryFn: getSeminarList,
   });
 
+  const handleCardClick = (id: number) => {
+    navigate(`/seminar/${id}`);
+  };
+
   const seminarList = data?.result?.seminarList || [];
+
+  const detailQueries = useQueries({
+    queries: seminarList.map((seminar) => ({
+      queryKey: ['seminarSession', seminar.seminarId],
+      queryFn: () => getSeminarSession(seminar.seminarId),
+      staleTime: 1000 * 60 * 5,
+    })),
+  });
+
+  const combinedSeminarList = seminarList.map((seminar, index) => {
+    const detailData = detailQueries[index]?.data;
+    const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
+
+    return {
+      ...seminar,
+      speakerNames: sessions.map((s: any) => s.speaker.name),
+      subTitles: sessions.map((s: any) => s.title),
+      speakerImageUrl: sessions.map((s: any) => s.speaker?.profileUrl || seminar.imageUrl),
+    };
+  });
+
+  const isLoading = isListLoading || detailQueries.some((q) => q.isLoading);
 
   return (
     <div>
@@ -36,19 +60,28 @@ function SeminarHome() {
       <div className="flex flex-col justify-center px-20 pt-64">
         <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} tags={TAGS} />
         {isLoading && <LoadingSpinner />}
+
         <div className="flex flex-col items-center pt-7 ">
-          {seminarList.map((seminar) => (
-            <div
-              key={seminar.seminarId}
-              className="border-b-2 pb-6 border-[#E8EAEF]"
-              onClick={() => handleCardClick(seminar.seminarId)}
-            >
-              <SeminarListCard seminar={seminar} />
+          {combinedSeminarList.map((seminar) => (
+            <div key={seminar.seminarId}>
+              <div onClick={() => handleCardClick(seminar.seminarId)} className="px-5 pb-5">
+                <SeminarListCard seminar={seminar} />
+              </div>
+
+              <SearchResultSpeaker
+                result={{
+                  seminarId: seminar.seminarId,
+                  seminarNum: seminar.seminarNum,
+                  speakerNames: seminar.speakerNames,
+                  subTitles: seminar.subTitles,
+                  speakerImageUrl: seminar.speakerImageUrl,
+                }}
+                onClose={() => setHamburgerOpen(false)}
+              />
             </div>
           ))}
         </div>
       </div>
-      <div className="h-[24px]" />
     </div>
   );
 }

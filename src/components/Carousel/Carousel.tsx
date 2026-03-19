@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import chevronrightduo from '../../assets/icons/common/chevronrightduo.svg';
 
@@ -10,8 +10,11 @@ export default function Carousel({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
 
   const CARD_WIDTH = 302 + 20;
-  const childrenArray = Array.isArray(children) ? children : [children];
-  const totalItems = childrenArray.length + 1;
+  const displayItems = useMemo(() => {
+    const childrenArray = Array.isArray(children) ? children : [children];
+    return childrenArray.slice(0, 3);
+  }, [children]);
+  const totalItems = displayItems.length + 1;
 
   const handleTouchStart = (e: React.TouchEvent) => setStartX(e.touches[0].clientX);
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -51,7 +54,7 @@ export default function Carousel({ children }: { children: ReactNode }) {
         onMouseUp={handleMouseUp}
       >
         {/* 카드 리스트 */}
-        {childrenArray.map((child, index) => (
+        {displayItems.map((child, index) => (
           <div key={index} className="flex-shrink-0 mr-[20px]">
             {child}
           </div>

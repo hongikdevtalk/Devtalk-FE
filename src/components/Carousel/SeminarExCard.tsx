@@ -63,14 +63,15 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
         </div>
         {/* 연사 정보 */}
         <div className="flex flex-col gap-1 w-full">
-          <div className="flex items-center gap-3 w-full overflow-hidden">
+          <div className="flex items-start gap-3 w-full overflow-hidden">
             <span className="w-[35px] flex-shrink-0 text-black subhead-1-regular leading-tight">
               연사
             </span>
-            <div className="flex flex-col gap-1 flex-1">
+            <div className="flex flex-row flex-wrap gap-x-2 gap-y-1 flex-1">
               {speakers.map((name, index) => (
                 <span key={index} className="text-black subhead-light leading-tight break-keep">
                   {name}
+                  {index < speakers.length - 1 && ','}
                 </span>
               ))}
             </div>

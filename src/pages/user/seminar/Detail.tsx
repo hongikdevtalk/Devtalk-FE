@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getSeminarReview } from '../../../apis/seminarDetail';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
+import { getSeminarDetail } from '../../../apis/seminarDetail';
 
 const SeminarDetail = () => {
   const { id } = useParams();
@@ -53,6 +54,14 @@ const SeminarDetail = () => {
     enabled: !!id,
   });
 
+  const { data: detailData } = useQuery({
+    queryKey: ['seminarDetail', seminarId],
+    queryFn: () => getSeminarDetail(seminarId),
+    enabled: !!seminarId,
+  });
+
+  const seminarNumber = detailData?.result?.seminarNum;
+
   const seminarReviews = data?.result || [];
 
   // 노출 회차 정보
@@ -70,9 +79,19 @@ const SeminarDetail = () => {
           }`}
         >
           <div className="flex flex-col gap-10 justify-center items-center bg-background ">
-            <SeminarDetailLectureCard key={`${seminarId}-0`} seminarId={seminarId} index={0} />
+            <SeminarDetailLectureCard
+              key={`${seminarId}-0`}
+              seminarId={seminarId}
+              seminarNum={seminarNumber ?? 0}
+              index={0}
+            />
             <div ref={secondRef}>
-              <SeminarDetailLectureCard key={`${seminarId}-1`} seminarId={seminarId} index={1} />
+              <SeminarDetailLectureCard
+                key={`${seminarId}-1`}
+                seminarId={seminarId}
+                seminarNum={seminarNumber ?? 0}
+                index={1}
+              />
             </div>
           </div>
           <div className="mt-40 h-[2px] shrink-0 self-stretch bg-grey-400" />

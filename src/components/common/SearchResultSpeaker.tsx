@@ -16,7 +16,7 @@ interface SearchResultSpeakerProps {
 
 const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   const navigate = useNavigate();
-  const { seminarId, seminarNum, speakerNames, subTitles, speakerImageUrl } = result;
+  const { seminarId, seminarNum, speakerNames = [], subTitles = [], speakerImageUrl = '' } = result;
 
   const handleNavigate = (index: number) => {
     onClose();
@@ -26,7 +26,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   return (
     <div className="flex flex-col">
       {/* 하단 영역 - 연사 정보 카드 */}
-      {speakerNames.map((name, index) => (
+      {speakerNames?.map((name, index) => (
         <div
           key={index}
           className="flex flex-col cursor-pointer"
@@ -48,7 +48,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
               </div>
 
               <div className="text-black subhead-1-regular whitespace-pre-line leading-tight">
-                {subTitles[index]}
+                {subTitles?.[index] || '정보 없음'}
               </div>
 
               <div className="text-grey-700 body-1-light text-[16px]">

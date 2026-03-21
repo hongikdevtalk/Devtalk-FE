@@ -12,6 +12,9 @@ import SeminarApplicantsQuestions from '../../pages/admin/seminar-manage/applica
 import Attendance from '../../pages/admin/seminar-live/Attendance';
 import Accounts from '../../pages/admin/auth-manage/Accounts';
 import HomeExposure from '../../pages/admin/home-manage/HomeExposure';
+import StatisticsRegistration from '../../pages/admin/statistics/Registration';
+import StatisticsViews from '../../pages/admin/statistics/Views';
+import StatisticsSearch from '../../pages/admin/statistics/Search';
 
 export const adminProtectedRoutes = [
   {
@@ -30,6 +33,9 @@ export const adminProtectedRoutes = [
       { path: 'seminars/applicants/:id/questions', element: <SeminarApplicantsQuestions /> },
       { path: 'seminar-live/attendance', element: <Attendance /> },
       { path: 'admin-accounts', element: <Accounts /> },
+      { path: 'statistics/registration', element: <StatisticsRegistration /> },
+      { path: 'statistics/views', element: <StatisticsViews /> },
+      { path: 'statistics/search', element: <StatisticsSearch /> },
     ],
   },
 ];

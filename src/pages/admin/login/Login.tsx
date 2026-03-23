@@ -30,7 +30,7 @@ const Login = () => {
   const isDisabled = id.trim() === '' || pw.trim() === '';
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen pb-60">
+    <div className="flex flex-col items-center justify-center min-h-screen pb-60 bg-black">
       {/* 로고 + 타이틀 */}
       <div className="flex items-center gap-x-8 mb-12 ">
         <img src={devlogo} alt="devlogo" className="w-[100px] h-[41.1px]" />
@@ -45,7 +45,7 @@ const Login = () => {
       {/* 입력폼 */}
       <div className="flex flex-col gap-y-12 w-[442px]">
         <input
-          className="bg-grey-600 w-full h-[55px] p-12 rounded-8 body-2-medium"
+          className="bg-grey-600 w-full h-[55px] p-12 rounded-8 body-2-medium text-grey-700"
           type="text"
           placeholder="아이디를 입력하세요."
           value={id}
@@ -55,7 +55,7 @@ const Login = () => {
           }}
         />
         <input
-          className="bg-grey-600 w-full h-[55px] p-12 rounded-8 body-2-medium"
+          className="bg-grey-600 w-full h-[55px] p-12 rounded-8 body-2-medium text-grey-700"
           type="password"
           placeholder="비밀번호를 입력하세요."
           value={pw}

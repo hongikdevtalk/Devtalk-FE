@@ -29,6 +29,14 @@ const menuData = [
     ],
   },
   {
+    title: '통계',
+    children: [
+      { name: '회차별 신청자', to: '/admin/statistics/registration', end: true },
+      { name: '세미나 카드별 조회수', to: '/admin/statistics/views', end: true },
+      { name: '검색어 통계', to: '/admin/statistics/search', end: true },
+    ],
+  },
+  {
     title: '세미나 Live 관리',
     children: [{ name: '출석 관리', to: '/admin/seminar-live/attendance', end: true }],
   },

@@ -34,6 +34,7 @@ import { getSeminarList } from '../../../apis/seminarList';
 // import type { SeminarSessionResponse } from '../../../types/SeminarDetail/seminarDetail';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import poster from '../../../assets/logos/poster.png';
+import { getShowSeminar } from '../../../apis/ShowSeminar/userShowSeminar';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -50,9 +51,19 @@ const Home = () => {
     queryKey: ['seminarList'],
     queryFn: getSeminarList,
   });
+
+  const { data: showSeminarResponse } = useQuery({
+    queryKey: ['showSeminar'],
+    queryFn: getShowSeminar,
+    staleTime: 0,
+  });
+
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
 
   const seminarList = seminarResponse?.result?.seminarList || [];
+
+  const isApplyActive = showSeminarResponse?.result?.applicantActivate;
+  const activeSeminarNum = showSeminarResponse?.result?.seminarNum;
 
   const sortedSeminars =
     seminarList.length > 0 ? [...seminarList].sort((a, b) => b.seminarNum - a.seminarNum) : [];
@@ -250,16 +261,20 @@ const Home = () => {
           </section>
           <div className="py-[14px]" />
 
-          {/* 신청 버튼 */}
-          <div className="px-5 pb-10">
-            <Button
-              variant="custom"
-              text={`${latestSeminar?.seminarNum ?? ''}회차 세미나 신청하기`}
-              onClick={() => navigate('/seminar/apply-info')}
-              className="w-full h-[24px] px-6 py-4 rounded-[10px] 
-              text-white heading-3-semibold bg-[radial-gradient(ellipse_171.17%_557.08%_at_74.62%_100.00%,_#BDF548_0%,_#4EABB5_100%)]"
-            />
-          </div>
+          {/* 플로팅 신청 버튼 */}
+          {isApplyActive && activeSeminarNum && (
+            <div className="fixed bottom-10 left-0 w-full px-5 z-50 pointer-events-none">
+              <div className="max-w-[384px] mx-auto pointer-events-auto">
+                <Button
+                  variant="custom"
+                  text={`${latestSeminar?.seminarNum ?? ''}회차 세미나 신청하기`}
+                  onClick={() => navigate('/seminar/apply-info')}
+                  className="w-full h-[56px] px-6 py-4 rounded-[12px] text-white heading-3-semibold shadow-lg
+                          bg-[img:var(--gradient-button)] transition-transform active:scale-95"
+                />
+              </div>
+            </div>
+          )}
 
           {/* 푸터 */}
           <div ref={bottomRef} className="w-full h-[1px]" />

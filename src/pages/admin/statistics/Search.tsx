@@ -10,7 +10,7 @@ interface KeywordSearchCount {
 }
 
 const PopularKeywordsSearch = () => {
-  const [keywordData, setKeywordData] = useState<KeywordSearchCount[]>([]);
+  const [keywordData, setKeywordData] = useState<KeywordSearchCount[]>(MOCK_POPULAR_KEYWORDS);
   const [isLoading, setIsLoading] = useState(false);
 
   // API 전용 로직
@@ -61,8 +61,7 @@ const PopularKeywordsSearch = () => {
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  // API 연결시 keywordData로 변경해야함
-                  data={MOCK_POPULAR_KEYWORDS}
+                  data={keywordData}
                   margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
                   barCategoryGap={30}
                 >

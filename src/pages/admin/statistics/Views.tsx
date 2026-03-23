@@ -21,7 +21,7 @@ interface ViewCountItem {
 
 const CardViews = () => {
   const [selectedRound, setSelectedRound] = useState(10);
-  const [viewData, setViewData] = useState<ViewCountItem[]>([]);
+  const [viewData, setViewData] = useState<ViewCountItem[]>(MOCK_VIEW_DATA);
   const [isLoading, setIsLoading] = useState(false);
 
   // API 로직
@@ -46,7 +46,6 @@ const CardViews = () => {
   const fetchViewStats = useCallback(async (startDate?: string, endDate?: string) => {
     setIsLoading(true);
     try {
-      // 실제 통신 없이 Mock 데이터를 상태에 주입
       setViewData(MOCK_VIEW_DATA);
       console.log(`Mock 데이터 로드 완료: ${startDate || '전체'} ~ ${endDate || '전체'}`);
     } catch (err) {
@@ -94,11 +93,7 @@ const CardViews = () => {
               <div className="text-black subhead-1-bold">데이터를 불러오는 중...</div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart
-                  // API 연결시 viewData로 변경
-                  data={MOCK_VIEW_DATA}
-                  margin={{ top: 30, right: 30, left: 0, bottom: 0 }}
-                >
+                <LineChart data={viewData} margin={{ top: 30, right: 30, left: 0, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#A6A6A6" />
                   <XAxis
                     dataKey="date"

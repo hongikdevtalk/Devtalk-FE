@@ -6,14 +6,19 @@ import HamburgerBar from './HamburgerBar';
 type HeaderProps = {
   hamburgerOpen: boolean;
   setHamburgerOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isScrolled?: boolean;
 };
 
-const Header = ({ hamburgerOpen, setHamburgerOpen }: HeaderProps) => {
+const Header = ({ hamburgerOpen, setHamburgerOpen, isScrolled = false }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (
     <>
-      <header className="fixed top-0 left-0 flex justify-center items-center w-full h-[56px] z-[56]">
+      <header
+        className={`fixed top-0 left-1/2 -translate-x-1/2 flex justify-center items-center w-full max-w-[430px] h-[56px] z-[56] transition-colors duration-200 ${
+          isScrolled ? 'bg-background shadow-sm shadow-grey-400/20' : 'bg-transparent'
+        }`}
+      >
         <div className="flex items-center justify-between w-[375px] h-[34px] px-[20px]">
           <img
             src={devlogo2}

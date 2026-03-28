@@ -1,6 +1,6 @@
 import link from '../../assets/icons/components/Footer/link.svg';
 import mail from '../../assets/icons/components/Footer/mail.svg';
-import messagecircle from '../../assets/icons/components/Footer/messagecircle.svg';
+import instagram from '../../assets/icons/components/Footer/instagram.svg';
 import dev from '../../assets/logos/dev.svg';
 import { getHomeLink } from '../../apis/HomeManage/homeLinkApi';
 import { useQuery } from '@tanstack/react-query';
@@ -34,16 +34,16 @@ const Footer = () => {
         {/* 왼쪽 정보 영역 */}
         <div className="flex flex-col gap-[5px]">
           <div className="flex items-center gap-[8px] cursor-pointer" onClick={handlePrivacyClick}>
-            <img src={link} alt="link" className="w-[24px] h-[24px]" />
-            <span className="caption-medium text-grey-700">개인정보 처리 방침</span>
+            <img src={link} alt="link" className="w-[16px] h-[16px] px-[1px] py-[1px]" />
+            <span className="caption-medium text-grey-700">개인정보처리방침</span>
           </div>
           <div className="flex items-center gap-[8px]">
-            <img src={mail} alt="mail" className="w-[24px] h-[24px]" />
+            <img src={mail} alt="mail" className="w-[16px] h-[16px]" />
             <span className="caption-medium text-grey-700">dev.hongik@gmail.com</span>
           </div>
           <div className="flex items-center gap-[8px] cursor-pointer" onClick={handleInquiryClick}>
-            <img src={messagecircle} alt="messagecircle" className="w-[24px] h-[24px]" />
-            <span className="caption-medium text-grey-700">문의하기</span>
+            <img src={instagram} alt="instagram" className="w-[16px] h-[16px]" />
+            <span className="caption-medium text-grey-700">@hongik.dev</span>
           </div>
         </div>
 

@@ -59,6 +59,7 @@ const Home = () => {
   });
 
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
 
   const seminarList = seminarResponse?.result?.seminarList || [];
 
@@ -122,6 +123,22 @@ const Home = () => {
       if (bottomRef.current) observer.unobserve(bottomRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    const scrollContainer = document.querySelector('.snap-y');
+
+    const handleScroll = () => {
+      if (!scrollContainer) return;
+      setHeaderScrolled(scrollContainer.scrollTop > 0);
+    };
+
+    handleScroll();
+    scrollContainer?.addEventListener('scroll', handleScroll);
+
+    return () => {
+      scrollContainer?.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   // const hideCTA = exVisible || bottomVisible;
   // const hideCTA = exVisible || bottomVisible;
 
@@ -169,7 +186,11 @@ const Home = () => {
   return (
     <>
       <div>
-        <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
+        <Header
+          hamburgerOpen={hamburgerOpen}
+          setHamburgerOpen={setHamburgerOpen}
+          isScrolled={headerScrolled}
+        />
         <div className="snap-y snap-proximity overflow-y-scroll h-screen scrollbar-hide overflow-x-hidden">
           {/* 데브톡 이미지 */}
           <section className="relative w-full h-[520px] snap-start">

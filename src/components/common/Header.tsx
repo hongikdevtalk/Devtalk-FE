@@ -9,7 +9,7 @@ type HeaderProps = {
   isScrolled?: boolean;
 };
 
-const Header = ({ hamburgerOpen, setHamburgerOpen, isScrolled = false }: HeaderProps) => {
+const Header = ({ hamburgerOpen, setHamburgerOpen, isScrolled = true }: HeaderProps) => {
   const navigate = useNavigate();
 
   return (

@@ -22,7 +22,7 @@ type HamburgerBarProps = {
 const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const { seminarId, seminarNum } = useShowSeminar();
+  const { seminarNum } = useShowSeminar();
 
   useEffect(() => {
     if (!isOpen) {
@@ -110,6 +110,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
               {filteredResults.map((result) => (
                 <div key={result.seminarId} className="flex flex-col">
                   <SearchResultItem key={result.seminarId} result={result} onClose={_onClose} />
+                  <div className="h-0.5 bg-grey-400 w-full" />
                   <SearchResultSpeaker
                     result={{
                       seminarId: result.seminarId,
@@ -133,7 +134,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
             <button
               className="text-black heading-3-regular cursor-pointer"
               onClick={() => {
-                navigate('/seminar'); // navigate 할 곳 필요..
+                navigate('/speakerList');
                 _onClose();
               }}
             >
@@ -142,13 +143,13 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
             <button
               className="text-black heading-3-regular cursor-pointer"
               onClick={() => {
-                navigate('/seminar');
+                navigate('/seminarList');
                 _onClose();
               }}
             >
               세미나 아카이브
             </button>
-            {seminarId && (
+            {/* {seminarId && (
               <button
                 className="cursor-pointer"
                 onClick={() => {
@@ -158,7 +159,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
               >
                 <p className="text-gradient heading-3-regular">{seminarNum}회차 데브톡 신청하기</p>
               </button>
-            )}
+            )} */}
             <button
               className="text-black heading-3-regular cursor-pointer"
               onClick={() => {

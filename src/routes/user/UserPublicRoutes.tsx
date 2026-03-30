@@ -1,16 +1,17 @@
 import UserLayout from '../../layouts/user/UserLayout';
 import Home from '../../pages/user/home/Home';
-import SeminarHome from '../../pages/user/seminar/Home';
+import SeminarHome from '../../pages/user/seminar/SpeakerList';
 import SeminarDetail from '../../pages/user/seminar/Detail';
 import SeminarApplyInfo from '../../pages/user/seminar/ApplyInfo';
 import SeminarApplyQuestion from '../../pages/user/seminar/ApplyQuestion';
 import LiveVerification from '../../pages/user/seminar/LiveVerification';
-import SpeakersList from '../../pages/user/speakers/List';
 import SpeakersDetail from '../../pages/user/speakers/Detail';
 import NoticeHome from '../../pages/user/notice/Home';
 import NoticeQna from '../../pages/user/notice/Qna';
 import NoticeInquiry from '../../pages/user/notice/Inquiry';
 import SeminarReview from '../../pages/user/seminar/Review';
+import SeminarList from '../../pages/user/seminar/SeminarList';
+import SpeakerList from '../../pages/user/seminar/SpeakerList';
 
 export const userPublicRoutes = [
   {
@@ -22,7 +23,8 @@ export const userPublicRoutes = [
       { path: 'seminar/apply-info', element: <SeminarApplyInfo /> },
       { path: 'seminar/apply-question', element: <SeminarApplyQuestion /> },
       { path: 'seminar/live/verification', element: <LiveVerification /> },
-      { path: 'speakers', element: <SpeakersList /> },
+      { path: 'seminarList', element: <SeminarList /> },
+      { path: 'speakerList', element: <SpeakerList /> },
       { path: 'speakers/:id/:num/:index', element: <SpeakersDetail /> },
       { path: 'notice', element: <NoticeHome /> },
       { path: 'notice/qna', element: <NoticeQna /> },

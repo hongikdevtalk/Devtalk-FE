@@ -12,13 +12,15 @@ const SeminarListCard = ({ seminar }: SeminarItem) => {
   const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 
   return (
-    <div className="w-[335px] pt-20 gap-[20px] flex flex-col cursor-pointer">
+    <div className="w-[335px] gap-[20px] flex flex-col cursor-pointer">
       <div className="flex flex-col gap-[4px]">
         <div className="flex flex-row items-center justify-between">
           <div className="heading-3-medium text-black whitespace-pre-line">{seminarTopic}</div>
           <Chip text={`${seminarNum}회차`} className="whitespace-nowrap" />
         </div>
-        <div className="body-1-light" style={{ color: '#7B7E84' }}>강연 주제를 한 줄로 요약하여 적어주세요.</div>
+        <div className="body-1-light" style={{ color: '#7B7E84' }}>
+          강연 주제를 한 줄로 요약하여 적어주세요.
+        </div>
       </div>
       <div className="h-[106px] flex flex-row gap-16">
         <img
@@ -29,7 +31,9 @@ const SeminarListCard = ({ seminar }: SeminarItem) => {
         <div className="h-[68px] flex flex-col gap-8 justify-between text-black">
           <div className="flex flex-row gap-12 align-start">
             <div className="subhead-medium whitespace-nowrap">일정</div>
-            <div className="subhead-light whitespace-nowrap">{date} {time}</div>
+            <div className="subhead-light whitespace-nowrap">
+              {date} {time}
+            </div>
           </div>
           <div className="flex flex-row gap-12 align-start">
             <div className="subhead-medium">장소</div>
@@ -37,6 +41,7 @@ const SeminarListCard = ({ seminar }: SeminarItem) => {
           </div>
         </div>
       </div>
+      <div className="h-0.5 bg-grey-400 w-full" />
     </div>
   );
 };

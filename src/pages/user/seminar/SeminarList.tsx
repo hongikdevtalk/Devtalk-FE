@@ -7,7 +7,6 @@ import { getSeminarList } from '../../../apis/seminarList';
 import type { SeminarListResponse } from '../../../types/SeminarManage/seminarCard.api';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useState } from 'react';
-import SearchResultSpeaker from '../../../components/common/SearchResultSpeaker';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 
 const TAGS = [
@@ -67,17 +66,6 @@ function SeminarHome() {
               <div onClick={() => handleCardClick(seminar.seminarId)} className="px-5 pb-5">
                 <SeminarListCard seminar={seminar} />
               </div>
-
-              <SearchResultSpeaker
-                result={{
-                  seminarId: seminar.seminarId,
-                  seminarNum: seminar.seminarNum,
-                  speakerNames: seminar.speakerNames,
-                  subTitles: seminar.subTitles,
-                  speakerImageUrl: seminar.speakerImageUrl,
-                }}
-                onClose={() => setHamburgerOpen(false)}
-              />
             </div>
           ))}
         </div>

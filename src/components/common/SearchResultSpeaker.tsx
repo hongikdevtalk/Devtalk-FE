@@ -32,8 +32,6 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
           className="flex flex-col cursor-pointer"
           onClick={() => handleNavigate(index)}
         >
-          <div className="h-0.5 bg-grey-400 w-full" />
-
           <div className="flex px-5 pt-5 pb-6 gap-[16px] items-start">
             <img
               className="w-[130px] h-[164px] rounded-[5px] object-cover shrink-0"
@@ -56,9 +54,9 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
               </div>
             </div>
           </div>
+          <div className="h-0.5 bg-grey-400 w-full" />
         </div>
       ))}
-      <div className="h-0.5 bg-grey-400 w-full" />
     </div>
   );
 };

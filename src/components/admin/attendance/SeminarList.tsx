@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useSeminarNums } from '../../../hooks/Applicants/useSeminarNums';
+import QrGenerateButton from './QrGenerateButton';
 
 // 세미나 데이터 타입 정의
 interface SeminarData {
@@ -25,8 +26,9 @@ const ApplicantsList = () => {
       {seminars.map((seminar, index) => (
         <div key={seminar.seminarId}>
           {/* 세미나 제목 */}
-          <div className="cursor-pointer py-20" onClick={() => navigate(`/admin/seminars/applicants/${seminar.seminarId}/attendance`)}>
+          <div className="cursor-pointer py-20 flex items-center justify-between" onClick={() => navigate(`/admin/seminars/applicants/${seminar.seminarId}/attendance`)}>
             <h3 className="text-white heading-2-semibold">{getSeminarTitle(seminar.seminarNum)}</h3>
+            <QrGenerateButton seminarId={seminar.seminarId} />
           </div>
 
           {/* 세미나 사이 구분선 */}

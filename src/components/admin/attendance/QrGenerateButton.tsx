@@ -9,8 +9,8 @@ const QrGenerateButton = ({ seminarId }: QrGenerateButtonProps) => {
 
   return (
     <button
-      style={{ width: 100, height: 20 }}
-      className="bg-[#ADE657] text-black text-xs font-semibold rounded"
+      style={{ width: 100, height: 50 }}
+      className="cursor-pointer bg-[#ADE657] text-black text-m font-semibold rounded"
       onClick={(e) => {
         e.stopPropagation();
         navigate(`/admin/seminars/${seminarId}/qr`);

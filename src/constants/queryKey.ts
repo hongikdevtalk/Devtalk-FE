@@ -10,4 +10,5 @@ export const QUERY_KEYS = {
   ADMIN_SEMINAR_APPLICANTS_DETAIL: 'adminSeminarApplicantsDetail',
   ADMIN_SEMINAR_QUESTIONS: 'adminSeminarQuestions',
   ADMIN_ACCOUNT_LIST: 'adminAccountList',
+  ADMIN_SEMINAR_QR: 'adminSeminarQr',
 };

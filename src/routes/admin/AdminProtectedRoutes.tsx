@@ -10,6 +10,8 @@ import SeminarApplicantsList from '../../pages/admin/seminar-manage/applicants/L
 import SeminarApplicantsDetail from '../../pages/admin/seminar-manage/applicants/Detail';
 import SeminarApplicantsQuestions from '../../pages/admin/seminar-manage/applicants/Questions';
 import Attendance from '../../pages/admin/seminar-live/Attendance';
+import AttendanceDetail from '../../pages/admin/seminar-live/AttendanceDetail';
+import QrCode from '../../pages/admin/seminar-live/QrCode';
 import Accounts from '../../pages/admin/auth-manage/Accounts';
 import HomeExposure from '../../pages/admin/home-manage/HomeExposure';
 import StatisticsRegistration from '../../pages/admin/statistics/Registration';
@@ -32,6 +34,8 @@ export const adminProtectedRoutes = [
       { path: 'seminars/applicants/:id', element: <SeminarApplicantsDetail /> },
       { path: 'seminars/applicants/:id/questions', element: <SeminarApplicantsQuestions /> },
       { path: 'seminar-live/attendance', element: <Attendance /> },
+      { path: 'seminars/applicants/:seminarId/attendance', element: <AttendanceDetail /> },
+      { path: 'seminars/:seminarId/qr', element: <QrCode /> },
       { path: 'admin-accounts', element: <Accounts /> },
       { path: 'statistics/registration', element: <StatisticsRegistration /> },
       { path: 'statistics/views', element: <StatisticsViews /> },

@@ -1,17 +1,37 @@
 import { useParams } from 'react-router-dom';
 import BackButton from '../../../components/Button/BackButton';
 import AttendanceDetailList from '../../../components/admin/attendance/AttendanceDetailList';
-import { useSeminarNums } from '../../../hooks/Applicants/useSeminarNums';
+import { useSeminarApplicantsDetail } from '../../../hooks/Applicants/useSeminarApplicantsDetail';
 
 const AttendanceDetail = () => {
   const { seminarId } = useParams<{ seminarId: string }>();
-  const { data: seminarNumsData } = useSeminarNums();
+  const { data: applicantsData } = useSeminarApplicantsDetail(seminarId!);
 
-  const seminar = seminarNumsData?.result?.find(
-    (item) => item.seminarId === Number(seminarId),
-  );
+  const formatDateKorean = (dateString: string): string => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+    const period = hours >= 12 ? '오후' : '오전';
+    const hour12 = hours % 12 || 12;
+    return `${year}. ${month}. ${day} ${period} ${hour12}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
 
-  const seminarTitle = `제 ${seminar?.seminarNum}회 Devtalk 세미나 출석부`;
+  const attendances =
+    applicantsData?.result?.students?.map((applicant, index) => ({
+      id: index + 1,
+      seminarName: applicant.topic,
+      studentNum: applicant.studentNum,
+      name: applicant.name,
+      contact: applicant.phone,
+      attendanceTime: formatDateKorean(applicant.appliedAt),
+      isAttendance: applicant.attendenceCheck,
+    })) || [];
+
+  const seminarTitle = `제 ${applicantsData?.result?.seminarNum}회 Devtalk 세미나 출석부`;
 
   return (
     <div className="py-11">
@@ -20,7 +40,7 @@ const AttendanceDetail = () => {
         <h1 className="text-white heading-1-bold">{seminarTitle}</h1>
       </div>
       <div className="ml-[21.5px]">
-        <AttendanceDetailList attendances={[]} />
+        <AttendanceDetailList attendances={attendances} />
       </div>
     </div>
   );

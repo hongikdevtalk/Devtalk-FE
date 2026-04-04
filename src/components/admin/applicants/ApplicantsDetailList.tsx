@@ -76,6 +76,7 @@ const ApplicantsDetailList: React.FC<ApplicantsDetailListProps> = ({
       setIsLoading(null);
     }
   };
+
   return (
     <div className="w-full">
       {/* 테이블이 화면보다 클 때 가로/세로 스크롤바 표시 */}

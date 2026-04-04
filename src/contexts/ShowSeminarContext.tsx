@@ -14,6 +14,8 @@ export const ShowSeminarProvider = ({ children }: { children: React.ReactNode })
     seminarNum: null,
     applicantActivate: false,
     liveActivate: false,
+    mainPosterImageUrl: null,
+    mainCards: null,
     isLoading: true,
   });
 

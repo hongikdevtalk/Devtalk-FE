@@ -25,7 +25,12 @@ const menuData = [
         matchPaths: ['/admin/seminars/:id', '/admin/seminars/:id/reviews'],
       },
       { name: '세미나 추가하기', to: '/admin/seminars/add', end: true },
-      { name: '세미나 신청자 관리', to: '/admin/seminars/applicants', end: false },
+      {
+        name: '세미나 신청자 관리',
+        to: '/admin/seminars/applicants',
+        end: true,
+        matchPaths: ['/admin/seminars/applicants/:id', '/admin/seminars/applicants/:id/questions'],
+      },
     ],
   },
   {
@@ -38,7 +43,12 @@ const menuData = [
   },
   {
     title: '세미나 Live 관리',
-    children: [{ name: '출석 관리', to: '/admin/seminar-live/attendance', end: true }],
+    children: [{
+      name: '출석 관리',
+      to: '/admin/seminar-live/attendance',
+      end: true,
+      matchPaths: ['/admin/seminars/applicants/:seminarId/attendance'],
+    }],
   },
   {
     title: '관리자 권한 관리',
@@ -58,7 +68,7 @@ export const Sidebar: React.FC = () => {
     if (!matchPaths) return;
 
     return matchPaths.some((pattern) => {
-      const regexPattern = `^${pattern.replace(/:id/g, '\\d+')}$`;
+      const regexPattern = `^${pattern.replace(/:[a-zA-Z]+/g, '[^/]+')}$`;
       const regex = new RegExp(regexPattern);
       return regex.test(pathname);
     });

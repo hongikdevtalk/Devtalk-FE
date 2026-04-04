@@ -1,5 +1,3 @@
-import emptybox from '../../../assets/icons/components/SeminarApply/emptybox.svg';
-import checkbox from '../../../assets/icons/components/SeminarApply/checkbox.svg';
 
 interface AttendanceItem {
   id: number;
@@ -44,13 +42,9 @@ const AttendanceDetailList: React.FC<AttendanceDetailListProps> = ({ attendances
                   </td>
                 ))}
                 <td className={cellStyle}>
-                  <div className="flex items-center justify-center w-full h-full">
-                    <img
-                      src={item.isAttendance ? checkbox : emptybox}
-                      alt={item.isAttendance ? '출석' : '미출석'}
-                      className="w-6 h-6"
-                    />
-                  </div>
+                  <span className="text-white">
+                    {item.isAttendance ? 'O' : 'X'}
+                  </span>
                 </td>
               </tr>
             ))}

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { Chip } from '../Chip/Chip';
 import download from '../../assets/icons/common/download.svg';
 
-const SeminarDetailCard = ({ id }: { id: number }) => {
+const SeminarDetailCard = ({ id, showDownload = true, showThumbnail = true }: { id: number; showDownload?: boolean; showThumbnail?: boolean }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['seminarDetail', id],
     queryFn: () => getSeminarDetail(id),
@@ -52,20 +52,24 @@ const SeminarDetailCard = ({ id }: { id: number }) => {
 
   return data ? (
     <div className="w-full gap-[20px] flex flex-col transition-all duration-500 ease-out">
-      <div className="relative h-[266px] w-full shrink-0">
-        <img src={thumbnailUrl} alt="seminar" className="h-full w-full object-cover" />
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 39.42%)' }}
-        />
-      </div>
+      {showThumbnail && (
+        <div className="relative h-[266px] w-full shrink-0">
+          <img src={thumbnailUrl} alt="seminar" className="h-full w-full object-cover" />
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(180deg, #FFF 0%, rgba(255, 255, 255, 0.00) 39.42%)' }}
+          />
+        </div>
+      )}
       <div className="w-full flex flex-col gap-[30px] px-[20px]">
         <div className="flex flex-col gap-16">
           <div className="flex flex-row items-center justify-between w-full">
             <Chip text={`${seminarNum}회차`} />
-            <button type="button" onClick={handleDownloadFiles} className="cursor-pointer">
-              <img src={download} alt="발표자료 다운로드" />
-            </button>
+            {showDownload && (
+              <button type="button" onClick={handleDownloadFiles} className="cursor-pointer">
+                <img src={download} alt="발표자료 다운로드" />
+              </button>
+            )}
           </div>
           <div className="heading-2-5-medium text-black">{topic}</div>
         </div>

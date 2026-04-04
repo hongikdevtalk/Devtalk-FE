@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NameSection } from './NameSection';
 import { PhoneSection } from './PhoneSection';
@@ -15,10 +16,12 @@ import chevronleft from '../../assets/icons/common/chevronleft2.svg';
 const ApplyForm = () => {
   const navigate = useNavigate();
   const draft = useApplyDraft();
+  const [isDuplicateChecked, setIsDuplicateChecked] = useState(false);
 
   const isActive =
     !!draft.name.trim() &&
     validateStudentId(draft.studentNum || '') &&
+    isDuplicateChecked &&
     !!draft.phone.trim() &&
     /\S+@\S+\.\S+/.test(draft.email || '') &&
     !!draft.departments[0]?.trim() &&
@@ -34,7 +37,11 @@ const ApplyForm = () => {
     <div className="flex flex-col gap-80">
       <div className="flex flex-col">
         <NameSection value={draft.name} onChange={(v) => draft.setField('name', v)} />
-        <StudentIdSection value={draft.studentNum} onChange={(v) => draft.setField('studentNum', v)} />
+        <StudentIdSection
+          value={draft.studentNum}
+          onChange={(v) => draft.setField('studentNum', v)}
+          onDuplicateCheck={setIsDuplicateChecked}
+        />
         <PhoneSection value={draft.phone} onChange={(v) => draft.setField('phone', v)} />
         <EmailSection value={draft.email} onChange={(v) => draft.setField('email', v)} />
         <DepartmentSection

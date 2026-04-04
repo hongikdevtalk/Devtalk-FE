@@ -31,7 +31,7 @@ export const StudentIdSection = ({ value, onChange }: StudentIdSectionProps) => 
           placeholder="C00000"
           name="student-id"
           autoComplete="off"
-          className={`h-[56px] w-[278px] px-[20px] rounded-[3px] text-grey-700 border-[1.4px] outline-none bg-transparent
+          className={`h-[56px] flex-1 min-w-0 px-[20px] rounded-[3px] text-grey-700 border-[1.4px] outline-none bg-transparent
             ${error ? 'border-status-error' : 'border-grey-700'}`}
         />
         <button

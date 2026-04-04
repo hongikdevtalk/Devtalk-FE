@@ -39,7 +39,7 @@ const ApplyInfo = () => {
   return (
     <div className="flex flex-col items-center mb-64">
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col w-[375px] gap-80 pt-[86px]">
+      <div className="flex flex-col w-[375px] gap-80 pt-[86px] px-5">
         <div className="flex flex-col">
           <div className="flex flex-col gap-32">
             {seminarNum !== null && <Chip text={`${seminarNum}회차`} />}
@@ -55,7 +55,7 @@ const ApplyInfo = () => {
                 </p>
               </div>
               <div className="mt-[30px] h-[2px] self-stretch bg-grey-400" />
-              <p className="heading-3-medium text-black mt-[30px]">세미나 신청을 위해 아래 내용을 작성해주세요.</p>
+              <p className="subhead-1-medium text-black mt-[30px]">세미나 신청을 위해 아래 내용을 작성해주세요.</p>
             </div>
           </div>
           {/* 신청폼 부분 */}

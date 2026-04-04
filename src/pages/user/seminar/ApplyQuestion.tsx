@@ -16,6 +16,7 @@ import type {
 import { getUserSeminar } from '../../../apis/userSeminar/userSeminarApi';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import { mapParticipation, mapInflowPath } from '../../../utils/mapEnums';
+import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
 
 type SeminarSession = {
   sessionId: number;
@@ -34,24 +35,15 @@ const ApplyQuestion = () => {
   const navigate = useNavigate();
   const draft = useApplyDraft();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
-  const [seminarNum] = useState<number | null>(10);
-  const seminarId = useApplyFlow((s) => s.seminarId);
+  const { seminarNum, mainCards, seminarId: contextSeminarId } = useShowSeminar();
+  const flowSeminarId = useApplyFlow((s) => s.seminarId);
+  const seminarId = flowSeminarId ?? contextSeminarId;
+
+  const seminarTitle = mainCards?.card1?.seminarTitle ?? null;
+  const speakers = [mainCards?.card2?.speakerName, mainCards?.card3?.speakerName].filter(Boolean) as string[];
 
   const [sessionIds, setSessionIds] = useState<number[]>([]);
-  const [sessions, setSessions] = useState<SeminarSession[]>([
-    {
-      sessionId: 1,
-      title: '프론트엔드 개발자의 커리어 여정',
-      description: '프론트엔드 개발자로 성장하는 방법에 대해 이야기합니다.',
-      speaker: { speakerId: 1, name: '김개발', organization: '카카오', profileUrl: '', history: '' },
-    },
-    {
-      sessionId: 2,
-      title: '디자인 시스템 구축기',
-      description: '실무에서 디자인 시스템을 구축한 경험을 공유합니다.',
-      speaker: { speakerId: 2, name: '이디자인', organization: '토스', profileUrl: '', history: '' },
-    },
-  ]);
+  const [sessions, setSessions] = useState<SeminarSession[]>([]);
 
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -151,17 +143,19 @@ const ApplyQuestion = () => {
   return (
     <>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col gap-16 mb-[160px] pt-[86px]">
+      <div className="flex flex-col items-center gap-16 mb-[160px] pt-[86px]">
         {/* 세미나 정보 */}
         <div className="flex flex-col w-[375px] px-[20px] gap-32">
           {seminarNum !== null && <Chip text={`${seminarNum}회차`} />}
           <div className="flex flex-col">
-            <p className="heading-3-medium text-black">세미나 제목</p>
+            <p className="heading-3-medium text-black">{seminarTitle ?? '세미나 제목'}</p>
             <p className="body-1-light text-grey-700">강연 주제를 한 줄로 요약하여 적어주세요.</p>
             <div className="flex flex-row items-center gap-[12px] mt-16">
               <p className="subhead-medium text-black">연사</p>
               <p className="subhead-light text-black">
-                {sessions.map((s, i) => `${i + 1}부 ${s.speaker.name} 님`).join(' / ')}
+                {speakers.length > 0
+                  ? speakers.map((name, i) => `${i + 1}부 ${name} 님`).join(' / ')
+                  : '-'}
               </p>
             </div>
             <div className="mt-[30px] h-[2px] self-stretch bg-grey-400" />
@@ -177,6 +171,7 @@ const ApplyQuestion = () => {
                 key={s.sessionId}
                 index={i + 1}
                 title={s.title}
+                oneLineSummary={i === 0 ? mainCards?.card2?.oneLineSummary : mainCards?.card3?.oneLineSummary}
                 value={draft.questions[s.sessionId] ?? ''}
                 onChange={(v) => handleChangeQuestion(s.sessionId, v)}
               />

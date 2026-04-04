@@ -1,16 +1,18 @@
 type SessionQuestionCardProps = {
   index: number;
   title: string;
+  oneLineSummary?: string | null;
   value: string;
   onChange: (value: string) => void;
 };
 
-export const SessionQuestionCard = ({ index, title, value, onChange }: SessionQuestionCardProps) => (
+export const SessionQuestionCard = ({ index, title, oneLineSummary, value, onChange }: SessionQuestionCardProps) => (
   <div className="flex flex-col">
     <div className="flex items-center gap-[12px]">
-      <span className="subhead-medium text-black">{index}부</span>
+      <span className="subhead-medium text-black whitespace-nowrap">{index}부</span>
       <span className="subhead-light text-black">{title}</span>
     </div>
+    {oneLineSummary && <span className="body-1-light text-grey-700 mt-[4px]">{oneLineSummary}</span>}
     <textarea
       value={value}
       onChange={(e) => onChange(e.target.value)}

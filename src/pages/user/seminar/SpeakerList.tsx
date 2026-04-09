@@ -7,16 +7,24 @@ import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useState } from 'react';
 import SearchResultSpeaker from '../../../components/common/SearchResultSpeaker';
 import { getSeminarSession } from '../../../apis/seminarDetail';
-
-const TAGS = [
-  { id: 1, text: '태그1' },
-  { id: 2, text: '태그2' },
-  { id: 3, text: '태그3' },
-];
+import { getPopularTags } from '../../../apis/popularTag';
 
 function SeminarHome() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const { data: popularTagsData } = useQuery({
+    queryKey: ['popularTags'],
+    queryFn: getPopularTags,
+    staleTime: 1000 * 60 * 10,
+  });
+
+  const tags = [
+    ...(popularTagsData?.result?.map((tag: string, index: number) => ({
+      id: index + 1,
+      text: tag,
+    })) || []),
+  ];
 
   const { data, isLoading: isListLoading } = useQuery<SeminarListResponse>({
     queryKey: ['seminarList'],
@@ -51,7 +59,7 @@ function SeminarHome() {
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
       <div className="flex flex-col justify-center px-20 pt-64">
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} tags={TAGS} />
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} tags={tags} />
         {isLoading && <LoadingSpinner />}
 
         <div className="flex flex-col items-center pt-7 ">

@@ -73,7 +73,7 @@ const SeminarDetail = () => {
   return (
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
-      <div className="flex flex-col gap-32 bg-background">
+      <div className="flex flex-col gap-32 bg-background pt-[50px]">
         {seminarId && <SeminarDetailCard key={seminarId} id={seminarId} />}
         <div
           ref={lectureRef}

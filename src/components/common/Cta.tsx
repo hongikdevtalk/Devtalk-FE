@@ -6,7 +6,7 @@ type CtaProps = {
 
 const Cta = ({ bodyText, buttonText, onClick }: CtaProps) => {
   return (
-    <div className="w-[375px] flex flex-col justify-center items-center gap-16 px-20 pt-20 pb-[24px]">
+    <div className="w-full flex flex-col justify-center items-center gap-16 px-20 pt-20 pb-[24px]">
       {bodyText && <div className="body-2-semibold text-grey-100">{bodyText}</div>}
       <button
         onClick={onClick}

@@ -6,7 +6,11 @@
 @import './styles/components.css';
 
 @layer base {
+  html {
+    overflow-x: hidden;
+  }
   body {
     @apply bg-background text-white font-sans;
+    overflow-x: hidden;
   }
 }

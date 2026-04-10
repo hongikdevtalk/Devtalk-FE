@@ -19,7 +19,7 @@ const Header = ({ hamburgerOpen, setHamburgerOpen, isScrolled = true }: HeaderPr
           isScrolled ? 'bg-background shadow-sm shadow-grey-400/20' : 'bg-transparent'
         }`}
       >
-        <div className="flex items-center justify-between w-[375px] h-[34px] px-[20px]">
+        <div className="flex items-center justify-between w-full h-[34px] px-[20px]">
           <img
             src={devlogo2}
             alt="devlogo2"

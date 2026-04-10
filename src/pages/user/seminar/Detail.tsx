@@ -67,6 +67,9 @@ const SeminarDetail = () => {
   // 노출 회차 정보
   const { seminarNum, applicantActivate, liveActivate } = useShowSeminar();
 
+  // 현재 보고 있는 세미나가 현재 노출 세미나인지 확인
+  const isCurrentSeminar = seminarNum !== null && seminarNumber === seminarNum;
+
   return (
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
@@ -125,23 +128,23 @@ const SeminarDetail = () => {
         </div>
       </div>
       <div className="fixed bottom-0">
-        {seminarNum && liveActivate ? (
+        {isCurrentSeminar && liveActivate ? (
           <Cta
             bodyText="지금 바로 입장해 주세요!"
             buttonText={`${seminarNum ?? ''}회차 세미나 입장하기`}
             onClick={() => navigate('/seminar/live/verification')}
-            isActive={true}
           />
-        ) : seminarNum && applicantActivate ? (
+        ) : isCurrentSeminar && applicantActivate ? (
           <Cta
-            bodyText="데브톡에 빠져보세요!"
             buttonText={`${seminarNum ?? ''}회차 세미나 신청하기`}
             onClick={() => navigate('/seminar/apply-info')}
-            isActive={false}
           />
-        ) : (
-          <></>
-        )}
+        ) : !isCurrentSeminar ? (
+          <Cta
+            buttonText="후기 작성하기"
+            onClick={() => navigate('/seminar/review')}
+          />
+        ) : null}
       </div>
       <div className="h-[250px]" />
     </div>

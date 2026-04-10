@@ -127,7 +127,7 @@ const SeminarDetail = () => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0">
+      <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px]">
         {isCurrentSeminar && liveActivate ? (
           <Cta
             bodyText="지금 바로 입장해 주세요!"

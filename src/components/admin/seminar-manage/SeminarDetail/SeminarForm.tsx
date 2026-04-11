@@ -126,6 +126,20 @@ const SeminarForm = ({
           onChange={handleInputChange}
           maxLength={20}
         />
+        <FormField
+          label="부제목"
+          id="subtitle"
+          placeholder="부제목을 입력해주세요."
+          value={data.subtitle}
+          onChange={handleInputChange}
+        />
+        <FormField
+          label="설명"
+          id="description"
+          placeholder="설명을 입력해주세요."
+          value={data.description}
+          onChange={handleInputChange}
+        />
 
         <p className="subhead-1-medium text-white mb-[16px]">발표자료</p>
         <AdminPresentationUpload

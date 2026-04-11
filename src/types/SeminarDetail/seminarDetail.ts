@@ -33,6 +33,15 @@ export interface SeminarSession {
 }
 export type SeminarSessionResponse = CommonResponse<SeminarSession[]>;
 
+//세미나 영상
+export interface SeminarVideo {
+  seminarNum: number;
+  seminarId: number;
+  topic: string;
+  seminarVideoUrl: string;
+}
+export type SeminarVideoResponse = CommonResponse<SeminarVideo>;
+
 //세미나 세부정보 (리뷰)
 export interface SeminarReview {
   reviewId: number;

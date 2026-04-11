@@ -12,6 +12,8 @@ export const mapApiDataToState = (apiData: SeminarDetailData): SeminarDetailStat
     seminarId: apiData.seminarId,
     seminarNum: apiData.seminarNum,
     topic: apiData.topic,
+    subtitle: apiData.subtitle || '',
+    description: apiData.description || '',
     seminarDate: formatIsoToInput(apiData.seminarDate),
     place: apiData.place,
     liveLink: apiData.liveLink,
@@ -47,8 +49,10 @@ export const mapStateToUpdateRequest = (state: SeminarDetailState): UpdateSemina
     seminarDate: formatInputToIso(state.seminarDate),
     place: state.place,
     topic: state.topic,
-    applyStartDate: formatDateToIso(state.applicationStartDate) || '',
-    applyEndDate: formatDateToIso(state.applicationEndDate) || '',
+    subtitle: state.subtitle,
+    description: state.description,
+    applyStartDate: formatDateToIso(state.applicationStartDate) ?? undefined,
+    applyEndDate: formatDateToIso(state.applicationEndDate) ?? undefined,
     liveLink: state.liveLink || null, // 빈 문자열이면 null
     speakers: state.speakers
       .filter((speaker) => speaker.speakerId) // speakerId가 있는 것만
@@ -69,6 +73,8 @@ export const mapStateToAddRequest = (state: SeminarDetailState): AddSeminarReque
     seminarDate: formatInputToIso(state.seminarDate),
     place: state.place,
     topic: state.topic,
+    subtitle: state.subtitle,
+    description: state.description,
     applyStartDate: formatDateToIso(state.applicationStartDate) || '',
     applyEndDate: formatDateToIso(state.applicationEndDate) || '',
     liveLink: state.liveLink || null,

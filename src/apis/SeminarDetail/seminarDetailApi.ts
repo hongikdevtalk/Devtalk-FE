@@ -34,51 +34,38 @@ export const patchSeminarFiles = async (
 ): Promise<EmptyResultResponse> => {
   const { deleteMaterialUrls, speakerIds, thumbnailFile, materials, speakerProfiles } = params;
 
-  // FormData 생성
+  // deleteMaterialUrls, speakerIds는 query param으로 전송
+  const queryParams = new URLSearchParams();
+  deleteMaterialUrls.forEach((url) => queryParams.append('deleteMaterialUrls', url));
+  speakerIds.forEach((id) => queryParams.append('speakerIds', id.toString()));
+  const queryString = queryParams.toString();
+  const url = queryString
+    ? `/admin/seminars/${seminarId}/files?${queryString}`
+    : `/admin/seminars/${seminarId}/files`;
+
+  // thumbnailFile, materials, speakerProfiles는 request body(FormData)로 전송
+  // Content-Type은 Axios가 boundary 포함해서 자동 설정하도록 헤더 미지정
   const formData = new FormData();
 
-  // deleteMaterialUrls 추가
-  if (deleteMaterialUrls.length > 0) {
-    deleteMaterialUrls.forEach((url) => {
-      formData.append('deleteMaterialUrls', url);
-    });
-  }
-
-  // speakerIds 추가
-  if (speakerIds.length > 0) {
-    speakerIds.forEach((id) => {
-      formData.append('speakerIds', id.toString());
-    });
-  }
-
-  // thumbnailFile 추가
   if (thumbnailFile) {
     formData.append('thumbnailFile', thumbnailFile);
   }
 
-  // materials 추가
   if (materials && materials.length > 0) {
     materials.forEach((file) => {
       formData.append('materials', file);
     });
   }
 
-  // speakerProfiles 추가
   if (speakerProfiles && speakerProfiles.length > 0) {
     speakerProfiles.forEach((file) => {
       formData.append('speakerProfiles', file);
     });
   }
 
-  const res = await adminInstance.patch<EmptyResultResponse>(
-    `/admin/seminars/${seminarId}/files`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
+  const res = await adminInstance.patch<EmptyResultResponse>(url, formData, {
+    headers: { 'Content-Type': undefined },
+  });
 
   return res.data;
 };

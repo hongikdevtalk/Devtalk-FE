@@ -16,6 +16,8 @@ export interface SeminarDetailState {
   seminarId?: number;
   seminarNum: number | null;
   topic: string;
+  subtitle: string;
+  description: string;
   seminarDate: string;
   place: string;
   liveLink: string;

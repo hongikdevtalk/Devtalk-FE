@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getSeminarDetail } from '../../apis/seminarDetail';
+import { getSeminarDetail, getSeminarVideo } from '../../apis/seminarDetail';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { formatDate } from '../../utils/formatDate';
 import axios from 'axios';
@@ -23,12 +23,19 @@ const SeminarDetailCard = ({ id, showDownload = true, showThumbnail = true }: { 
     refetchOnMount: 'always',
   });
 
+  const { data: videoData } = useQuery({
+    queryKey: ['seminarVideo', id],
+    queryFn: () => getSeminarVideo(id),
+    enabled: Number.isFinite(id),
+  });
+
   if (isLoading || !data?.result) {
     return <LoadingSpinner />;
   }
 
   const { seminarNum, topic, thumbnailUrl, seminarDate, place, fileUrls } = data?.result || {};
   const formDate = formatDate(seminarDate ?? '');
+  const videoUrl = videoData?.result?.seminarVideoUrl;
 
   const handleDownloadFiles = async () => {
     if (!fileUrls || fileUrls.length === 0) {
@@ -63,7 +70,11 @@ const SeminarDetailCard = ({ id, showDownload = true, showThumbnail = true }: { 
 
   const handleVideoClick = () => {
     setBottomSheetOpen(false);
-    setModalOpen(true);
+    if (videoUrl) {
+      window.open(videoUrl, '_blank');
+    } else {
+      setModalOpen(true);
+    }
   };
 
   return data ? (

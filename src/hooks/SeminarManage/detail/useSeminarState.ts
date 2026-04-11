@@ -22,6 +22,8 @@ const blankData: SeminarDetailState = {
   seminarDate: '',
   place: '',
   topic: '',
+  subtitle: '',
+  description: '',
   liveLink: '',
   thumbnailUrl: null,
   thumbnailFileName: null,

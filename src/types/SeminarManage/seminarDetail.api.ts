@@ -15,6 +15,8 @@ export interface SeminarDetailData {
   seminarId: number;
   seminarNum: number | null;
   topic: string;
+  subtitle: string;
+  description: string;
   seminarDate: string;
   place: string;
   activeStartDate: string;
@@ -35,8 +37,10 @@ export interface UpdateSeminarRequest {
   seminarDate: string;
   place: string;
   topic: string;
-  applyStartDate: string;
-  applyEndDate: string;
+  subtitle: string;
+  description: string;
+  applyStartDate?: string;
+  applyEndDate?: string;
   liveLink: string | null; // 삭제 시 null
   speakers: Array<{
     speakerId: number;

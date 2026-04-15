@@ -2,6 +2,7 @@ import type {
   SeminarDetailResponse,
   SeminarReviewResponse,
   SeminarSessionResponse,
+  SeminarVideoResponse,
 } from '../types/SeminarDetail/seminarDetail';
 import { publicInstance } from './userInstance';
 
@@ -22,5 +23,11 @@ export const getSeminarSession = async (seminarId: number): Promise<SeminarSessi
 //세미나 세부정보 (리뷰)
 export const getSeminarReview = async (seminarId: number): Promise<SeminarReviewResponse> => {
   const res = await publicInstance.get<SeminarReviewResponse>(`/user/seminars/${seminarId}/review`);
+  return res.data;
+};
+
+//세미나 영상
+export const getSeminarVideo = async (seminarId: number): Promise<SeminarVideoResponse> => {
+  const res = await publicInstance.get<SeminarVideoResponse>(`/user/seminars/video/${seminarId}`);
   return res.data;
 };

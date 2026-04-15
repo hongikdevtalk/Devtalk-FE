@@ -203,13 +203,13 @@ const Home = () => {
             <div className="flex flex-col pt-2.5 px-[24px]">
               <p className="text-black heading-3-medium">DevTalk이란?</p>
             </div>
-            <div className="flex flex-col justify-between px-5 pt-2.5 pb-5">
+            <div className="flex flex-col justify-between px-[24px] pt-2.5 pb-5">
               <img
                 src={IntroDevtalk}
                 alt="DevTalk 소개 이미지"
-                className="w-[335px] h-[196px] rounded-8"
+                className="w-full h-[196px] rounded-8 object-cover"
               />
-              <div className="flex flex-col w-[335px] h-[100px] pt-[16px] body-1-medium text-grey-700">
+              <div className="flex flex-col w-full pt-[16px] body-1-medium text-grey-700">
                 <p>2023년부터 지금까지,</p>
                 <p>
                   <span className="text-grey-700 font-bold">

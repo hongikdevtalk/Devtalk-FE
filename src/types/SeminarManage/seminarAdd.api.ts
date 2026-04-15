@@ -4,6 +4,8 @@ export interface AddSeminarRequest {
   seminarDate: string;
   place: string;
   topic: string;
+  subtitle: string;
+  description: string;
   applyStartDate: string;
   applyEndDate: string;
   liveLink: string | null;

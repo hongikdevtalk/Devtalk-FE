@@ -13,6 +13,7 @@ export interface ApplicantData {
   participationType: 'ONLINE' | 'OFFLINE';
   inflowPath: string;
   attendenceCheck: boolean;
+  checkInTime: string | null;
 }
 
 export interface SeminarApplicantsDetailResult {

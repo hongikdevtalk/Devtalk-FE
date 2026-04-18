@@ -27,8 +27,8 @@ const AttendanceDetail = () => {
       studentNum: applicant.studentNum,
       name: applicant.name,
       contact: applicant.phone,
-      attendanceTime: formatDateKorean(applicant.appliedAt),
-      isAttendance: applicant.attendenceCheck,
+      attendanceTime: applicant.checkInTime ? formatDateKorean(applicant.checkInTime) : '-',
+      isAttendance: !!applicant.checkInTime,
     })) || [];
 
   const seminarTitle = `제 ${applicantsData?.result?.seminarNum}회 Devtalk 세미나 출석부`;

@@ -30,17 +30,17 @@ export const useSeminarValidation = (
 
   // ==================== 활성화 날짜 검증 ====================
   const validateActivationDates = useMemo(() => {
-    if (!currentState?.applicationStartDate || !currentState.applicationEndDate) {
+    if (!currentState?.applyStartDate || !currentState.applyEndDate) {
       return { application: '' };
     }
 
-    const { applicationStartDate, applicationEndDate } = currentState;
+    const { applyStartDate, applyEndDate } = currentState;
     const newErrors = { application: '' };
 
     // 신청 기간 검증
-    if (applicationStartDate > applicationEndDate) {
+    if (applyStartDate > applyEndDate) {
       newErrors.application = '※ 시작일은 종료일보다 늦을 수 없습니다.';
-    } else if (applicationStartDate.getTime() === applicationEndDate.getTime()) {
+    } else if (new Date(applyStartDate).getTime() === new Date(applyEndDate).getTime()) {
       newErrors.application = '※ 시작일과 종료일은 같을 수 없습니다.';
     }
 
@@ -61,14 +61,14 @@ export const useSeminarValidation = (
     // 썸네일 검증
     if (mode === 'add' && !pendingFiles.thumbnail) {
       errors.thumbnail = '썸네일 이미지를 업로드해주세요.';
-    } else if (mode === 'edit' && !currentState.thumbnailUrl && !pendingFiles.thumbnail) {
+    } else if (mode === 'edit' && !currentState.thumbnail && !pendingFiles.thumbnail) {
       errors.thumbnail = '썸네일 이미지를 업로드해주세요.';
     }
 
     // 연사 프로필 검증
     currentState.speakers.forEach((speaker, index) => {
       const key = mode === 'add' ? index : (speaker.speakerId ?? index);
-      const hasExistingProfile = !!speaker.profileUrl;
+      const hasExistingProfile = !!speaker.profile;
       const hasPendingProfile = pendingFiles.speakerProfiles.has(key);
 
       // 1부 연사는 필수
@@ -120,14 +120,14 @@ export const useSeminarValidation = (
     const hasThumbnail =
       mode === 'add'
         ? !!pendingFiles.thumbnail
-        : !!currentState.thumbnailUrl || !!pendingFiles.thumbnail;
+        : !!currentState.thumbnail || !!pendingFiles.thumbnail;
     if (!hasThumbnail) {
       errors.push('썸네일 이미지를 업로드해주세요.');
     }
 
     const hasValidSpeaker = speakers.some(
       (speaker) =>
-        speaker.profileUrl ||
+        speaker.profile ||
         speaker.name.trim() ||
         speaker.organization.trim() ||
         speaker.history.trim() ||
@@ -140,7 +140,7 @@ export const useSeminarValidation = (
     } else {
       speakers.forEach((speaker, index) => {
         const key = mode === 'add' ? index : (speaker.speakerId ?? index);
-        const hasProfile = !!speaker.profileUrl || !!pendingFiles.speakerProfiles.get(key);
+        const hasProfile = !!speaker.profile || !!pendingFiles.speakerProfiles.get(key);
 
         // 1부 연사는 필수
         if (index === 0) {

@@ -9,7 +9,7 @@ interface SeminarExProps {
     seminarId: number;
     seminarNum: number;
     seminarTopic: string;
-    summary: string;
+    description?: string;
     speakerNames: string | string[];
     imageUrl?: string;
     isClosed?: boolean;
@@ -21,7 +21,7 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
     seminarId,
     seminarNum,
     seminarTopic,
-    summary,
+    description,
     speakerNames,
     imageUrl,
     isClosed = false,
@@ -58,8 +58,10 @@ export const SeminarExCard = ({ seminar }: SeminarExProps) => {
           </div>
         </div>
         <div className="gap-1">
-          {/* 강연 내용 요약 -> 아직 없음 => 세미나 제목으로 설정해놓음 */}
-          <p className="w-full text-black body-1-light text-[16px]">{summary}</p>
+          {/* 강연 내용 요약 */}
+          <p className="w-full text-black body-1-light text-[16px]">
+            {description || '세미나 설명이 없습니다.'}
+          </p>
         </div>
         {/* 연사 정보 */}
         <div className="flex flex-col gap-1 w-full">

@@ -8,6 +8,7 @@ interface FormFieldProps {
   onPaste?: (e: React.ClipboardEvent<HTMLInputElement>) => void;
   error?: string;
   maxLength?: number;
+  type?: string;
 }
 
 const FormField = ({
@@ -19,12 +20,13 @@ const FormField = ({
   onPaste,
   error,
   maxLength,
+  type,
 }: FormFieldProps) => {
   return (
     <div className="mb-7">
       <label className="block subhead-1-medium text-white mb-[16px]">{label}</label>
       <input
-        type="text"
+        type={type || 'text'}
         id={id}
         name={id}
         className="form-input-base form-input-text"

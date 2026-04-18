@@ -20,3 +20,16 @@ export interface ReviewListData {
 }
 
 export type ReviewListResponse = CommonResponse<ReviewListData>;
+
+export type SeminarReviewRequest = {
+  seminarId: number | string;
+  totalContent: string;
+  score: number;
+};
+
+export interface SeminarReview {
+  reviewId: number;
+  seminarId: number;
+}
+
+export type SeminarReviewResponse = CommonResponse<SeminarReview>;

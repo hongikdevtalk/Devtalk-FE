@@ -62,7 +62,7 @@ export default function Carousel({ children }: { children: ReactNode }) {
 
         {/* 더보기 영역 */}
         <div
-          onClick={() => navigate('/seminar')}
+          onClick={() => navigate('/seminarList')}
           className="flex-shrink-0 flex items-center gap-[6px] px-5 h-[346px] cursor-pointer"
         >
           <span className="heading-3-medium font-medium text-black whitespace-nowrap">더보기</span>

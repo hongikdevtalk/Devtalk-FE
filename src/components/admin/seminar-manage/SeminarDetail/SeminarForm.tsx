@@ -129,16 +129,18 @@ const SeminarForm = ({
         <FormField
           label="부제목"
           id="subtitle"
-          placeholder="부제목을 입력해주세요."
+          placeholder="부제목을 입력해주세요. (30자 이내)"
           value={data.subtitle}
           onChange={handleInputChange}
+          maxLength={30}
         />
         <FormField
-          label="설명"
+          label="한 줄 평"
           id="description"
-          placeholder="설명을 입력해주세요."
+          placeholder="한 줄 평을 입력해주세요. (50자 이내)"
           value={data.description}
           onChange={handleInputChange}
+          maxLength={50}
         />
 
         <p className="subhead-1-medium text-white mb-[16px]">발표자료</p>

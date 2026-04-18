@@ -26,7 +26,7 @@ const LiveVerification = () => {
             localStorage.setItem(STORAGE_KEY.USER_ACCESS_TOKEN, accessToken);
             localStorage.setItem(STORAGE_KEY.USER_REFRESH_TOKEN, refreshToken);
             alert('인증이 완료되었습니다.');
-            navigate('/seminar/live');
+            navigate('/seminar/live', { state: { attendanceTime: new Date().toISOString() } });
           } else {
             setModalOpen(true);
           }

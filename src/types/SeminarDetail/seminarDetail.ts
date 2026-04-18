@@ -7,6 +7,9 @@ export interface SeminarDetail {
   seminarId: number;
   seminarNum: number;
   topic: string;
+  subtitle: string;
+  description: string;
+  seminarTags: string[];
   thumbnailUrl: fileUrl;
   startDate: string;
   endDate: string;

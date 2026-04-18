@@ -8,7 +8,9 @@ export interface SpeakerData {
   history: string;
   sessionTitle: string;
   sessionContent: string;
-  profile: FileData;
+  profile: FileData | null;
+  partTag: string;
+  oneLineSummary: string;
 }
 
 export interface SeminarDetailData {
@@ -24,9 +26,10 @@ export interface SeminarDetailData {
   applyStartDate: string;
   applyEndDate: string;
   liveLink: string;
-  thumbnail: FileData;
+  thumbnail: FileData | null;
   materials: FileData[];
   speakers: SpeakerData[];
+  seminarTags: string[];
 }
 
 export type SeminarDetailResponse = CommonResponse<SeminarDetailData>;
@@ -37,10 +40,11 @@ export interface UpdateSeminarRequest {
   seminarDate: string;
   place: string;
   topic: string;
-  subtitle: string;
-  description: string;
-  applyStartDate?: string;
-  applyEndDate?: string;
+  subtitle: string | null;
+  description: string | null;
+  seminarTags: string[];
+  applyStartDate: string;
+  applyEndDate: string;
   liveLink: string | null; // 삭제 시 null
   speakers: Array<{
     speakerId: number;
@@ -49,6 +53,8 @@ export interface UpdateSeminarRequest {
     history: string;
     sessionTitle: string;
     sessionContent: string;
+    partTag: string;
+    oneLineSummary: string;
   }>;
 }
 

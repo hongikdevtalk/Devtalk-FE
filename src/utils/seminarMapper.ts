@@ -12,13 +12,19 @@ export const mapApiDataToState = (apiData: SeminarDetailData): SeminarDetailStat
     seminarId: apiData.seminarId,
     seminarNum: apiData.seminarNum,
     topic: apiData.topic,
-    subtitle: apiData.subtitle || '',
-    description: apiData.description || '',
+    subtitle: apiData.subtitle ?? '',
+    description: apiData.description ?? '',
     seminarDate: formatIsoToInput(apiData.seminarDate),
     place: apiData.place,
     liveLink: apiData.liveLink,
-    thumbnailUrl: apiData.thumbnail?.fileUrl || null,
-    thumbnailFileName: apiData.thumbnail?.fileName || null,
+    thumbnail: apiData.thumbnail
+      ? {
+          fileUrl: apiData.thumbnail.fileUrl,
+          fileName: apiData.thumbnail.fileName,
+          fileExtension: apiData.thumbnail.fileExtension,
+          fileSize: apiData.thumbnail.fileSize,
+        }
+      : null,
     materials: apiData.materials || [],
     speakers: apiData.speakers.map(
       (apiSpeaker: SpeakerData): SpeakerState => ({
@@ -28,18 +34,21 @@ export const mapApiDataToState = (apiData: SeminarDetailData): SeminarDetailStat
         history: apiSpeaker.history,
         sessionTitle: apiSpeaker.sessionTitle,
         sessionContent: apiSpeaker.sessionContent,
-        profileUrl: apiSpeaker.profile?.fileUrl || null,
-        profileFileName: apiSpeaker.profile?.fileName || null,
+        partTag: apiSpeaker.partTag,
+        oneLineSummary: apiSpeaker.oneLineSummary,
+        profile: apiSpeaker.profile
+          ? {
+              fileUrl: apiSpeaker.profile.fileUrl,
+              fileName: apiSpeaker.profile.fileName,
+              fileExtension: apiSpeaker.profile.fileExtension,
+              fileSize: apiSpeaker.profile.fileSize,
+            }
+          : null,
       })
     ),
-    applicationStartDate:
-      apiData.applyStartDate && apiData.applyStartDate.trim() !== ''
-        ? new Date(apiData.applyStartDate)
-        : null,
-    applicationEndDate:
-      apiData.applyEndDate && apiData.applyEndDate.trim() !== ''
-        ? new Date(apiData.applyEndDate)
-        : null,
+    applyStartDate: apiData.applyStartDate,
+    applyEndDate: apiData.applyEndDate,
+    seminarTags: apiData.seminarTags,
   };
 };
 
@@ -49,11 +58,13 @@ export const mapStateToUpdateRequest = (state: SeminarDetailState): UpdateSemina
     seminarDate: formatInputToIso(state.seminarDate),
     place: state.place,
     topic: state.topic,
-    subtitle: state.subtitle,
-    description: state.description,
-    applyStartDate: formatDateToIso(state.applicationStartDate) ?? undefined,
-    applyEndDate: formatDateToIso(state.applicationEndDate) ?? undefined,
+    subtitle: state.subtitle ?? null,
+    description: state.description ?? null,
+    applyStartDate:
+      (state.applyStartDate ? formatDateToIso(new Date(state.applyStartDate)) : '') ?? '',
+    applyEndDate: (state.applyEndDate ? formatDateToIso(new Date(state.applyEndDate)) : '') ?? '',
     liveLink: state.liveLink || null, // 빈 문자열이면 null
+    seminarTags: state.seminarTags,
     speakers: state.speakers
       .filter((speaker) => speaker.speakerId) // speakerId가 있는 것만
       .map((speaker) => ({
@@ -63,6 +74,16 @@ export const mapStateToUpdateRequest = (state: SeminarDetailState): UpdateSemina
         history: speaker.history,
         sessionTitle: speaker.sessionTitle,
         sessionContent: speaker.sessionContent,
+        partTag: speaker.partTag,
+        oneLineSummary: speaker.oneLineSummary,
+        profile: speaker.profile
+          ? {
+              fileUrl: speaker.profile.fileUrl,
+              fileName: speaker.profile.fileName,
+              fileExtension: speaker.profile.fileExtension,
+              fileSize: speaker.profile.fileSize,
+            }
+          : null,
       })),
   };
 };
@@ -73,27 +94,23 @@ export const mapStateToAddRequest = (state: SeminarDetailState): AddSeminarReque
     seminarDate: formatInputToIso(state.seminarDate),
     place: state.place,
     topic: state.topic,
-    subtitle: state.subtitle,
-    description: state.description,
-    applyStartDate: formatDateToIso(state.applicationStartDate) || '',
-    applyEndDate: formatDateToIso(state.applicationEndDate) || '',
+    subtitle: state.subtitle ?? '',
+    description: state.description ?? '',
+    seminarTags: state.seminarTags || [],
+    applyStartDate:
+      (state.applyStartDate ? formatDateToIso(new Date(state.applyStartDate)) : '') ?? '',
+    applyEndDate: (state.applyEndDate ? formatDateToIso(new Date(state.applyEndDate)) : '') ?? '',
     liveLink: state.liveLink || null,
     speakers: state.speakers
-      .filter((speaker) => {
-        return (
-          speaker.name.trim() !== '' &&
-          speaker.organization.trim() !== '' &&
-          speaker.history.trim() !== '' &&
-          speaker.sessionTitle.trim() !== '' &&
-          speaker.sessionContent.trim() !== ''
-        );
-      })
+      .filter((speaker) => speaker.name.trim() !== '')
       .map((speaker) => ({
         name: speaker.name,
         organization: speaker.organization,
         history: speaker.history,
         sessionTitle: speaker.sessionTitle,
         sessionContent: speaker.sessionContent,
+        partTag: speaker.partTag ?? '',
+        oneLineSummary: speaker.oneLineSummary ?? '',
       })),
   };
 };

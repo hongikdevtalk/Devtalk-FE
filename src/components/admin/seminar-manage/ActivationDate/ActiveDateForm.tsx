@@ -1,15 +1,15 @@
 import DateTimeSelector from './DateTimeSelector';
 
 interface ActiveDateProps {
-  applicationStartDate: Date | null;
-  applicationEndDate: Date | null;
-  onChange: (dateType: 'applicationStartDate' | 'applicationEndDate', newDate: Date | null) => void;
+  applyStartDate: Date | null;
+  applyEndDate: Date | null;
+  onChange: (dateType: 'applyStartDate' | 'applyEndDate', newDate: Date | null) => void;
   applicationDateError?: string;
 }
 
 const ActiveDateForm = ({
-  applicationStartDate,
-  applicationEndDate,
+  applyStartDate,
+  applyEndDate,
   onChange,
   applicationDateError,
 }: ActiveDateProps) => {
@@ -20,14 +20,14 @@ const ActiveDateForm = ({
         <h2 className="heading-2-bold text-white mb-6">세미나 신청 기간</h2>
         <div className="flex flex-col gap-y-9">
           <DateTimeSelector
-            date={applicationStartDate}
-            onDateChange={(newDate) => onChange('applicationStartDate', newDate)}
+            date={applyStartDate}
+            onDateChange={(newDate) => onChange('applyStartDate', newDate)}
           />
           <div className="flex items-center gap-x-3 ml-auto">
             <span className="subhead-1-semibold text-white">~</span>
             <DateTimeSelector
-              date={applicationEndDate}
-              onDateChange={(newDate) => onChange('applicationEndDate', newDate)}
+              date={applyEndDate}
+              onDateChange={(newDate) => onChange('applyEndDate', newDate)}
             />
           </div>
         </div>

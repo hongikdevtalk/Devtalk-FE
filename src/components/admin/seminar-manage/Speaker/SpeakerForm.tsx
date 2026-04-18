@@ -18,9 +18,8 @@ const SpeakerForm = ({ speakers, onChange, updateSpeakerProfile }: SpeakerFormPr
     );
     onChange(updatedSpeakers);
 
-    if (field === 'profileUrl') {
-      const key = speakers[index].speakerId ?? index;
-      updateSpeakerProfile(key, value instanceof File ? value : null);
+    if (field === 'profile' && (value instanceof File || value === null)) {
+      updateSpeakerProfile(index, value instanceof File ? value : null);
     }
   };
 
@@ -33,7 +32,9 @@ const SpeakerForm = ({ speakers, onChange, updateSpeakerProfile }: SpeakerFormPr
             key={index}
             partNumber={index + 1}
             speakerData={speaker}
-            onChange={(field, value) => handleSpeakerChange(index, field, value)}
+            onChange={(field, value) =>
+              handleSpeakerChange(index, field as keyof SpeakerState, value)
+            }
           />
         ))}
       </div>

@@ -13,8 +13,9 @@ const blankSpeakerState: SpeakerState = {
   history: '',
   sessionTitle: '',
   sessionContent: '',
-  profileUrl: null,
-  profileFileName: null,
+  partTag: '',
+  oneLineSummary: '',
+  profile: null,
 };
 
 const blankData: SeminarDetailState = {
@@ -24,13 +25,13 @@ const blankData: SeminarDetailState = {
   topic: '',
   subtitle: '',
   description: '',
+  seminarTags: [],
   liveLink: '',
-  thumbnailUrl: null,
-  thumbnailFileName: null,
+  thumbnail: null,
   materials: [],
   speakers: [blankSpeakerState, blankSpeakerState],
-  applicationStartDate: null,
-  applicationEndDate: null,
+  applyStartDate: null,
+  applyEndDate: null,
 };
 
 export const useSeminarState = (id: string | undefined) => {

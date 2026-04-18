@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getHomeLink } from '../../apis/HomeManage/homeLinkApi';
-import { useQuery, useQueries, keepPreviousData } from '@tanstack/react-query';
+import { useQuery, useQueries } from '@tanstack/react-query';
 import type { SeminarListResponse } from '../../types/SeminarManage/seminarCard.api';
-import { getSeminarSearch } from '../../apis/seminarList';
+import { getSeminarList } from '../../apis/seminarList';
 import SearchResultItem from './SearchResultItem';
 import { getSeminarSession } from '../../apis/seminarDetail';
 import SearchResultSpeaker from './SearchResultSpeaker';
@@ -36,28 +36,19 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
     staleTime: 1000 * 60 * 10,
   });
 
-  const tags = [
-    ...(popularTagsData?.result?.map((tag: string, index: number) => ({
+  const tags =
+    popularTagsData?.result?.map((tag: string, index: number) => ({
       id: index + 1,
       text: tag,
-    })) || []),
-  ];
+    })) || [];
 
-  // const { data: seminarData } = useQuery<SeminarListResponse>({
-  //   queryKey: ['seminarList'],
-  //   queryFn: getSeminarList,
-  //   enabled: isOpen,
-  // });
-
-  // 클라이언트 ID 필요 !!!!!!!
-  const { data: seminarSearchData } = useQuery<SeminarListResponse>({
-    queryKey: ['seminarSearch', searchTerm],
-    queryFn: () => getSeminarSearch(searchTerm, 'devtalk-client-id'),
-    enabled: isOpen && searchTerm.trim().length > 0,
-    placeholderData: keepPreviousData,
+  const { data: seminarData } = useQuery<SeminarListResponse>({
+    queryKey: ['seminarList'],
+    queryFn: getSeminarList,
+    enabled: isOpen,
   });
 
-  const seminarResults = seminarSearchData?.result?.seminarList || [];
+  const seminarResults = seminarData?.result?.seminarList || [];
 
   const detailQueries = useQueries({
     queries: seminarResults.map((seminar) => ({
@@ -68,7 +59,7 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
     })),
   });
 
-  const combinedSeminarResults = seminarResults.map((seminar, index) => {
+  const combinedResults = seminarResults.map((seminar, index) => {
     const detailData = detailQueries[index]?.data;
     const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
 
@@ -80,33 +71,18 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
     };
   });
 
-  // const combinedResults = seminarList.map((seminar, index) => {
-  //   const detailData = detailQueries[index]?.data;
-  //   const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
+  const filteredResults = combinedResults.filter((item) => {
+    if (!searchTerm || !searchTerm.trim()) return false;
+    const term = searchTerm.toLowerCase().trim();
 
-  //   const speakerNames = sessions.map((s: any) => s.speaker.name);
-  //   const subTitles = sessions.map((s: any) => s.title);
-  //   const speakerImageUrl = sessions.map((s: any) => s.speaker?.profileUrl || seminar.imageUrl);
+    const matchesNum = String(item.seminarNum) === term.replace(/[^0-9]/g, '');
+    const matchesTopic = item.seminarTopic.toLowerCase().includes(term);
+    const matchesSpeaker = item.speakerNames.some((name: string) =>
+      name.toLowerCase().includes(term)
+    );
 
-  //   return {
-  //     ...seminar,
-  //     speakerNames,
-  //     subTitles,
-  //     speakerImageUrl,
-  //   };
-  // });
-
-  // const filteredResults = combinedResults.filter((item) => {
-  //   if (!searchTerm || !searchTerm.trim()) return false;
-  //   const term = searchTerm.toLowerCase().trim();
-  //   const matchesNum = String(item.seminarNum) === term.replace(/[^0-9]/g, '');
-  //   const matchesTopic = item.seminarTopic.toLowerCase().includes(term);
-  //   const matchesSpeaker = item.speakerNames.some((name: string) =>
-  //     name.toLowerCase().includes(term)
-  //   );
-
-  //   return matchesNum || matchesTopic || matchesSpeaker;
-  // });
+    return matchesNum || matchesTopic || matchesSpeaker;
+  });
 
   const { data: inquiryLinkData } = useQuery({
     queryKey: ['home', 'inquiryLink'],
@@ -128,10 +104,10 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
       </div>
       {/* 콘텐츠 영역 */}
       <div className="flex-1 w-full overflow-y-auto">
-        {searchTerm.length > 0 ? (
-          combinedSeminarResults.length > 0 ? (
+        {searchTerm.trim().length > 0 ? (
+          filteredResults.length > 0 ? (
             <div className="flex flex-col">
-              {combinedSeminarResults.map((result) => (
+              {filteredResults.map((result) => (
                 <div key={result.seminarId} className="flex flex-col">
                   <SearchResultItem key={result.seminarId} result={result} onClose={_onClose} />
                   <div className="h-0.5 bg-grey-400 w-full" />

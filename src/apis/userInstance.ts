@@ -1,5 +1,17 @@
-import axios, { type AxiosInstance } from 'axios';
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios';
 import { STORAGE_KEY } from '../constants/key';
+import { getClientId } from '../utils/clientId';
+
+// 검색 x-client-id
+const setCommonInterceptors = (instance: AxiosInstance) => {
+  instance.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+      config.headers['X-Client-Id'] = getClientId();
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+};
 
 export const publicInstance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
@@ -25,6 +37,8 @@ userInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+[publicInstance, userInstance, userRefreshInstance].forEach(setCommonInterceptors);
 
 userInstance.interceptors.response.use(
   (response) => response,
@@ -86,7 +100,6 @@ userInstance.interceptors.response.use(
 
     //접근 권한이 없는 경우
     if (error.response.status === 403 && originalRequest._retry) {
-      //홈으로 이동
       window.location.replace('/');
 
       return userInstance(originalRequest);

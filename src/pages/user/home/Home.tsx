@@ -1,37 +1,18 @@
 // Home 페이지
-// 이전 코드들은 필요한 코드들 제외 현재 주석 처리해놓음.
 // Home - Devtalk 소개, 카드리스트(현재, 이전[연사카드]), FAQ 관련, 신청하기 버튼
 
-// import Cta from '../../../components/common/Cta';
 import Footer from '../../../components/common/Footer';
 import Header from '../../../components/common/Header';
-// import SeminarPoster from '../../../components/common/SeminarPoster';
 import IntroDevtalk from '../../../assets/images/introDevtalk.svg';
-// import ReviewCard from '../../../components/common/ReviewCard';
-// import ExSeminar from '../../../assets/images/exSeminar.jpg';
-// import { ButtonExSeminar } from '../../../components/Button/ButtonExSeminar';
-// import Timer from '../../../assets/icons/common/devtalkTimer.png';
-// import Ticket from '../../../assets/icons/common/devtalkTicket.png';
 import { Button } from '../../../components/Button/Button';
 import Carousel from '../../../components/Carousel/Carousel';
 import { SeminarInfoCard } from '../../../components/Carousel/SeminarInfoCard';
 import { SeminarExCard } from '../../../components/Carousel/SeminarExCard';
-// import { LectureCardMain } from '../../../components/LectureCard/LectureCardMain';
-// import { LectureCardSpeaker } from '../../../components/LectureCard/LectureCardSpeaker';
-// import { LectureCardSession } from '../../../components/LectureCard/LectureCardSession';
 import { useNavigate } from 'react-router-dom';
-// import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
-// import InfiniteCarousel from '../../../components/common/InfiniteCarousel';
 import { useEffect, useRef, useState } from 'react';
-// import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
-// import BackgroundVideo from '../../../components/common/BackgroundVideo';
-// import { useHomeReviews } from '../../../hooks/HomeManage/useHomeReview';
-// import ComingSoon from '../../../components/common/ComingSoon';
 import FaqItems from '../../../components/common/FaqItems';
-// import dev from '../../../assets/logos/dev.svg';
 import { useQuery, useQueries } from '@tanstack/react-query';
 import { getSeminarList } from '../../../apis/seminarList';
-// import type { SeminarSessionResponse } from '../../../types/SeminarDetail/seminarDetail';
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import poster from '../../../assets/logos/poster.png';
 import { getShowSeminar } from '../../../apis/ShowSeminar/userShowSeminar';
@@ -40,13 +21,6 @@ const Home = () => {
   const navigate = useNavigate();
   const exSeminarref = useRef<HTMLDivElement | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
-  //const [exVisible, setExVisible] = useState(false);
-  //const [bottomVisible, setBottomVisible] = useState(false);
-  //const [exVisible, setExVisible] = useState(false);
-  //const [bottomVisible, setBottomVisible] = useState(false);
-
-  // const [hideCTA, setHideCTA] = useState(false);
   const { data: seminarResponse } = useQuery({
     queryKey: ['seminarList'],
     queryFn: getSeminarList,
@@ -69,7 +43,6 @@ const Home = () => {
   const sortedSeminars =
     seminarList.length > 0 ? [...seminarList].sort((a, b) => b.seminarNum - a.seminarNum) : [];
   const latestSeminar = sortedSeminars[0];
-  // const pastSeminars = sortedSeminars.slice(1);
 
   const detailQueries = useQueries({
     queries: sortedSeminars.map((seminar) => ({
@@ -103,12 +76,8 @@ const Home = () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.target === exSeminarref.current) {
-            //setExVisible(entry.isIntersecting);
-            //setExVisible(entry.isIntersecting);
           }
           if (entry.target === bottomRef.current) {
-            //setBottomVisible(entry.isIntersecting);
-            //setBottomVisible(entry.isIntersecting);
           }
         });
       },
@@ -139,49 +108,6 @@ const Home = () => {
       scrollContainer?.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  // const hideCTA = exVisible || bottomVisible;
-  // const hideCTA = exVisible || bottomVisible;
-
-  // 노출 회차 정보 -> 원본
-  // const { seminarId, seminarNum, liveActivate, applicantActivate, isLoading } = useShowSeminar();
-
-  // const { data } = useHomeReviews();
-  // 노출 회차 정보 -> 원본
-  // const { seminarId, seminarNum, liveActivate, applicantActivate, isLoading } = useShowSeminar();
-
-  // const { data } = useHomeReviews();
-
-  // let ctaElement = null;
-  // if (applicantActivate && liveActivate && seminarId) {
-  //   ctaElement = (
-  //     <Cta
-  //       bodyText="지금 바로 입장해 주세요!"
-  //       buttonText={`${seminarNum ?? ''}회차 세미나 입장하기`}
-  //       onClick={() => navigate('seminar/live/verification')}
-  //       isActive
-  //     />
-  //   );
-  // } else if (applicantActivate && !liveActivate && seminarId) {
-  //   ctaElement = (z
-  //     <Cta
-  //       bodyText="데브톡에 빠져보세요!"
-  //       buttonText={`${seminarNum ?? ''}회차 세미나 신청하기`}
-  //       onClick={() => navigate('seminar/apply-info')}
-  //       isActive={false}
-  //     />
-  //   );
-  // } else if (!applicantActivate && liveActivate && seminarId) {
-  //   ctaElement = (
-  //     <Cta
-  //       bodyText="지금 바로 입장해 주세요!"
-  //       buttonText={`${seminarNum ?? ''}회차 세미나 입장하기`}
-  //       onClick={() => navigate('seminar/live/verification')}
-  //       isActive
-  //     />
-  //   );
-  // } else {
-  //   ctaElement = null;
-  // }
 
   return (
     <>
@@ -240,8 +166,6 @@ const Home = () => {
                     <SeminarExCard key={item.seminarId} seminar={item} />
                   </div>
                 ))}
-                {/* <LectureCardMain seminarId={seminarId ?? 0} index={0} />
-                <LectureCardSpeaker seminarId={seminarId ?? 0} index={0} /> */}
               </Carousel>
             </div>
           </section>
@@ -303,141 +227,6 @@ const Home = () => {
             <Footer />
           </div>
         </div>
-
-        {/* <div className="w-full max-w-[440px] mx-auto pt-[56px]"></div> */}
-        {/* 배경 비디오 및 세미나 포스터*/}
-        {/* {seminarId ? (
-            <div className="snap-center relative w-[376px] h-[585px] mx-auto pt-[56px]">
-              <BackgroundVideo />
-              <div className="relative z-10">
-                <SeminarPoster />
-              </div>
-            </div>
-          ) : (
-            <div className="snap-center relative w-[376px] h-[585px] mx-auto pt-[56px]">
-              <ComingSoon />
-            </div>
-          )} */}
-
-        {/* CTA */}
-        {/* {!hideCTA && !hamburgerOpen && !isLoading && ctaElement && (
-            <div className="fixed bottom-0 w-full z-50">{ctaElement}</div>
-          )} */}
-
-        {/* 강연 소개 카드 */}
-        {/* {seminarId && (
-            <div className="flex flex-col pt-80 gap-32">
-              <div className="text-black heading-2-semibold px-20 snap-none">
-              <div className="text-black heading-2-semibold px-20 snap-none">
-                다가오는 세미나 강연 소개
-              </div>
-
-              <div className="flex flex-col snap-center pb-[80px]">
-                <Carousel>
-                  <LectureCardMain seminarId={seminarId ?? 0} index={0} />
-                  <LectureCardSpeaker seminarId={seminarId ?? 0} index={0} />
-                  <LectureCardSession seminarId={seminarId ?? 0} index={0} />
-                </Carousel>
-              </div>
-              <div className="flex flex-col snap-center">
-                <Carousel>
-                  <LectureCardMain seminarId={seminarId ?? 0} index={1} />
-                  <LectureCardSpeaker seminarId={seminarId ?? 0} index={1} />
-                  <LectureCardSession seminarId={seminarId ?? 0} index={1} />
-                </Carousel>
-              </div>
-            </div>
-          )} */}
-
-        {/* 학우들의 후기
-          <div className="flex flex-col px-20 gap-16 pb-[200px] snap-none">
-            <p className="text-white heading-2-bold">학우들의 후기</p>
-            <div className="-mx-20">
-              <InfiniteCarousel>
-                {data?.result?.map((review) => (
-                  <ReviewCard
-                    key={review.reviewId}
-                    session={review.seminarNum}
-                    rating={review.rating}
-                    content={review.content}
-                  />
-                ))}
-              </InfiniteCarousel>
-            </div>
-          </div> */}
-
-        {/* 이전 세미나 알아보기 */}
-        {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
-        {/* 이미지 */}
-        {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
-        {/* 이전 세미나 알아보기 */}
-        {/* <div ref={exSeminarref} className="relative w-[375px] h-[196px] snap-center"> */}
-        {/* 이미지 */}
-        {/* <img src={ExSeminar} alt="이전 세미나" className="w-full h-full object-cover" /> */}
-
-        {/* 그라데이션 */}
-        {/* <div
-        {/* 그라데이션 */}
-        {/* <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(180deg, rgba(15, 17, 20, 0.90) 0%, rgba(15, 17, 20, 0.10) 100%)',
-                backdropFilter: 'blur(0.5px)',
-              }}
-            /> */}
-
-        {/* 텍스트 + 버튼 */}
-        {/* <div className="absolute inset-0 flex flex-col items-center justify-center gap-16 text-center">
-              <p className="text-white heading-3-semibold">과거 데브톡 내용이 궁금하다면?</p>
-              <ButtonExSeminar />
-            </div> */}
-        {/* </div> */}
-
-        {/* <div className="h-[120px]"></div> */}
-
-        {/* 신청하기 */}
-        {/* {seminarId && !isLoading && (
-            <>
-              {liveActivate ? (
-                <div className="flex flex-col items-center px-20 pb-[100px] gap-16">
-                  <p className="text-white heading-2-bold">지금 바로 입장하세요!</p>
-                  <div className="flex flex-col w-[335px] gap-28">
-                    <div className="flex flex-col items-center gap-16">
-                      <img
-                        src={Ticket}
-                        alt="티켓 아이콘"
-                        className="w-[240px] h-[153px] object-cover"
-                      />
-                    </div>
-                    <Button
-                      variant="default"
-                      text={`${seminarNum ?? ''}회차 세미나 입장하기`}
-                      onClick={() => navigate('seminar/live/verification')}
-                    />
-                  </div>
-                </div>
-              ) : applicantActivate ? (
-                <div className="flex flex-col items-center px-20 pb-[100px] gap-16">
-                  <p className="text-white heading-2-bold">지금 바로 신청하세요!</p>
-                  <div className="flex flex-col w-[335px] gap-28">
-                    <div className="flex flex-col items-center gap-16">
-                      <img
-                        src={Timer}
-                        alt="타이머 아이콘"
-                        className="w-[240px] h-[153px] object-cover"
-                      />
-                    </div>
-                    <Button
-                      variant="default"
-                      text={`${seminarNum ?? ''}회차 세미나 신청하기`}
-                      onClick={() => navigate('/seminar/apply-info')}
-                    />
-                  </div>
-                </div>
-              ) : null}
-            </>
-          )} */}
       </div>
     </>
   );

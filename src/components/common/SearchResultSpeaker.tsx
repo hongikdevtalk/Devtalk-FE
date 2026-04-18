@@ -9,6 +9,7 @@ interface SearchResultSpeakerProps {
     seminarNum: number;
     speakerNames: string[];
     subTitles: string[];
+    oneLineSummary?: string[];
     speakerImageUrl: string | string[];
   };
   onClose: () => void;
@@ -16,7 +17,14 @@ interface SearchResultSpeakerProps {
 
 const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
   const navigate = useNavigate();
-  const { seminarId, seminarNum, speakerNames = [], subTitles = [], speakerImageUrl = '' } = result;
+  const {
+    seminarId,
+    seminarNum,
+    speakerNames = [],
+    subTitles = [],
+    oneLineSummary = [],
+    speakerImageUrl = '',
+  } = result;
 
   const handleNavigate = (index: number) => {
     onClose();
@@ -50,7 +58,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
               </div>
 
               <div className="text-grey-700 body-1-light text-[16px]">
-                강연 주제를 한 줄로 요약하여 적어주세요.
+                {oneLineSummary?.[index] || '세미나 설명이 없습니다.'}
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import Header from '../../../components/common/Header';
 import SearchBar from '../../../components/common/SearchBar';
 import { useQuery, useQueries } from '@tanstack/react-query';
-import { getSeminarList } from '../../../apis/seminarList';
+import { getSpeakerSearch, getSeminarList } from '../../../apis/seminarList';
 import type { SeminarListResponse } from '../../../types/SeminarManage/seminarCard.api';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useState } from 'react';
@@ -9,7 +9,7 @@ import SearchResultSpeaker from '../../../components/common/SearchResultSpeaker'
 import { getSeminarSession } from '../../../apis/seminarDetail';
 import { getPopularTags } from '../../../apis/popularTag';
 
-function SeminarHome() {
+function SeminarSpeakerHome() {
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -27,11 +27,11 @@ function SeminarHome() {
   ];
 
   const { data, isLoading: isListLoading } = useQuery<SeminarListResponse>({
-    queryKey: ['seminarList'],
-    queryFn: getSeminarList,
+    queryKey: ['speakerSearchData', searchTerm],
+    queryFn: () => (searchTerm.trim() === '' ? getSeminarList() : getSpeakerSearch(searchTerm)),
   });
 
-  const seminarList = data?.result?.seminarList || [];
+  const seminarList = Array.isArray(data?.result) ? data.result : data?.result?.seminarList || [];
 
   const detailQueries = useQueries({
     queries: seminarList.map((seminar) => ({
@@ -42,9 +42,7 @@ function SeminarHome() {
   });
 
   const combinedSeminarList = seminarList.map((seminar, index) => {
-    const detailData = detailQueries[index]?.data;
-    const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
-
+    const sessions = detailQueries[index]?.data?.result || [];
     return {
       ...seminar,
       speakerNames: sessions.map((s: any) => s.speaker.name),
@@ -83,4 +81,4 @@ function SeminarHome() {
   );
 }
 
-export default SeminarHome;
+export default SeminarSpeakerHome;

@@ -8,8 +8,15 @@ export interface SpeakerState {
   history: string;
   sessionTitle: string;
   sessionContent: string;
-  profileUrl: string | null;
-  profileFileName?: string | null;
+  partTag: string;
+  oneLineSummary: string;
+  profile: {
+    fileName?: string | null;
+    fileExtension?: string;
+    fileSize?: number;
+    fileUrl: string | null;
+    file?: File | null;
+  } | null;
 }
 
 export interface SeminarDetailState {
@@ -20,13 +27,18 @@ export interface SeminarDetailState {
   description: string;
   seminarDate: string;
   place: string;
+  applyStartDate: string | null;
+  applyEndDate: string | null;
   liveLink: string;
-  thumbnailUrl: string | null;
-  thumbnailFileName?: string | null;
+  thumbnail: {
+    fileUrl: string | null;
+    fileName?: string | null;
+    fileExtension?: string;
+    fileSize?: number;
+  } | null;
   materials: FileData[];
   speakers: SpeakerState[];
-  applicationStartDate: Date | null;
-  applicationEndDate: Date | null;
+  seminarTags: string[];
 }
 
 export interface FormErrors {

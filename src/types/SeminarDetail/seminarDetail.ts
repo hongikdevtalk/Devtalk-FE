@@ -7,6 +7,9 @@ export interface SeminarDetail {
   seminarId: number;
   seminarNum: number;
   topic: string;
+  subtitle: string;
+  description: string;
+  seminarTags: string[];
   thumbnailUrl: fileUrl;
   startDate: string;
   endDate: string;
@@ -28,8 +31,14 @@ export interface SeminarSession {
   sessionId: number;
   title: string;
   description: string;
-  speaker: SessionSpeaker;
-  keywords: string[];
+  speaker: {
+    name: string;
+    organization: string;
+    history: string;
+    profileUrl: string;
+    speakerId: number;
+    speakerTags: string[];
+  };
 }
 export type SeminarSessionResponse = CommonResponse<SeminarSession[]>;
 

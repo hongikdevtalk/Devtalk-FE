@@ -1,39 +1,28 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts';
-import { MOCK_POPULAR_KEYWORDS } from './MockSearch';
 import DateRange from './tabs/DateRange';
-// import { getPopularKeywords } from '../../../apis/Applicants/seminarStatisticsApi';
-
-interface KeywordSearchCount {
-  keyword: string;
-  count: number;
-}
+import { getPopularKeywords } from '../../../apis/Applicants/seminarStatisticsApi';
+import type {
+  KeywordSearchCount,
+  PopularKeywordsResult,
+} from '../../../types/Applicants/seminarStatistics.api';
 
 const PopularKeywordsSearch = () => {
-  const [keywordData, setKeywordData] = useState<KeywordSearchCount[]>(MOCK_POPULAR_KEYWORDS);
+  const [keywordData, setKeywordData] = useState<KeywordSearchCount[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // API 전용 로직
-  // const fetchKeywords = useCallback(async (start?: string, end?: string) => {
-  //   setIsLoading(true);
-  //   try {
-  //     const res = await getPopularKeywords(start, end);
-  //     if (res && res.isSuccess) {
-  //       setKeywordData(res.result as unknown as KeywordSearchCount[]);
-  //     }
-  //   } catch (err) {
-  //     console.error('검색어 데이터 로딩 실패', err);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }, []);
-
-  // mockdata 전용
-  const fetchKeywords = useCallback(async (start?: string, end?: string) => {
+  const fetchKeywords = useCallback(async (from?: string, to?: string) => {
     setIsLoading(true);
+
+    const cleanFrom = from?.split('T')[0];
+    const cleanTo = to?.split('T')[0];
+
     try {
-      setKeywordData(MOCK_POPULAR_KEYWORDS);
-      console.log(`Mock 검색어 로드 완료: ${start || '전체'} ~ ${end || '전체'}`);
+      const res = await getPopularKeywords(cleanFrom, cleanTo);
+      if (res && res.isSuccess && res.result) {
+        const sortedData = res.result as unknown as PopularKeywordsResult;
+        setKeywordData(sortedData.keywords);
+      }
     } catch (err) {
       console.error('검색어 데이터 로딩 실패', err);
     } finally {
@@ -41,13 +30,37 @@ const PopularKeywordsSearch = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchKeywords();
-  }, [fetchKeywords]);
+  const getInitialValues = () => {
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
 
-  const handleApplyDate = (startDate: string, endDate: string) => {
-    fetchKeywords(startDate, endDate);
+    const formatToUI = (d: Date) => ({
+      years: String(d.getFullYear()),
+      months: String(d.getMonth() + 1).padStart(2, '0'),
+      days: String(d.getDate()).padStart(2, '0'),
+    });
+
+    return {
+      start: formatToUI(lastWeek),
+      end: formatToUI(today),
+    };
   };
+
+  const initialValues = getInitialValues();
+  const availableDateStrings = Array.isArray(keywordData)
+    ? keywordData.map((item) => item.date)
+    : [];
+
+  useEffect(() => {
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+    fetchKeywords(formatDate(lastWeek), formatDate(today));
+  }, [fetchKeywords]);
 
   return (
     <div className="flex flex-col items-center w-full bg-black p-10">
@@ -61,7 +74,7 @@ const PopularKeywordsSearch = () => {
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={keywordData}
+                  data={Array.isArray(keywordData) ? keywordData : []}
                   margin={{ top: 20, right: 0, left: 0, bottom: 0 }}
                   barCategoryGap={30}
                 >
@@ -75,9 +88,9 @@ const PopularKeywordsSearch = () => {
 
                   <YAxis hide domain={[0, 60]} />
 
-                  <Bar dataKey="count" fill="#A3E635" radius={[4, 4, 0, 0]} barSize={40}>
+                  <Bar dataKey="searchCount" fill="#A3E635" radius={[4, 4, 0, 0]} barSize={40}>
                     <LabelList
-                      dataKey="count"
+                      dataKey="searchCount"
                       position="top"
                       fontSize={14}
                       fontWeight="bold"
@@ -92,7 +105,12 @@ const PopularKeywordsSearch = () => {
         </div>
 
         <div className="w-full mt-10 flex items-center justify-between px-4">
-          <DateRange onApply={handleApplyDate} />
+          <DateRange
+            availableDates={availableDateStrings}
+            initialStart={initialValues.start}
+            initialEnd={initialValues.end}
+            onApply={(from, to) => fetchKeywords(from, to)}
+          />
         </div>
       </div>
     </div>

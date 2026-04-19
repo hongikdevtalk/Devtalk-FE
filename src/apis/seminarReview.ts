@@ -2,12 +2,13 @@ import type { SeminarReviewRequest, SeminarReviewResponse } from '../types/semin
 import { userInstance } from './userInstance';
 
 export const postSeminarReview = async ({
-  review,
+  seminarId,
+  totalContent,
   score,
 }: SeminarReviewRequest): Promise<SeminarReviewResponse> => {
-  const res = await userInstance.post<SeminarReviewResponse>('/user/live/review', {
-    review,
-    score,
-  });
+  const res = await userInstance.post<SeminarReviewResponse>(
+    `/archive/seminars/${seminarId}/reviews`,
+    { totalContent, score }
+  );
   return res.data;
 };

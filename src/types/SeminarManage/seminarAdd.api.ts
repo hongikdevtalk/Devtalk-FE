@@ -6,6 +6,7 @@ export interface AddSeminarRequest {
   topic: string;
   subtitle: string;
   description: string;
+  seminarTags: string[];
   applyStartDate: string;
   applyEndDate: string;
   liveLink: string | null;
@@ -15,5 +16,8 @@ export interface AddSeminarRequest {
     history: string;
     sessionTitle: string;
     sessionContent: string;
+    partTag: string;
+    oneLineSummary: string;
+    speakerTags: string[];
   }>;
 }

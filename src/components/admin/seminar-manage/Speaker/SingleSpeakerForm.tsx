@@ -16,12 +16,16 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      onChange('profileUrl', file as unknown as any);
+      onChange('profile', {
+        fileName: file.name,
+        file: file,
+        fileUrl: URL.createObjectURL(file),
+      } as any);
     }
   };
 
   const handleFileRemove = () => {
-    onChange('profileUrl', null);
+    onChange('profile', null);
   };
 
   return (
@@ -39,11 +43,11 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
               onChange={handleFileChange}
               className="hidden"
             />
-            {speakerData.profileUrl ? (
+            {speakerData.profile?.fileUrl || (speakerData.profile as any) instanceof File ? (
               <div className="flex items-center justify-between w-full">
                 <span className="body-1-semibold text-grey-300">
-                  {(speakerData as any).profileUrl?.name ||
-                    speakerData.profileFileName ||
+                  {(speakerData.profile as any)?.name ||
+                    speakerData.profile?.fileName ||
                     '첨부된 이미지'}
                 </span>
                 <button type="button" onClick={handleFileRemove} className="cursor-pointer">
@@ -88,7 +92,7 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
           <textarea
             id={`organization-${partNumber}`}
             name="organization"
-            value={speakerData.organization}
+            value={speakerData.organization ?? ''}
             onChange={handleInputChange}
             rows={4}
             placeholder="소속을 입력해주세요."
@@ -104,7 +108,7 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
           <textarea
             id={`history-${partNumber}`}
             name="history"
-            value={speakerData.history}
+            value={speakerData.history ?? ''}
             onChange={handleInputChange}
             rows={4}
             placeholder="이력을 입력해주세요."
@@ -120,7 +124,7 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
           <textarea
             id={`sessionTitle-${partNumber}`}
             name="sessionTitle"
-            value={speakerData.sessionTitle}
+            value={speakerData.sessionTitle ?? ''}
             onChange={handleInputChange}
             rows={4}
             placeholder="강연 제목을 입력해주세요."
@@ -136,10 +140,40 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
           <textarea
             id={`sessionContent-${partNumber}`}
             name="sessionContent"
-            value={speakerData.sessionContent}
+            value={speakerData.sessionContent ?? ''}
             onChange={handleInputChange}
             rows={10}
             placeholder={`강연 내용을 입력해주세요. 강조하고 싶은 텍스트 앞뒤에 %를 입력하면 강조처리 됩니다.\n(예: %LLM은 어쩌다 이렇게 똑똑해졌을까요?%)`}
+            className="form-input-base form-input-textarea"
+          />
+        </div>
+
+        <div className="grid grid-cols-[120px_1fr] items-center gap-4">
+          <label htmlFor={`oneLineSummary-${partNumber}`} className="subhead-1-medium text-center">
+            연사 한 줄 요약
+          </label>
+          <textarea
+            id={`oneLineSummary-${partNumber}`}
+            name="oneLineSummary"
+            value={speakerData.oneLineSummary ?? ''}
+            onChange={handleInputChange}
+            rows={2}
+            placeholder={`연사 한 줄 요약을 입력해주세요.`}
+            className="form-input-base form-input-textarea"
+          />
+        </div>
+
+        <div className="grid grid-cols-[120px_1fr] items-center gap-4">
+          <label htmlFor={`description-${partNumber}`} className="subhead-1-medium text-center">
+            세션 태그 (3개)
+          </label>
+          <textarea
+            id={`partTag-${partNumber}`}
+            name="partTag"
+            value={speakerData.partTag ?? ''}
+            onChange={handleInputChange}
+            rows={3}
+            placeholder={`세션 태그 3개를 입력해주세요. (예: 10회차, AI, 보안)`}
             className="form-input-base form-input-textarea"
           />
         </div>

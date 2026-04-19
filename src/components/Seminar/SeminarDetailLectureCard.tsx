@@ -20,8 +20,8 @@ const SeminarDetailLectureCard = ({
   });
 
   const session = data?.result?.[index];
-
-  const { title, description, speaker, keywords } = session || {};
+  const { title, description, speaker } = session || {};
+  const speakerTags = speaker?.speakerTags || [];
 
   const navigate = useNavigate();
 
@@ -70,7 +70,9 @@ const SeminarDetailLectureCard = ({
         <div className="mt-16 w-full">
           <SessionTagList
             tags={
-              keywords && keywords.length > 0 ? keywords.slice(0, 3) : ['태그1', '태그2', '태그3']
+              Array.isArray(speakerTags) && speakerTags.length > 0
+                ? speakerTags.slice(0, 3)
+                : ['태그1', '태그2', '태그3']
             }
           />
         </div>

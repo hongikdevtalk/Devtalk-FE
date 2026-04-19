@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Chip } from '../../../components/Chip/Chip';
 import BackButton from '../../../components/Button/BackButton';
 import { useShowSeminar } from '../../../contexts/ShowSeminarContext';
-import { getSeminarSession } from '../../../apis/seminarDetail';
+import { getSeminarSession, getSeminarDetail } from '../../../apis/seminarDetail';
 import { useSeminarAuth } from '../../../hooks/SeminarLive/useSeminarAuth';
 import ReviewModal from '../../../components/Modal/ReviewAlertModal';
 
@@ -54,15 +54,21 @@ const Review = () => {
   };
 
   const { data: sessionData } = useQuery({
-    queryKey: ['seminarDetail', seminarId],
+    queryKey: ['seminarSession', seminarId],
     queryFn: () => getSeminarSession(seminarId!),
+    enabled: !!seminarId,
+  });
+
+  const { data: detailData } = useQuery({
+    queryKey: ['seminarDetail', seminarId],
+    queryFn: () => getSeminarDetail(seminarId!),
     enabled: !!seminarId,
   });
 
   const sessions = Array.isArray(sessionData?.result) ? sessionData.result : [];
   const speakerNames = sessions.map((s: any) => s.speaker.name).join(' / ');
   const seminarTitle = sessions.length > 0 ? sessions[0].title : '세미나 제목';
-  // const seminarSummary = sessions.length > 0 ? `${sessions[0].speaker.name} 님의 강연입니다.` : '강연 요약 정보가 없습니다.';
+  const description = detailData?.result?.description || '세미나 설명이 없습니다.';
 
   //별점
   const [score, setScore] = useState(0);
@@ -98,9 +104,10 @@ const Review = () => {
 
   //리뷰 제출 함수
   function handleSubmit() {
-    if (isPending || !isAllFilled) return;
+    if (isPending || !isAllFilled || !seminarId) return;
     mutate({
-      review,
+      seminarId,
+      totalContent: review,
       score,
     });
   }
@@ -120,16 +127,13 @@ const Review = () => {
       <div className="w-full flex flex-col justify-center pt-15">
         <div className="w-[384px] flex flex-col items-start justify-center">
           <div className="self-stretch px-5 py-7 inline-flex flex-col justify-center items-start gap-4 overflow-hidden">
-            <div className="px-2.5 py-1.5 bg-gray-200 rounded-[5px] inline-flex justify-center items-center gap-2.5">
-              <div className="justify-start text-grey-700 body-1-medium">
-                <Chip text={`${seminarNum}회차`} />
-              </div>
+            <div className="justify-start text-grey-700 body-1-medium pb-4">
+              <Chip text={`${seminarNum}회차`} />
             </div>
             <div className="self-stretch flex flex-col justify-start items-start gap-1">
               <div className="self-stretch text-black heading-3-medium">{seminarTitle}</div>
-              {/* 요약본 추가 필요 */}
               <div className="self-stretch text-grey-700 body-1-light text-[16px] leading-5">
-                강연한 내용을 한 줄로 요약해주세요.
+                {description}
               </div>
             </div>
 

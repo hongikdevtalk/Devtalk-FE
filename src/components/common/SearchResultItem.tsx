@@ -11,6 +11,7 @@ interface SearchResultItemProps {
     seminarNum: number;
     seminarDate: string;
     place: string;
+    description?: string;
     imageUrl?: string;
   };
   onClose: () => void;
@@ -18,7 +19,7 @@ interface SearchResultItemProps {
 
 const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
   const navigate = useNavigate();
-  const { seminarId, seminarNum, seminarTopic, seminarDate, place, imageUrl } = result;
+  const { seminarId, seminarNum, seminarTopic, seminarDate, place, description, imageUrl } = result;
 
   const handleNavigate = () => {
     onClose();
@@ -35,9 +36,8 @@ const SearchResultItem = ({ result, onClose }: SearchResultItemProps) => {
           </div>
           <Chip text={`${seminarNum}회차`} />
         </div>
-        {/* 요약본이 아직 없음 */}
         <p className="text-grey-700 body-1-light text-[16px]">
-          강연 주제를 한 줄로 요약하여 적어주세요.
+          {description || '세미나 설명이 없습니다.'}
         </p>
 
         <div className="flex justify-start items-start mt-[16px] gap-16">

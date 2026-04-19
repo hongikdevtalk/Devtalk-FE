@@ -3,33 +3,41 @@ import Header from '../../../components/common/Header';
 import SeminarListCard from '../../../components/Seminar/SeminarListCard';
 import SearchBar from '../../../components/common/SearchBar';
 import { useQuery, useQueries } from '@tanstack/react-query';
-import { getSeminarList } from '../../../apis/seminarList';
+import { getSeminarSearch, getSeminarList } from '../../../apis/seminarList';
 import type { SeminarListResponse } from '../../../types/SeminarManage/seminarCard.api';
 import LoadingSpinner from '../../../components/common/LoadingSpinner';
 import { useState } from 'react';
 import { getSeminarSession } from '../../../apis/seminarDetail';
-
-const TAGS = [
-  { id: 1, text: '태그1' },
-  { id: 2, text: '태그2' },
-  { id: 3, text: '태그3' },
-];
+import { getPopularTags } from '../../../apis/popularTag';
 
 function SeminarHome() {
   const navigate = useNavigate();
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const { data: popularTagsData } = useQuery({
+    queryKey: ['popularTags'],
+    queryFn: getPopularTags,
+    staleTime: 1000 * 60 * 10,
+  });
+
+  const tags = [
+    ...(popularTagsData?.result?.map((session: any, index: number) => ({
+      id: index + 1,
+      text: session.title,
+    })) || []),
+  ];
+
   const { data, isLoading: isListLoading } = useQuery<SeminarListResponse>({
-    queryKey: ['seminarList'],
-    queryFn: getSeminarList,
+    queryKey: ['seminarList', searchTerm],
+    queryFn: () => (searchTerm.trim() === '' ? getSeminarList() : getSeminarSearch(searchTerm)),
   });
 
   const handleCardClick = (id: number) => {
     navigate(`/seminar/${id}`);
   };
 
-  const seminarList = data?.result?.seminarList || [];
+  const seminarList = Array.isArray(data?.result) ? data.result : data?.result?.seminarList || [];
 
   const detailQueries = useQueries({
     queries: seminarList.map((seminar) => ({
@@ -40,9 +48,7 @@ function SeminarHome() {
   });
 
   const combinedSeminarList = seminarList.map((seminar, index) => {
-    const detailData = detailQueries[index]?.data;
-    const sessions = Array.isArray(detailData?.result) ? detailData.result : [];
-
+    const sessions = detailQueries[index]?.data?.result || [];
     return {
       ...seminar,
       speakerNames: sessions.map((s: any) => s.speaker.name),
@@ -57,7 +63,7 @@ function SeminarHome() {
     <div>
       <Header hamburgerOpen={hamburgerOpen} setHamburgerOpen={setHamburgerOpen} />
       <div className="flex flex-col justify-center px-20 pt-64">
-        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} tags={TAGS} />
+        <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} tags={tags} />
         {isLoading && <LoadingSpinner />}
 
         <div className="flex flex-col items-center pt-7 ">

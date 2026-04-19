@@ -24,10 +24,20 @@ export interface RegistrationResult {
 export interface KeywordSearchCount {
   date: string;
   keyword: string;
-  count: number;
+  searchCount: number;
+}
+
+export interface PopularKeywordsResult {
+  totalSearchCount: number;
+  keywords: KeywordSearchCount[];
 }
 
 export interface ViewCountItem {
   date: string;
-  count: number;
+  viewCount: number;
+}
+
+export interface ViewStatisticsResult {
+  totalviewcount: number;
+  viewPoints: ViewCountItem[];
 }

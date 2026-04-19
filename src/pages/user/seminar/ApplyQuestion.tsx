@@ -4,7 +4,7 @@ import { SessionQuestionCard } from '../../../components/SeminarApply/SessionQue
 import chevronleft from '../../../assets/icons/common/chevronleft2.svg';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApplySuccessModal from '../../../components/Modal/ApplySuccessModal';
+import Modal from '../../../components/Modal/Modal';
 import ApplyAlertModal from '../../../components/Modal/ApplyAlertModal';
 import { useApplyDraft } from '../../../stores/useApplyDraft';
 import { useApplyFlow } from '../../../stores/useApplyFlow';
@@ -48,7 +48,6 @@ const ApplyQuestion = () => {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [successType, setSuccessType] = useState<'online' | 'offline' | null>(null);
 
   // 해당 세미나의 세션 id 리스트 (질문 저장용 키)
   useEffect(() => {
@@ -98,10 +97,6 @@ const ApplyQuestion = () => {
     // 한국어 라벨 → 백엔드 enum 매핑 (요청 직전에만)
     const participationEnum = mapParticipation(draft.participationType);
     const inflowEnum = mapInflowPath(draft.inflowPath || '');
-
-    const nextSuccessType: 'online' | 'offline' =
-      participationEnum === 'ONLINE' ? 'online' : 'offline';
-    setSuccessType(nextSuccessType);
 
     const body: SeminarApplyRequest = {
       studentNum: draft.studentNum,
@@ -202,10 +197,14 @@ const ApplyQuestion = () => {
         </button>
       </div>
 
-      <ApplySuccessModal
+      <Modal
         open={openSuccess}
-        onClose={() => setOpenSuccess(false)}
-        type={successType ?? 'offline'}
+        title="신청 완료"
+        body="신청 완료되었습니다. 신청 확인 및 세미나 정보는 메일에서 확인해주세요"
+        onClose={() => {
+          setOpenSuccess(false);
+          navigate('/');
+        }}
       />
       <ApplyAlertModal open={openAlert} onClose={() => setOpenAlert(false)} />
     </>

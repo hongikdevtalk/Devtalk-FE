@@ -63,10 +63,10 @@ export const mapStateToUpdateRequest = (state: SeminarDetailState): UpdateSemina
     applyStartDate:
       (state.applyStartDate ? formatDateToIso(new Date(state.applyStartDate)) : '') ?? '',
     applyEndDate: (state.applyEndDate ? formatDateToIso(new Date(state.applyEndDate)) : '') ?? '',
-    liveLink: state.liveLink || null, // 빈 문자열이면 null
+    liveLink: state.liveLink || null,
     seminarTags: state.seminarTags,
     speakers: state.speakers
-      .filter((speaker) => speaker.speakerId) // speakerId가 있는 것만
+      .filter((speaker) => speaker.speakerId)
       .map((speaker) => ({
         speakerId: speaker.speakerId!,
         name: speaker.name,
@@ -74,8 +74,15 @@ export const mapStateToUpdateRequest = (state: SeminarDetailState): UpdateSemina
         history: speaker.history,
         sessionTitle: speaker.sessionTitle,
         sessionContent: speaker.sessionContent,
-        partTag: speaker.partTag,
+        partTag: speaker.partTag || '',
         oneLineSummary: speaker.oneLineSummary,
+        speakerTags:
+          typeof speaker.partTag === 'string'
+            ? speaker.partTag
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter(Boolean)
+            : [],
         profile: speaker.profile
           ? {
               fileUrl: speaker.profile.fileUrl,
@@ -111,6 +118,13 @@ export const mapStateToAddRequest = (state: SeminarDetailState): AddSeminarReque
         sessionContent: speaker.sessionContent,
         partTag: speaker.partTag ?? '',
         oneLineSummary: speaker.oneLineSummary ?? '',
+        speakerTags:
+          typeof speaker.partTag === 'string'
+            ? speaker.partTag
+                .split(',')
+                .map((tag) => tag.trim())
+                .filter((tag) => tag !== '')
+            : [],
       })),
   };
 };

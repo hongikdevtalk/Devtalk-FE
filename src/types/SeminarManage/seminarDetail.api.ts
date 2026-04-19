@@ -55,6 +55,7 @@ export interface UpdateSeminarRequest {
     sessionContent: string;
     partTag: string;
     oneLineSummary: string;
+    speakerTags: string[];
   }>;
 }
 

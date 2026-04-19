@@ -22,9 +22,9 @@ function SeminarHome() {
   });
 
   const tags = [
-    ...(popularTagsData?.result?.map((tag: string, index: number) => ({
+    ...(popularTagsData?.result?.map((session: any, index: number) => ({
       id: index + 1,
-      text: tag,
+      text: session.title,
     })) || []),
   ];
 

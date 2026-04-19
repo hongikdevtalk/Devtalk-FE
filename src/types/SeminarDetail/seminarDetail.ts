@@ -31,8 +31,14 @@ export interface SeminarSession {
   sessionId: number;
   title: string;
   description: string;
-  speaker: SessionSpeaker;
-  keywords: string[];
+  speaker: {
+    name: string;
+    organization: string;
+    history: string;
+    profileUrl: string;
+    speakerId: number;
+    speakerTags: string[];
+  };
 }
 export type SeminarSessionResponse = CommonResponse<SeminarSession[]>;
 

@@ -15,6 +15,7 @@ export interface SpeakerState {
     fileExtension?: string;
     fileSize?: number;
     fileUrl: string | null;
+    file?: File | null;
   } | null;
 }
 

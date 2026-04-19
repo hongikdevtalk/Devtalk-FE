@@ -63,9 +63,7 @@ export const patchSeminarFiles = async (
     });
   }
 
-  const res = await adminInstance.patch<EmptyResultResponse>(url, formData, {
-    headers: { 'Content-Type': undefined },
-  });
+  const res = await adminInstance.patch<EmptyResultResponse>(url, formData);
 
   return res.data;
 };

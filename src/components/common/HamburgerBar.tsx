@@ -36,11 +36,12 @@ const HamburgerBar = ({ isOpen, onClose: _onClose }: HamburgerBarProps) => {
     staleTime: 1000 * 60 * 10,
   });
 
-  const tags =
-    popularTagsData?.result?.map((tag: string, index: number) => ({
+  const tags = [
+    ...(popularTagsData?.result?.map((session: any, index: number) => ({
       id: index + 1,
-      text: tag,
-    })) || [];
+      text: session.title,
+    })) || []),
+  ];
 
   const { data: seminarData } = useQuery<SeminarListResponse>({
     queryKey: ['seminarList'],

@@ -16,5 +16,8 @@ export interface AddSeminarRequest {
     history: string;
     sessionTitle: string;
     sessionContent: string;
+    partTag: string;
+    oneLineSummary: string;
+    speakerTags: string[];
   }>;
 }

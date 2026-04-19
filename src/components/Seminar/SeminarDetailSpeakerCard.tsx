@@ -21,9 +21,9 @@ const SeminarDetailSpeakerCard = ({
   });
 
   const session = data?.result?.[index];
-  const { title, description, speaker, keywords } = session || {};
+  const { title, description, speaker } = session || {};
+  const speakerTags = speaker?.speakerTags || [];
 
-  // %~% 텍스트 <span>으로 변환
   const highlightDescription = (text: string) => {
     return text.replace(/%([^%]+)%/g, `<span class="text-highlight">$1</span>`);
   };
@@ -52,7 +52,6 @@ const SeminarDetailSpeakerCard = ({
           <div>
             <p className="body-1-medium text-grey-700">{speaker?.organization}</p>
           </div>
-
           <ul className="w-[273px] pl-5 body-2-regular text-grey-700 list-disc list-outside">
             {speaker?.history
               ?.split('-')
@@ -71,7 +70,9 @@ const SeminarDetailSpeakerCard = ({
           <div className="w-full py-10">
             <SessionTagList
               tags={
-                keywords && keywords.length > 0 ? keywords.slice(0, 3) : ['태그1', '태그2', '태그3']
+                Array.isArray(speakerTags) && speakerTags.length > 0
+                  ? speakerTags.slice(0, 3)
+                  : ['태그1', '태그2', '태그3']
               }
             />
           </div>

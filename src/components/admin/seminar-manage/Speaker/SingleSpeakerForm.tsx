@@ -16,7 +16,11 @@ const SingleSpeakerForm = ({ partNumber, speakerData, onChange }: SingleSpeakerF
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      onChange('profile', file as unknown as any);
+      onChange('profile', {
+        fileName: file.name,
+        file: file,
+        fileUrl: URL.createObjectURL(file),
+      } as any);
     }
   };
 

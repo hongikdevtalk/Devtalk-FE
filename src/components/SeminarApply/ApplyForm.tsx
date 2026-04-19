@@ -24,7 +24,7 @@ const ApplyForm = () => {
     isDuplicateChecked &&
     !!draft.phone.trim() &&
     /\S+@\S+\.\S+/.test(draft.email || '') &&
-    !!draft.departments[0]?.trim() &&
+    !!draft.departmentEtc?.trim() &&
     !!draft.grade;
 
   useEffect(() => {
@@ -45,8 +45,8 @@ const ApplyForm = () => {
         <PhoneSection value={draft.phone} onChange={(v) => draft.setField('phone', v)} />
         <EmailSection value={draft.email} onChange={(v) => draft.setField('email', v)} />
         <DepartmentSection
-          value={draft.departments[0] || ''}
-          onChange={(v) => draft.setField('departments', v ? [v] : [])}
+          value={draft.departmentEtc || ''}
+          onChange={(v) => draft.setField('departmentEtc', v || null)}
         />
         <GradeSection
           selected={draft.grade ? `${draft.grade}학년` : null}

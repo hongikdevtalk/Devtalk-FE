@@ -2,7 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LabelList } from 'recharts';
 import DateRange from './tabs/DateRange';
 import { getPopularKeywords } from '../../../apis/Applicants/seminarStatisticsApi';
-import type { KeywordSearchCount } from '../../../types/Applicants/seminarStatistics.api';
+import type {
+  KeywordSearchCount,
+  PopularKeywordsResult,
+} from '../../../types/Applicants/seminarStatistics.api';
 
 const PopularKeywordsSearch = () => {
   const [keywordData, setKeywordData] = useState<KeywordSearchCount[]>([]);
@@ -16,8 +19,9 @@ const PopularKeywordsSearch = () => {
 
     try {
       const res = await getPopularKeywords(cleanFrom, cleanTo);
-      if (res && res.isSuccess) {
-        setKeywordData(res.result as unknown as KeywordSearchCount[]);
+      if (res && res.isSuccess && res.result) {
+        const sortedData = res.result as unknown as PopularKeywordsResult;
+        setKeywordData(sortedData.keywords);
       }
     } catch (err) {
       console.error('검색어 데이터 로딩 실패', err);
@@ -84,9 +88,9 @@ const PopularKeywordsSearch = () => {
 
                   <YAxis hide domain={[0, 60]} />
 
-                  <Bar dataKey="count" fill="#A3E635" radius={[4, 4, 0, 0]} barSize={40}>
+                  <Bar dataKey="searchCount" fill="#A3E635" radius={[4, 4, 0, 0]} barSize={40}>
                     <LabelList
-                      dataKey="count"
+                      dataKey="searchCount"
                       position="top"
                       fontSize={14}
                       fontWeight="bold"

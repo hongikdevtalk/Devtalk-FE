@@ -12,7 +12,10 @@ import {
 import chevronDown from '../../../assets/icons/common/chevrondown.svg';
 import DateRange from './tabs/DateRange';
 import { getViewStatistics } from '../../../apis/Applicants/seminarStatisticsApi';
-import type { ViewCountItem } from '../../../types/Applicants/seminarStatistics.api';
+import type {
+  ViewCountItem,
+  ViewStatisticsResult,
+} from '../../../types/Applicants/seminarStatistics.api';
 import { useSeminarNums } from '../../../hooks/Applicants/useSeminarNums';
 
 const CardViews = () => {
@@ -43,8 +46,9 @@ const CardViews = () => {
 
       try {
         const res = await getViewStatistics(currentId, cleanFrom, cleanTo);
-        if (res && res.isSuccess) {
-          setViewData(res.result);
+        if (res && res.isSuccess && res.result) {
+          const sortedData = res.result as unknown as ViewStatisticsResult;
+          setViewData(sortedData.viewPoints);
         }
       } catch (err) {
         console.error('조회수 데이터 로딩 실패', err);
@@ -132,6 +136,7 @@ const CardViews = () => {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#A6A6A6" />
                   <XAxis
                     dataKey="date"
+                    tickFormatter={(value) => (value ? value.split('T')[0] : '')}
                     axisLine={false}
                     tickLine={false}
                     tick={{ fill: '#000', fontSize: 14, fontWeight: 'bold' }}
@@ -146,7 +151,7 @@ const CardViews = () => {
 
                   <Line
                     type="linear"
-                    dataKey="count"
+                    dataKey="viewCount"
                     stroke="#333333"
                     strokeWidth={2}
                     dot={{ r: 4, fill: '#333333' }}
@@ -154,7 +159,7 @@ const CardViews = () => {
                     isAnimationActive={false}
                   >
                     <LabelList
-                      dataKey="count"
+                      dataKey="viewCount"
                       position="top"
                       offset={10}
                       style={{ fontSize: '12px', fontWeight: 'bold' }}

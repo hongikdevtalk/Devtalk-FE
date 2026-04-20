@@ -20,7 +20,7 @@ export interface PopularTagsResponse {
   isSuccess: boolean;
   code: string;
   message: string;
-  result: Session[];
+  result: string[];
 }
 
 export const getPopularTags = async (): Promise<PopularTagsResponse> => {

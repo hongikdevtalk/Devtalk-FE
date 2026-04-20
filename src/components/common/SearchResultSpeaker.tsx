@@ -22,7 +22,7 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
     seminarNum,
     speakerNames = [],
     subTitles = [],
-    oneLineSummary = [],
+    // oneLineSummary = [],
     speakerImageUrl = '',
   } = result;
 
@@ -50,16 +50,18 @@ const SearchResultSpeaker = ({ result, onClose }: SearchResultSpeakerProps) => {
             <div className="flex flex-col flex-1 py-2 gap-2.5">
               <div className="self-stretch flex justify-between items-center">
                 <div className="text-black heading-3-medium">{name}</div>
-                <Chip text={`${seminarNum}회차`} />
+                <div className="whitespace-nowrap">
+                  <Chip text={`${seminarNum}회차`} />
+                </div>
               </div>
 
               <div className="text-black subhead-1-regular whitespace-pre-line leading-tight">
                 {subTitles?.[index] || '정보 없음'}
               </div>
 
-              <div className="text-grey-700 body-1-light text-[16px]">
+              {/* <div className="text-grey-700 body-1-light text-[16px]">
                 {oneLineSummary?.[index] || '세미나 설명이 없습니다.'}
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="h-0.5 bg-grey-400 w-full" />
